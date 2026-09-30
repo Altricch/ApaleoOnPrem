@@ -163,9 +163,9 @@ exists specifically to make the night audit safe — it forces preview, report, 
 
 ## The built-in assistant
 
-The clone's own UI is also an MCP client. **Assist → Assistant** runs an agent loop
-over these tools through Claude, and it is the reference for how the safety model is
-meant to be used.
+The clone's own UI is also an MCP client. The **Assistant** panel, docked to the right
+of the workspace, runs an agent loop over these tools through Claude, and it is the
+reference for how the safety model is meant to be used.
 
 It connects the way any other client would - a real `Client` over the in-memory
 transport - so it sees exactly this tool list, these descriptions and these errors.

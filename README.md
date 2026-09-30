@@ -135,12 +135,13 @@ configuration and the measurements.
 
 ### Assistant
 
-The UI has a chat screen (**Assist → Assistant**) that drives those same MCP tools
-through Claude. It needs a key:
+The UI has an assistant that drives those same MCP tools through Claude. It docks to
+the right of the workspace — open it with **Assistant** in the top bar (`Esc` closes
+it), and it stays open across pages until you close it. It needs a key:
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
-npm start          # then open /app/#/chat
+npm start          # then open /app/ and click Assistant
 ```
 
 Without one the screen still loads and reports what is missing — the tools are live,
@@ -148,6 +149,8 @@ only the model is absent.
 
 Three things are worth knowing about how it works:
 
+- **It is a panel, not a page.** The question is usually about the screen you are
+  already on, so opening it reflows that screen rather than replacing it.
 - **The transcript lives in the browser.** Every turn posts the whole history back, so
   the server keeps no session state and nothing is stored about the conversation.
 - **Tool calls are shown, not hidden.** Each call is a row you can expand to see the

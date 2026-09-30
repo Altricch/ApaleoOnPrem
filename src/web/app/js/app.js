@@ -9,6 +9,7 @@ import { api, session, ApiError } from './api.js';
 import { state, loadProperties, selectProperty, refreshProperty, resolveName } from './state.js';
 import { date } from './format.js';
 import { loginView } from './views/login.js';
+import { chatPanel } from './views/chat.js';
 
 const root = document.getElementById('root');
 
@@ -17,8 +18,6 @@ const ROUTES = [
   { path: 'calendar', title: 'Room plan', icon: '▦', section: 'Operate', load: () => import('./views/calendar.js') },
   { path: 'reservations', title: 'Reservations', icon: '☰', section: 'Operate', load: () => import('./views/reservations.js') },
   { path: 'housekeeping', title: 'Housekeeping', icon: '✽', section: 'Operate', load: () => import('./views/housekeeping.js') },
-
-  { path: 'chat', title: 'Assistant', icon: '✦', section: 'Assist', load: () => import('./views/chat.js') },
 
   { path: 'availability', title: 'Availability', icon: '▤', section: 'Revenue', load: () => import('./views/availability.js') },
   { path: 'rates', title: 'Rates', icon: '€', section: 'Revenue', load: () => import('./views/rates.js') },
@@ -69,6 +68,29 @@ async function signOut() {
 let outlet = null;
 let titleEl = null;
 let businessDateEl = null;
+let workarea = null;
+let panelNode = null;
+let panelOpen = false;
+
+const PANEL_KEY = 'apaleo-clone.assistant-open';
+
+/**
+ * The assistant is a panel rather than a page: the question is usually about
+ * the screen you are already on, so opening it must not take that screen away.
+ * The node is built once and kept, so toggling never interrupts an answer.
+ */
+function toggleAssistant(open) {
+  panelOpen = open ?? !panelOpen;
+  if (panelOpen && !panelNode) {
+    panelNode = chatPanel({ onClose: () => toggleAssistant(false) });
+    workarea.append(panelNode);
+  }
+  workarea.classList.toggle('with-panel', panelOpen);
+  if (panelNode) panelNode.hidden = !panelOpen;
+  document.querySelector('.assistant-toggle')?.classList.toggle('on', panelOpen);
+  try { localStorage.setItem(PANEL_KEY, panelOpen ? '1' : '0'); } catch { /* private mode */ }
+  if (panelOpen) panelNode?.querySelector('.chat-input')?.focus();
+}
 
 function renderShell() {
   if (!state.property) {
@@ -83,6 +105,9 @@ function renderShell() {
   titleEl = h('h1', 'Dashboard');
   businessDateEl = h('span.businessdate');
   outlet = h('main.content');
+  workarea = h('div.workarea', [outlet]);
+  panelNode = null;
+  panelOpen = false;
 
   mount(root, h('div.shell', [
     h('aside.sidebar', [
@@ -103,14 +128,32 @@ function renderShell() {
         titleEl,
         h('div.spacer'),
         businessDateEl,
+        h('button.btn.sm.assistant-toggle', {
+          onclick: () => toggleAssistant(),
+          title: 'Assistant (Esc to close)',
+        }, [h('span.ico', '✦'), 'Assistant']),
         h('a.btn.sm', { href: '/docs/', target: '_blank' }, 'API'),
       ]),
-      outlet,
+      workarea,
     ]),
   ]));
 
   paintBusinessDate();
   window.addEventListener('hashchange', route);
+
+  // Escape closes the panel, but only when no drawer or modal is open -
+  // those own the key while they are up.
+  window.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || !panelOpen) return;
+    if (document.querySelector('.scrim')) return;
+    toggleAssistant(false);
+  });
+
+  // Reopen it if it was open last time - it is a workspace, not a dialog.
+  let wasOpen = false;
+  try { wasOpen = localStorage.getItem(PANEL_KEY) === '1'; } catch { /* private mode */ }
+  if (wasOpen) toggleAssistant(true);
+
   route();
 }
 

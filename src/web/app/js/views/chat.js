@@ -3,15 +3,18 @@ import { session } from '../api.js';
 import { state } from '../state.js';
 
 /**
- * A chat against the MCP tools.
+ * A chat against the MCP tools, docked to the right of the workspace.
+ *
+ * It is a panel rather than a page on purpose: the answer is usually about
+ * whatever screen you are already on, and losing the room plan to read it
+ * defeats the point. The transcript stays put while you navigate.
  *
  * The transcript is the source of truth and it lives here, in the browser:
  * every turn posts the whole history back, so the server holds no session and
  * the conversation survives anything except closing the tab.
  *
- * The screen shows the tool calls rather than hiding them. In a system that
- * can cancel a booking, "what did it just do" has to be answerable by looking,
- * not by trusting the prose above it.
+ * Tool calls are shown, not hidden. In a system that can cancel a booking,
+ * "what did it just do" has to be answerable by looking.
  */
 
 /** Wire history: exactly what goes back to the model. */
@@ -26,24 +29,32 @@ let abort = null;
 
 let els = {};
 
-export async function render() {
-  // The transcript deliberately survives navigation: stepping over to the
-  // room plan to check something and coming back should not lose the thread.
-  // "New chat" is the way to clear it.
-  status = await fetchStatus();
-
-  els = {};
+/**
+ * Build the panel. Called once when the shell mounts; the node is kept and
+ * re-shown rather than rebuilt, so an in-flight answer survives a toggle.
+ */
+export function chatPanel({ onClose }) {
   const log = h('div.chat-log');
-  const composer = buildComposer();
-
+  els = {};
   els.log = log;
-  paint();
 
-  return h('div.chat', [
-    header(),
+  const node = h('aside.chatpanel', [
+    header(onClose),
     log,
-    composer,
+    h('div.chat-composer-slot'),
   ]);
+
+  // Status decides whether the composer is usable, so the panel paints an
+  // empty shell first and fills it in rather than blocking the shell render.
+  fetchStatus().then((s) => {
+    status = s;
+    mount(node.querySelector('.chat-composer-slot'), buildComposer());
+    mount(node.querySelector('.chat-head'), ...headerChildren(onClose));
+    paint();
+  });
+
+  paint();
+  return node;
 }
 
 async function fetchStatus() {
@@ -63,7 +74,11 @@ function authHeaders() {
 
 /* ------------------------------------------------------------------ head */
 
-function header() {
+function header(onClose) {
+  return h('div.chat-head', headerChildren(onClose));
+}
+
+function headerChildren(onClose) {
   const bits = [];
   if (status?.unreachable) {
     bits.push(chip('server unreachable', 'bad'));
@@ -75,19 +90,19 @@ function header() {
     if (status.thinking) bits.push(chip('thinking', 'info'));
   }
 
-  return h('div.chat-head', [
-    h('div', [
+  return [
+    h('div.chat-headline', [
       h('div.chat-title', 'Assistant'),
-      h('div.chat-sub', status?.enabled
-        ? `Asks the ${status.tools} MCP tools on your behalf. Irreversible actions need your approval.`
-        : 'Connected to the MCP tools, but no model is configured.'),
+      h('div.chat-badges', bits),
     ]),
-    h('div.chat-badges', bits),
-    h('button.btn.ghost', {
-      onclick: () => { wire = []; turns = []; pending = new Map(); paint(); },
-      title: 'Clear the conversation',
-    }, 'New chat'),
-  ]);
+    h('div.chat-headtools', [
+      h('button.iconbtn', {
+        onclick: () => { wire = []; turns = []; pending = new Map(); paint(); },
+        title: 'New chat',
+      }, '⟳'),
+      h('button.iconbtn', { onclick: onClose, title: 'Close (Esc)' }, '✕'),
+    ]),
+  ];
 }
 
 /* -------------------------------------------------------------- composer */
@@ -121,12 +136,18 @@ function buildComposer() {
   els.box = box;
   els.send = send;
 
+  // Suggestions are scaffolding for an empty panel; once there is a
+  // conversation they are just clutter competing with it for a narrow column.
+  const suggest = h('div.chat-suggest', SUGGESTIONS.map((s) =>
+    h('button.chat-chip', {
+      onclick: () => { box.value = s; autoGrow(box); submit(); },
+      disabled: !status?.enabled,
+    }, s)));
+  els.suggest = suggest;
+  suggest.hidden = turns.length > 0;
+
   return h('div.chat-composer', [
-    h('div.chat-suggest', SUGGESTIONS.map((s) =>
-      h('button.chat-chip', {
-        onclick: () => { box.value = s; autoGrow(box); submit(); },
-        disabled: !status?.enabled,
-      }, s))),
+    suggest,
     h('div.chat-entry', [box, send]),
     h('div.chat-foot', status?.enabled
       ? 'The assistant reads live data. It will ask before anything irreversible.'
@@ -142,6 +163,7 @@ function autoGrow(el) {
 /* ----------------------------------------------------------------- paint */
 
 function paint() {
+  if (els.suggest) els.suggest.hidden = turns.length > 0;
   if (!els.log) return;
   if (!turns.length) {
     mount(els.log, emptyState(
