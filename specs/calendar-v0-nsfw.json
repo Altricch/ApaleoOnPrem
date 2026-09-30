@@ -1,0 +1,1668 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "apaleo Calendar API - not safe for work",
+    "description": "Continuously evolving version - use at your own risk! Manage calendar events and their occurrences.",
+    "version": "v0-nsfw"
+  },
+  "paths": {
+    "/calendar/v0-nsfw/events": {
+      "post": {
+        "tags": [
+          "CalendarEvent"
+        ],
+        "summary": "Create a calendar event.",
+        "description": "Create a new calendar event.\u003Cbr\u003EYou must have this scope: \u0027calendar-events.manage\u0027.",
+        "operationId": "CalendarEventsPost",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "description": "Unique key for safely retrying requests without accidentally performing the same operation twice. \nWe\u0027ll always send back the same response for requests made with the same key, \nand keys can\u0027t be reused with different request parameters. Keys expire after 24 hours.",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The definition of the calendar event.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateCalendarEventModel"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Calendar event successfully created.",
+            "schema": {
+              "$ref": "#/definitions/CalendarEventModel"
+            },
+            "headers": {
+              "Location": {
+                "description": "The location of the created resource.",
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "calendar-events.manage",
+              "admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "CalendarEvent"
+        ],
+        "summary": "Get a list of calendar events.",
+        "description": "Get every calendar event whose property ids intersect the properties the caller can\naccess, optionally narrowed further by the given request.\u003Cbr\u003EYou must have this scope: \u0027calendar-events.read\u0027.",
+        "operationId": "CalendarEventsGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyIds",
+            "description": "Return calendar events touching any of the specified property ids.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "description": "Return calendar events of the specified category.",
+            "type": "string",
+            "enum": [
+              "ConcertsAndMusic",
+              "Sports",
+              "ArtsAndEntertainment",
+              "ConferencesAndBusiness",
+              "CommunityAndLifestyle",
+              "PublicHoliday",
+              "SchoolHoliday",
+              "Other"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "description": "Page number to retrieve. Default: 1. If the page has no items, the API returns 204 No Content.",
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Items per page. Default: 500. Maximum: 500.",
+            "type": "integer",
+            "default": 500
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/CalendarEventListModel"
+            }
+          },
+          "204": {
+            "description": "No calendar events could be found."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "calendar-events.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/calendar/v0-nsfw/events/{id}": {
+      "get": {
+        "tags": [
+          "CalendarEvent"
+        ],
+        "summary": "Get a specific calendar event.",
+        "description": "Get a specific calendar event by its id.\u003Cbr\u003EYou must have this scope: \u0027calendar-events.read\u0027.",
+        "operationId": "CalendarEventsByIdGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The id of the calendar event.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/CalendarEventModel"
+            }
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "calendar-events.read",
+              "admin"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "CalendarEvent"
+        ],
+        "summary": "Replace a calendar event.",
+        "description": "Replace a calendar event. propertyIds is required (an empty list is rejected).\nOmitting recurrence turns the event into a one-off.\u003Cbr\u003EYou must have this scope: \u0027calendar-events.manage\u0027.",
+        "operationId": "CalendarEventsByIdPut",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The id of the calendar event.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The definition of the calendar event.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReplaceCalendarEventModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/CalendarEventModel"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "calendar-events.manage",
+              "admin"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "CalendarEvent"
+        ],
+        "summary": "Patch a calendar event.",
+        "description": "Apply a JSON Patch document to a calendar event. Fields no operation touches keep their stored value.\nHere is the list of operations that are currently allowed:\n- Replace title\n- Replace or remove description\n- Replace from and to\n- Replace category\n- Replace or remove recurrence\npropertyIds cannot be changed. Use PUT to replace the property list.\u003Cbr\u003EYou must have this scope: \u0027calendar-events.manage\u0027.",
+        "operationId": "CalendarEventsByIdPatch",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The id of the calendar event.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Define the list of operations to be applied to the resource. Learn more about JSON Patch here: http://jsonpatch.com/.",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Operation"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The calendar event was successfully modified."
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "calendar-events.manage",
+              "admin"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "CalendarEvent"
+        ],
+        "summary": "Delete a calendar event.",
+        "description": "Delete a calendar event. Suppression markers belonging to this event are removed\nwith it. Independently stored events are left unchanged.\u003Cbr\u003EYou must have this scope: \u0027calendar-events.manage\u0027.",
+        "operationId": "CalendarEventsByIdDelete",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The id of the calendar event.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deletion of the calendar event was successful."
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "calendar-events.manage",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/calendar/v0-nsfw/events/occurrences": {
+      "get": {
+        "tags": [
+          "CalendarEvent"
+        ],
+        "summary": "Get calendar event occurrences.",
+        "description": "Get every expanded occurrence that overlaps the given date range for the properties\nthe caller can access. Recurrence is expanded and cancelled slots are omitted.\u003Cbr\u003EYou must have this scope: \u0027calendar-events.read\u0027.",
+        "operationId": "CalendarEventsOccurrencesGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyIds",
+            "description": "Return occurrences touching any of the specified property ids.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "Inclusive local start date of the query window.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "Inclusive local end date of the query window.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "categories",
+            "description": "Return occurrences of any of the specified categories.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ConcertsAndMusic",
+                "Sports",
+                "ArtsAndEntertainment",
+                "ConferencesAndBusiness",
+                "CommunityAndLifestyle",
+                "PublicHoliday",
+                "SchoolHoliday",
+                "Other"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "eventIds",
+            "description": "Return occurrences of the specified event ids. Unknown ids contribute nothing.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/CalendarEventOccurrenceListModel"
+            }
+          },
+          "204": {
+            "description": "No calendar event occurrences could be found."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "calendar-events.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/calendar/v0-nsfw/event-actions/{id}/fork": {
+      "put": {
+        "tags": [
+          "CalendarEventActions"
+        ],
+        "summary": "Fork the given properties out of a calendar event.",
+        "description": "Creates a new independent calendar event for the given properties from a full snapshot\nand removes those properties from the original event.\u003Cbr\u003EYou must have this scope: \u0027calendar-events.manage\u0027.",
+        "operationId": "CalendarEvent-actionsByIdForkPut",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The id of the original calendar event.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The full snapshot of the new calendar event.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ForkCalendarEventModel"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Calendar event successfully forked.",
+            "schema": {
+              "$ref": "#/definitions/CalendarEventModel"
+            },
+            "headers": {
+              "Location": {
+                "description": "The location of the created resource.",
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "calendar-events.manage",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/calendar/v0-nsfw/event-actions/{id}/occurrences/{occurrenceDate}": {
+      "put": {
+        "tags": [
+          "CalendarEventActions"
+        ],
+        "summary": "Override one occurrence of a calendar event.",
+        "description": "Creates a new independent one-off calendar event for the given properties from a full snapshot\nand suppresses that occurrence on the original event.\u003Cbr\u003EYou must have this scope: \u0027calendar-events.manage\u0027.",
+        "operationId": "CalendarEvent-actionsByIdOccurrencesByOccurrenceDatePut",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The id of the original calendar event.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "occurrenceDate",
+            "description": "The start date of the occurrence being overridden, in the property time zone.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The full snapshot of the replacement calendar event.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OverrideCalendarEventOccurrenceModel"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Calendar event occurrence successfully overridden.",
+            "schema": {
+              "$ref": "#/definitions/CalendarEventModel"
+            },
+            "headers": {
+              "Location": {
+                "description": "The location of the created resource.",
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "calendar-events.manage",
+              "admin"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "CalendarEventActions"
+        ],
+        "summary": "Cancel one occurrence of a calendar event.",
+        "description": "Suppresses one occurrence of a calendar event for the given properties. No replacement event is created\nand the original event is left unchanged.\u003Cbr\u003EYou must have this scope: \u0027calendar-events.manage\u0027.",
+        "operationId": "CalendarEvent-actionsByIdOccurrencesByOccurrenceDateDelete",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "occurrenceDate",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "propertyIds",
+            "description": "The ids of the properties whose occurrence is cancelled.",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "calendar-events.manage",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/calendar/v0-nsfw/event-actions/{id}/split": {
+      "put": {
+        "tags": [
+          "CalendarEventActions"
+        ],
+        "summary": "Split a recurring calendar event from one occurrence onwards.",
+        "description": "Truncates the original series just before the given date and creates a new calendar event\nfrom the submitted snapshot that continues from that date. Cancelled dates in the tail stay\ncancelled on the new event.\u003Cbr\u003EYou must have this scope: \u0027calendar-events.manage\u0027.",
+        "operationId": "CalendarEvent-actionsByIdSplitPut",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The id of the original calendar event.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The full snapshot of the new calendar event.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SplitCalendarEventModel"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Calendar event successfully split.",
+            "schema": {
+              "$ref": "#/definitions/CalendarEventModel"
+            },
+            "headers": {
+              "Location": {
+                "description": "The location of the created resource.",
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "calendar-events.manage",
+              "admin"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "CalendarEventListModel": {
+      "type": "object",
+      "required": [
+        "calendarEvents",
+        "count"
+      ],
+      "properties": {
+        "calendarEvents": {
+          "type": "array",
+          "description": "List of calendar events",
+          "items": {
+            "$ref": "#/definitions/CalendarEventModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "calendarEvents": [
+          {
+            "id": "ZDGUUAKX",
+            "title": "Oktoberfest",
+            "description": "Munich\u0027s yearly beer festival",
+            "from": "2026-09-19",
+            "to": "2026-10-04",
+            "category": "CommunityAndLifestyle",
+            "propertyIds": [
+              "MUC"
+            ],
+            "recurrence": {
+              "frequency": "Yearly",
+              "interval": 1
+            }
+          }
+        ],
+        "count": 1
+      }
+    },
+    "CalendarEventModel": {
+      "type": "object",
+      "required": [
+        "category",
+        "from",
+        "id",
+        "propertyIds",
+        "title",
+        "to"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The id of the calendar event."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the calendar event.",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "description": "The description of the calendar event.",
+          "x-nullable": true
+        },
+        "from": {
+          "type": "string",
+          "description": "The first date the calendar event takes place.",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "to": {
+          "type": "string",
+          "description": "The last date the calendar event takes place.",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "category": {
+          "type": "string",
+          "description": "The category of the calendar event.",
+          "enum": [
+            "ConcertsAndMusic",
+            "Sports",
+            "ArtsAndEntertainment",
+            "ConferencesAndBusiness",
+            "CommunityAndLifestyle",
+            "PublicHoliday",
+            "SchoolHoliday",
+            "Other"
+          ]
+        },
+        "propertyIds": {
+          "type": "array",
+          "description": "The ids of the properties this calendar event currently applies to.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recurrence": {
+          "$ref": "#/definitions/CalendarEventRecurrenceModel"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "id": "ZDGUUAKX",
+        "title": "Oktoberfest",
+        "description": "Munich\u0027s yearly beer festival",
+        "from": "2026-09-19",
+        "to": "2026-10-04",
+        "category": "CommunityAndLifestyle",
+        "propertyIds": [
+          "MUC"
+        ],
+        "recurrence": {
+          "frequency": "Yearly",
+          "interval": 1
+        }
+      }
+    },
+    "CalendarEventOccurrenceListModel": {
+      "type": "object",
+      "required": [
+        "count",
+        "occurrences"
+      ],
+      "properties": {
+        "occurrences": {
+          "type": "array",
+          "description": "List of calendar event occurrences",
+          "items": {
+            "$ref": "#/definitions/CalendarEventOccurrenceModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "occurrences": [
+          {
+            "eventId": "ZDGUUAKX",
+            "propertyIds": [
+              "MUC1",
+              "VIE1"
+            ],
+            "title": "Oktoberfest",
+            "description": "Munich\u0027s yearly beer festival",
+            "category": "CommunityAndLifestyle",
+            "from": "2026-09-18T22:00:00Z",
+            "to": "2026-10-04T22:00:00Z",
+            "isShared": true,
+            "recurrence": {
+              "frequency": "Weekly",
+              "interval": 1,
+              "end": "2026-10-03"
+            }
+          }
+        ],
+        "count": 1
+      }
+    },
+    "CalendarEventOccurrenceModel": {
+      "type": "object",
+      "required": [
+        "category",
+        "eventId",
+        "from",
+        "isShared",
+        "propertyIds",
+        "title",
+        "to"
+      ],
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "description": "The id of the calendar event this occurrence came from."
+        },
+        "propertyIds": {
+          "type": "array",
+          "description": "The caller-accessible properties this exact absolute window applies to,\nin the event\u0027s stored order.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the calendar event at read time.",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "description": "The description of the calendar event at read time.",
+          "x-nullable": true
+        },
+        "category": {
+          "type": "string",
+          "description": "The category of the calendar event.",
+          "enum": [
+            "ConcertsAndMusic",
+            "Sports",
+            "ArtsAndEntertainment",
+            "ConferencesAndBusiness",
+            "CommunityAndLifestyle",
+            "PublicHoliday",
+            "SchoolHoliday",
+            "Other"
+          ]
+        },
+        "from": {
+          "type": "string",
+          "description": "Start of the occurrence\u0027s first local calendar day, as a UTC instant. Inclusive."
+        },
+        "to": {
+          "type": "string",
+          "description": "Start of the local day after the occurrence\u0027s last calendar day, as a UTC instant. Exclusive."
+        },
+        "isShared": {
+          "type": "boolean",
+          "description": "True when the underlying calendar event currently lists more than one property\nin total \u2014 not whether this occurrence lists more than one. A single-entry\n\u0060propertyIds\u0060 with \u0060isShared: true\u0060 means the event also spans a\nproperty the caller cannot access."
+        },
+        "recurrence": {
+          "$ref": "#/definitions/CalendarEventRecurrenceModel"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "eventId": "ZDGUUAKX",
+        "propertyIds": [
+          "MUC1",
+          "VIE1"
+        ],
+        "title": "Oktoberfest",
+        "description": "Munich\u0027s yearly beer festival",
+        "category": "CommunityAndLifestyle",
+        "from": "2026-09-18T22:00:00Z",
+        "to": "2026-10-04T22:00:00Z",
+        "isShared": true,
+        "recurrence": {
+          "frequency": "Weekly",
+          "interval": 1,
+          "end": "2026-10-03"
+        }
+      }
+    },
+    "CalendarEventRecurrenceModel": {
+      "type": "object",
+      "required": [
+        "frequency"
+      ],
+      "properties": {
+        "frequency": {
+          "type": "string",
+          "description": "How often the event repeats.",
+          "enum": [
+            "Daily",
+            "Weekly",
+            "Monthly",
+            "Yearly"
+          ]
+        },
+        "interval": {
+          "type": "integer",
+          "description": "The number of frequency units between occurrences. Defaults to 1 when omitted.",
+          "format": "int32",
+          "maximum": 2147483647,
+          "minimum": 1,
+          "x-nullable": true
+        },
+        "end": {
+          "type": "string",
+          "description": "The date after which the event no longer recurs. Recurs indefinitely when omitted.",
+          "format": "date",
+          "example": "2020-10-10",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "CreateCalendarEventModel": {
+      "type": "object",
+      "required": [
+        "category",
+        "from",
+        "propertyIds",
+        "title",
+        "to"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The title of the calendar event.",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "description": "The description of the calendar event.",
+          "x-nullable": true
+        },
+        "from": {
+          "type": "string",
+          "description": "The first date the calendar event takes place.",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "to": {
+          "type": "string",
+          "description": "The last date the calendar event takes place.",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "category": {
+          "type": "string",
+          "description": "The category of the calendar event.",
+          "enum": [
+            "ConcertsAndMusic",
+            "Sports",
+            "ArtsAndEntertainment",
+            "ConferencesAndBusiness",
+            "CommunityAndLifestyle",
+            "PublicHoliday",
+            "SchoolHoliday",
+            "Other"
+          ]
+        },
+        "propertyIds": {
+          "type": "array",
+          "description": "The ids of the properties this calendar event applies to.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recurrence": {
+          "$ref": "#/definitions/CalendarEventRecurrenceModel"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "title": "Oktoberfest",
+        "description": "Munich\u0027s yearly beer festival",
+        "from": "2026-09-19",
+        "to": "2026-10-04",
+        "category": "CommunityAndLifestyle",
+        "propertyIds": [
+          "MUC"
+        ],
+        "recurrence": {
+          "frequency": "Yearly",
+          "interval": 1
+        }
+      }
+    },
+    "ForkCalendarEventModel": {
+      "type": "object",
+      "required": [
+        "category",
+        "from",
+        "propertyIds",
+        "title",
+        "to"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The title of the calendar event.",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "description": "The description of the calendar event.",
+          "x-nullable": true
+        },
+        "from": {
+          "type": "string",
+          "description": "The first date the calendar event takes place.",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "to": {
+          "type": "string",
+          "description": "The last date the calendar event takes place.",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "category": {
+          "type": "string",
+          "description": "The category of the calendar event.",
+          "enum": [
+            "ConcertsAndMusic",
+            "Sports",
+            "ArtsAndEntertainment",
+            "ConferencesAndBusiness",
+            "CommunityAndLifestyle",
+            "PublicHoliday",
+            "SchoolHoliday",
+            "Other"
+          ]
+        },
+        "propertyIds": {
+          "type": "array",
+          "description": "The ids of the properties to split into an independent calendar event.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recurrence": {
+          "$ref": "#/definitions/CalendarEventRecurrenceModel"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "title": "Oktoberfest \u2014 Munich",
+        "description": "Independent property event",
+        "from": "2026-09-19",
+        "to": "2026-10-04",
+        "category": "CommunityAndLifestyle",
+        "propertyIds": [
+          "MUC",
+          "BER"
+        ],
+        "recurrence": {
+          "frequency": "Yearly",
+          "interval": 1,
+          "end": "2027-10-04"
+        }
+      }
+    },
+    "MessageItemCollection": {
+      "type": "object",
+      "properties": {
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "readOnly": true,
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "Operation": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "x-nullable": true
+        },
+        "path": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "op": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "from": {
+          "type": "string",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "OverrideCalendarEventOccurrenceModel": {
+      "type": "object",
+      "required": [
+        "category",
+        "from",
+        "propertyIds",
+        "title",
+        "to"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The title of the calendar event.",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "description": "The description of the calendar event.",
+          "x-nullable": true
+        },
+        "from": {
+          "type": "string",
+          "description": "The first date the calendar event takes place.",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "to": {
+          "type": "string",
+          "description": "The last date the calendar event takes place.",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "category": {
+          "type": "string",
+          "description": "The category of the calendar event.",
+          "enum": [
+            "ConcertsAndMusic",
+            "Sports",
+            "ArtsAndEntertainment",
+            "ConferencesAndBusiness",
+            "CommunityAndLifestyle",
+            "PublicHoliday",
+            "SchoolHoliday",
+            "Other"
+          ]
+        },
+        "propertyIds": {
+          "type": "array",
+          "description": "The ids of the properties whose occurrence is replaced.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "title": "Oktoberfest \u2014 Munich, revised",
+        "description": "Moved to the Theresienwiese annex",
+        "from": "2026-09-26",
+        "to": "2026-09-26",
+        "category": "CommunityAndLifestyle",
+        "propertyIds": [
+          "MUC",
+          "BER"
+        ]
+      }
+    },
+    "ProblemDetails": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "title": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "x-nullable": true
+        },
+        "detail": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "instance": {
+          "type": "string",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": {}
+    },
+    "ReplaceCalendarEventModel": {
+      "type": "object",
+      "required": [
+        "category",
+        "from",
+        "propertyIds",
+        "title",
+        "to"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The title of the calendar event.",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "description": "The description of the calendar event.",
+          "x-nullable": true
+        },
+        "from": {
+          "type": "string",
+          "description": "The first date the calendar event takes place.",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "to": {
+          "type": "string",
+          "description": "The last date the calendar event takes place.",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "category": {
+          "type": "string",
+          "description": "The category of the calendar event.",
+          "enum": [
+            "ConcertsAndMusic",
+            "Sports",
+            "ArtsAndEntertainment",
+            "ConferencesAndBusiness",
+            "CommunityAndLifestyle",
+            "PublicHoliday",
+            "SchoolHoliday",
+            "Other"
+          ]
+        },
+        "propertyIds": {
+          "type": "array",
+          "description": "The ids of the properties this calendar event applies to.\nSubmitting an empty list is rejected.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recurrence": {
+          "$ref": "#/definitions/CalendarEventRecurrenceModel"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "title": "Oktoberfest",
+        "description": "Munich\u0027s yearly beer festival",
+        "from": "2026-09-19",
+        "to": "2026-10-04",
+        "category": "CommunityAndLifestyle",
+        "propertyIds": [
+          "MUC"
+        ],
+        "recurrence": {
+          "frequency": "Yearly",
+          "interval": 1
+        }
+      }
+    },
+    "SplitCalendarEventModel": {
+      "type": "object",
+      "required": [
+        "category",
+        "from",
+        "title",
+        "to"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The title of the calendar event.",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "description": "The description of the calendar event.",
+          "x-nullable": true
+        },
+        "from": {
+          "type": "string",
+          "description": "The first date of the new calendar event, and the occurrence to split from.",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "to": {
+          "type": "string",
+          "description": "The last date of the new calendar event.",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "category": {
+          "type": "string",
+          "description": "The category of the calendar event.",
+          "enum": [
+            "ConcertsAndMusic",
+            "Sports",
+            "ArtsAndEntertainment",
+            "ConferencesAndBusiness",
+            "CommunityAndLifestyle",
+            "PublicHoliday",
+            "SchoolHoliday",
+            "Other"
+          ]
+        },
+        "recurrence": {
+          "$ref": "#/definitions/CalendarEventRecurrenceModel"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "title": "Oktoberfest \u2014 extended programme",
+        "description": "New programme from the third week onwards",
+        "from": "2026-10-17",
+        "to": "2026-11-01",
+        "category": "CommunityAndLifestyle",
+        "recurrence": {
+          "frequency": "Weekly",
+          "interval": 1,
+          "end": "2026-12-31"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://identity.apaleo.com/connect/authorize",
+      "scopes": {
+        "admin": "Full access",
+        "reservations.import": "Import reservations"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "CalendarEvent"
+    },
+    {
+      "name": "CalendarEventActions"
+    }
+  ]
+}

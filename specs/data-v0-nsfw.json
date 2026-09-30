@@ -1,0 +1,1468 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "apaleo Data API - not safe for work",
+    "description": "Continuously evolving version - use at your own risk! Import transactional data from other PMS.",
+    "version": "v0-nsfw"
+  },
+  "paths": {
+    "/data/v0-nsfw/bookings": {
+      "post": {
+        "tags": [
+          "BookingMigration"
+        ],
+        "description": "\u003Cbr\u003EYou must have this scope: \u0027reservations.import\u0027.",
+        "operationId": "DataBookingsPost",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "description": "Unique key for safely retrying requests without accidentally performing the same operation twice. \nWe\u0027ll always send back the same response for requests made with the same key, \nand keys can\u0027t be reused with different request parameters. Keys expire after 24 hours.",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateBookingMigrationModel"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/BookingCreatedMigrationModel"
+            },
+            "headers": {
+              "Location": {
+                "description": "The location of the created resource.",
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "reservations.import"
+            ]
+          }
+        ]
+      }
+    },
+    "/data/v0-nsfw/import/reservations-upload": {
+      "post": {
+        "tags": [
+          "Import"
+        ],
+        "summary": "Reads reservations to migrate from CSV and returns the batch id",
+        "description": "The reservations will be created by-passing availability checks and offer calculation as they have been accepted\nalready by the hotel. Still only reservations with arrival in the future are accepted.\nThe values in the CSV must be delimited by \u0027;\u0027.\u003Cbr\u003EYou must have this scope: \u0027reservations.import\u0027.",
+        "operationId": "DataImportReservations-uploadPost",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "description": "Unique key for safely retrying requests without accidentally performing the same operation twice. \nWe\u0027ll always send back the same response for requests made with the same key, \nand keys can\u0027t be reused with different request parameters. Keys expire after 24 hours.",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "formFile",
+            "description": "The file to upload.",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Uploaded.",
+            "schema": {
+              "$ref": "#/definitions/MigrationBatchCreatedModel"
+            },
+            "headers": {
+              "Location": {
+                "description": "The location of the created resource.",
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "reservations.import"
+            ]
+          }
+        ]
+      }
+    },
+    "/data/v0-nsfw/import/batch/{id}": {
+      "get": {
+        "tags": [
+          "Import"
+        ],
+        "summary": "Gets a batch by id",
+        "description": "\u003Cbr\u003EYou must have this scope: \u0027reservations.import\u0027.",
+        "operationId": "DataImportBatchByIdGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/MigrationBatchModel"
+            }
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "reservations.import"
+            ]
+          }
+        ]
+      }
+    },
+    "/data/v0-nsfw/import/trigger-batch": {
+      "post": {
+        "tags": [
+          "Import"
+        ],
+        "summary": "Triggers the asynchronous execution of a batch",
+        "description": "\u003Cbr\u003EYou must have this scope: \u0027reservations.import\u0027.",
+        "operationId": "DataImportTrigger-batchPost",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "description": "Unique key for safely retrying requests without accidentally performing the same operation twice. \nWe\u0027ll always send back the same response for requests made with the same key, \nand keys can\u0027t be reused with different request parameters. Keys expire after 24 hours.",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TriggerBatchModel"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Triggered.",
+            "schema": {
+              "$ref": "#/definitions/MigrationBatchCreatedModel"
+            }
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "reservations.import"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "BookReservationServiceMigrationModel": {
+      "type": "object",
+      "required": [
+        "serviceId"
+      ],
+      "properties": {
+        "serviceId": {
+          "type": "string",
+          "description": "The id of the service you want to book"
+        },
+        "count": {
+          "type": "integer",
+          "description": "The number of services to book for each service date. It defaults to the service offer count when not specified.",
+          "format": "int32",
+          "x-nullable": true
+        },
+        "amount": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "dates": {
+          "type": "array",
+          "description": "The optional dates you want to book the service for; if not specified the default service pattern will be used (e.g. whole stay).",
+          "items": {
+            "$ref": "#/definitions/Date"
+          },
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "serviceId": "MUC-SPA",
+        "dates": [
+          {
+            "serviceDate": "2026-09-29",
+            "amount": {
+              "amount": 25.0,
+              "currency": "EUR"
+            }
+          },
+          {
+            "serviceDate": "2026-09-30"
+          }
+        ]
+      }
+    },
+    "BookerMigrationModel": {
+      "type": "object",
+      "required": [
+        "lastName"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title of the booker",
+          "enum": [
+            "Mr",
+            "Ms",
+            "Dr",
+            "Prof",
+            "Mrs",
+            "Other"
+          ],
+          "x-nullable": true
+        },
+        "gender": {
+          "type": "string",
+          "description": "Gender of the booker",
+          "enum": [
+            "Female",
+            "Male",
+            "Other",
+            "Unknown"
+          ],
+          "x-nullable": true
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of the booker",
+          "x-nullable": true
+        },
+        "middleInitial": {
+          "type": "string",
+          "description": "Middle initial of the booker",
+          "x-nullable": true
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the booker",
+          "minLength": 1
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the booker",
+          "x-nullable": true
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the booker",
+          "x-nullable": true
+        },
+        "address": {
+          "$ref": "#/definitions/PersonAddressModel"
+        },
+        "nationalityCountryCode": {
+          "type": "string",
+          "description": "The booker\u0027s nationality, in ISO 3166-1 alpha-2 code",
+          "x-nullable": true
+        },
+        "identificationNumber": {
+          "type": "string",
+          "description": "The booker\u0027s identification number for the given identificationType.",
+          "x-nullable": true
+        },
+        "identificationIssueDate": {
+          "type": "string",
+          "description": "The issue date of the booker\u0027s identification document.",
+          "format": "date",
+          "example": "2020-10-10",
+          "x-nullable": true
+        },
+        "identificationExpiryDate": {
+          "type": "string",
+          "description": "The expiry date of the booker\u0027s identification document.",
+          "format": "date",
+          "example": "2020-10-10",
+          "x-nullable": true
+        },
+        "identificationType": {
+          "type": "string",
+          "description": "The type of the identificationNumber",
+          "enum": [
+            "SocialInsuranceNumber",
+            "PassportNumber",
+            "IdNumber",
+            "DriverLicenseNumber",
+            "VisaNumber",
+            "ForeignerIdentityNumber",
+            "TaxIdentificationNumber",
+            "Other"
+          ],
+          "x-nullable": true
+        },
+        "company": {
+          "$ref": "#/definitions/PersonCompanyMigrationModel"
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "description": "Preferred contact two-letter language code (ISO Alpha-2)",
+          "x-nullable": true
+        },
+        "birthDate": {
+          "type": "string",
+          "description": "Birth date",
+          "format": "date",
+          "example": "2020-10-10",
+          "x-nullable": true
+        },
+        "birthPlace": {
+          "type": "string",
+          "description": "The place of birth",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "BookingCreatedMigrationModel": {
+      "type": "object",
+      "required": [
+        "id",
+        "reservationIds"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Booking id"
+        },
+        "reservationIds": {
+          "type": "array",
+          "description": "List of ids for newly created reservations",
+          "items": {
+            "$ref": "#/definitions/ReservationCreatedMigrationModel"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "id": "XPGMSXGF",
+        "reservationIds": [
+          {
+            "id": "XPGMSXGF-1"
+          },
+          {
+            "id": "XPGMSXGF-2"
+          }
+        ]
+      }
+    },
+    "CommissionModel": {
+      "type": "object",
+      "required": [
+        "commissionAmount"
+      ],
+      "properties": {
+        "commissionAmount": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "beforeCommissionAmount": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CreateBookingMigrationModel": {
+      "type": "object",
+      "description": "With this request you can migrate a booking from other PMS system",
+      "required": [
+        "booker",
+        "reservations"
+      ],
+      "properties": {
+        "paymentAccount": {
+          "$ref": "#/definitions/CreatePaymentAccountMigrationModel"
+        },
+        "booker": {
+          "$ref": "#/definitions/BookerMigrationModel"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Additional information and comments",
+          "x-nullable": true
+        },
+        "bookerComment": {
+          "type": "string",
+          "description": "Additional information and comments by the booker",
+          "x-nullable": true
+        },
+        "reservations": {
+          "type": "array",
+          "description": "List of reservations to create",
+          "items": {
+            "$ref": "#/definitions/CreateReservationMigrationModel"
+          }
+        },
+        "transactionReference": {
+          "type": "string",
+          "description": "The reference of a payment transaction. This should be set when a payment transaction has been initiated and should be used to complete the transaction upon reservation creation.\nWhen set, the payment transaction completion is always triggered regardless of the reservation guarantee type and payment automation settings.",
+          "x-nullable": true
+        },
+        "registeredCard": {
+          "$ref": "#/definitions/RegisteredCardModel"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "paymentAccount": {
+          "accountNumber": "1111",
+          "accountHolder": "John Doe",
+          "expiryMonth": "8",
+          "expiryYear": "2018",
+          "paymentMethod": "visa",
+          "payerEmail": "s.hopper@test.com",
+          "payerReference": "4ea6462b-cca3-4c17-a035-c7b5132db83c",
+          "isVirtual": false
+        },
+        "booker": {
+          "title": "Mr",
+          "gender": "Male",
+          "firstName": "Jon",
+          "middleInitial": "D",
+          "lastName": "Doe",
+          "email": "john.d@doe.com",
+          "phone": "\u002B4989123343",
+          "address": {
+            "addressLine1": "My Street 1",
+            "postalCode": "12453",
+            "city": "MyCity",
+            "countryCode": "GB"
+          }
+        },
+        "reservations": [
+          {
+            "arrival": "2026-10-01",
+            "departure": "2026-10-03",
+            "adults": 1,
+            "childrenAges": [
+              6
+            ],
+            "guestComment": "I need a wake up service",
+            "channelCode": "Direct",
+            "primaryGuest": {
+              "title": "Mr",
+              "gender": "Male",
+              "firstName": "Jon",
+              "middleInitial": "D",
+              "lastName": "Doe",
+              "email": "john.d@doe.com",
+              "phone": "\u002B4989123343",
+              "address": {
+                "addressLine1": "My Street 1",
+                "postalCode": "12453",
+                "city": "MyCity",
+                "countryCode": "GB"
+              }
+            },
+            "guaranteeType": "Prepayment",
+            "travelPurpose": "Business",
+            "timeSlices": [
+              {
+                "ratePlanId": "MUC-NONREF-FAMILY"
+              },
+              {
+                "ratePlanId": "MUC-NONREF-FAMILY"
+              }
+            ],
+            "services": [
+              {
+                "serviceId": "MUC-BRKF"
+              },
+              {
+                "serviceId": "MUC-YOGA",
+                "dates": [
+                  {
+                    "serviceDate": "2026-10-02",
+                    "amount": {
+                      "amount": 35.0,
+                      "currency": "EUR"
+                    }
+                  }
+                ]
+              }
+            ],
+            "prePaymentAmount": {
+              "amount": 50.0,
+              "currency": "EUR"
+            },
+            "externalReferences": {
+              "globalDistributionSystemId": "GDS123",
+              "onlineTravelAgencyId": "OTA123",
+              "onlineBookingToolId": "OBT123",
+              "channelManagerId": "CM123",
+              "centralReservationSystemId": "CRS123",
+              "legacyId": "LEGACY-PMS-123"
+            }
+          },
+          {
+            "arrival": "2026-10-02",
+            "departure": "2026-10-04",
+            "adults": 1,
+            "childrenAges": [
+              6
+            ],
+            "channelCode": "Direct",
+            "primaryGuest": {
+              "title": "Mr",
+              "gender": "Male",
+              "firstName": "Eric",
+              "middleInitial": "E",
+              "lastName": "Steinmetz",
+              "email": "eric.e@steinmetz.com",
+              "phone": "\u002B4989123343",
+              "address": {
+                "addressLine1": "My Street 1",
+                "postalCode": "12453",
+                "city": "MyCity",
+                "countryCode": "GB"
+              }
+            },
+            "guaranteeType": "CreditCard",
+            "timeSlices": [
+              {
+                "ratePlanId": "BER-FLEX-DBL",
+                "totalAmount": {
+                  "amount": 120.0,
+                  "currency": "EUR"
+                }
+              },
+              {
+                "ratePlanId": "BER-FLEX-DBL",
+                "totalAmount": {
+                  "amount": 125.0,
+                  "currency": "EUR"
+                }
+              }
+            ],
+            "companyId": "BER-UMBRELLA",
+            "commission": {
+              "commissionAmount": {
+                "amount": 20.0,
+                "currency": "EUR"
+              },
+              "beforeCommissionAmount": {
+                "amount": 100.0,
+                "currency": "EUR"
+              }
+            }
+          }
+        ],
+        "transactionReference": "564578124534890J"
+      }
+    },
+    "CreatePaymentAccountMigrationModel": {
+      "type": "object",
+      "description": "DEPRECATED: CreatePaymentAccountMigrationModel is deprecated, use \u0060/booking/v1/payment-accounts\u0060 instead. This model will be removed on May 15, 2026.",
+      "properties": {
+        "accountNumber": {
+          "type": "string",
+          "description": "The account number (e.g. masked credit card number or last 4 digits)",
+          "x-nullable": true
+        },
+        "accountHolder": {
+          "type": "string",
+          "description": "The account holder (e.g. card holder)",
+          "x-nullable": true
+        },
+        "expiryMonth": {
+          "type": "string",
+          "description": "The credit card\u0027s expiration month",
+          "x-nullable": true
+        },
+        "expiryYear": {
+          "type": "string",
+          "description": "The credit card\u0027s expiration year",
+          "x-nullable": true
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "The payment method (e.g. visa)",
+          "x-nullable": true
+        },
+        "payerEmail": {
+          "type": "string",
+          "description": "The email address of the shopper / customer",
+          "x-nullable": true
+        },
+        "payerReference": {
+          "type": "string",
+          "description": "The reference used to uniquely identify the shopper (e.g. user ID or account ID). Used for recurring payments",
+          "x-nullable": true
+        },
+        "isVirtual": {
+          "type": "boolean",
+          "description": "Indicates if the payment account is a virtual credit card. If not specified it defaults to \u0027false\u0027"
+        },
+        "inactiveReason": {
+          "type": "string",
+          "description": "A reason why account is inactive when PayerReference was not provided",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "CreateReservationMigrationModel": {
+      "type": "object",
+      "description": "With this request you can migrate a reservation",
+      "required": [
+        "adults",
+        "arrival",
+        "channelCode",
+        "departure",
+        "timeSlices"
+      ],
+      "properties": {
+        "arrival": {
+          "type": "string",
+          "description": "Date and optional time of arrival\u003Cbr /\u003ESpecify either a pure date or a date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E"
+        },
+        "departure": {
+          "type": "string",
+          "description": "Date and optional time of departure. Cannot be more than 5 years after arrival.\u003Cbr /\u003ESpecify either a pure date or a date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E"
+        },
+        "adults": {
+          "type": "integer",
+          "description": "Number of adults",
+          "format": "int32"
+        },
+        "childrenAges": {
+          "type": "array",
+          "description": "Ages of the children",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "x-nullable": true
+        },
+        "comment": {
+          "type": "string",
+          "description": "Additional information and comments",
+          "x-nullable": true
+        },
+        "guestComment": {
+          "type": "string",
+          "description": "Additional information and comments by the guest",
+          "x-nullable": true
+        },
+        "externalCode": {
+          "type": "string",
+          "description": "Code in some system",
+          "x-nullable": true
+        },
+        "channelCode": {
+          "type": "string",
+          "description": "Channel code",
+          "enum": [
+            "Direct",
+            "BookingCom",
+            "Ibe",
+            "ChannelManager",
+            "Expedia",
+            "Homelike",
+            "Hrs",
+            "AltoVita",
+            "DesVu",
+            "Gimsi"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "description": "Source of the reservation",
+          "x-nullable": true
+        },
+        "primaryGuest": {
+          "$ref": "#/definitions/GuestMigrationModel"
+        },
+        "additionalGuests": {
+          "type": "array",
+          "description": "Additional guests of the reservation.",
+          "items": {
+            "$ref": "#/definitions/GuestMigrationModel"
+          },
+          "x-nullable": true
+        },
+        "guaranteeType": {
+          "type": "string",
+          "description": "The guarantee that has to be applied for this reservation. It has to be the same or stronger than\nthe minimum guarantee required by the selected rate plan",
+          "enum": [
+            "PM6Hold",
+            "CreditCard",
+            "Prepayment",
+            "Company"
+          ],
+          "x-nullable": true
+        },
+        "travelPurpose": {
+          "type": "string",
+          "description": "Purpose of the trip, leisure or business",
+          "enum": [
+            "Business",
+            "Leisure"
+          ],
+          "x-nullable": true
+        },
+        "timeSlices": {
+          "type": "array",
+          "description": "Gross prices including services and taxes for each time slice. They will be applied to the reservation timeslices\nin the order specified from arrival to departure",
+          "items": {
+            "$ref": "#/definitions/CreateReservationTimeSliceMigrationModel"
+          }
+        },
+        "services": {
+          "type": "array",
+          "description": "Additional services (extras, add-ons) that should be added to the reservation",
+          "items": {
+            "$ref": "#/definitions/BookReservationServiceMigrationModel"
+          },
+          "x-nullable": true
+        },
+        "companyId": {
+          "type": "string",
+          "description": "Set this if this reservation belongs to a company",
+          "x-nullable": true
+        },
+        "corporateCode": {
+          "type": "string",
+          "description": "Corporate code provided during creation. Used to find offers during amend.",
+          "x-nullable": true
+        },
+        "prePaymentAmount": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "commission": {
+          "$ref": "#/definitions/CommissionModel"
+        },
+        "promoCode": {
+          "type": "string",
+          "description": "The promo code associated with a certain special offer",
+          "x-nullable": true
+        },
+        "externalReferences": {
+          "$ref": "#/definitions/ExternalReferencesMigrationModel"
+        },
+        "registeredCard": {
+          "$ref": "#/definitions/RegisteredCardModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CreateReservationTimeSliceMigrationModel": {
+      "type": "object",
+      "required": [
+        "ratePlanId"
+      ],
+      "properties": {
+        "ratePlanId": {
+          "type": "string",
+          "description": "The rate plan id for this time slice"
+        },
+        "totalAmount": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Date": {
+      "type": "object",
+      "required": [
+        "serviceDate"
+      ],
+      "properties": {
+        "serviceDate": {
+          "type": "string",
+          "description": "The date the service is delivered",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "count": {
+          "type": "integer",
+          "description": "The number of services to book for this date. It defaults to the service offer count when not specified.",
+          "format": "int32",
+          "x-nullable": true
+        },
+        "amount": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ExternalReferencesMigrationModel": {
+      "type": "object",
+      "properties": {
+        "globalDistributionSystemId": {
+          "type": "string",
+          "description": "The ID of the global distribution system.",
+          "x-nullable": true
+        },
+        "onlineTravelAgencyId": {
+          "type": "string",
+          "description": "The ID of the online travel agency.",
+          "x-nullable": true
+        },
+        "onlineBookingToolId": {
+          "type": "string",
+          "description": "The ID of the online booking tool.",
+          "x-nullable": true
+        },
+        "channelManagerId": {
+          "type": "string",
+          "description": "The ID of the channel manager.",
+          "x-nullable": true
+        },
+        "centralReservationSystemId": {
+          "type": "string",
+          "description": "The ID of the central reservation system.",
+          "x-nullable": true
+        },
+        "legacyId": {
+          "type": "string",
+          "description": "The ID of the legacy PMS system.",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "GuestMigrationModel": {
+      "type": "object",
+      "required": [
+        "lastName"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title of the guest",
+          "enum": [
+            "Mr",
+            "Ms",
+            "Dr",
+            "Prof",
+            "Mrs",
+            "Other"
+          ],
+          "x-nullable": true
+        },
+        "gender": {
+          "type": "string",
+          "description": "Gender of the booker",
+          "enum": [
+            "Female",
+            "Male",
+            "Other",
+            "Unknown"
+          ],
+          "x-nullable": true
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of the guest",
+          "x-nullable": true
+        },
+        "middleInitial": {
+          "type": "string",
+          "description": "Middle initial of the guest",
+          "x-nullable": true
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the guest",
+          "minLength": 1
+        },
+        "secondLastName": {
+          "type": "string",
+          "description": "Second last name of the guest",
+          "x-nullable": true
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the guest",
+          "x-nullable": true
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the guest",
+          "x-nullable": true
+        },
+        "address": {
+          "$ref": "#/definitions/PersonAddressModel"
+        },
+        "nationalityCountryCode": {
+          "type": "string",
+          "description": "The guest\u0027s nationality, in ISO 3166-1 alpha-2 code",
+          "x-nullable": true
+        },
+        "identificationNumber": {
+          "type": "string",
+          "description": "The guest\u0027s identification number for the given identificationType.",
+          "x-nullable": true
+        },
+        "identificationAdditionalNumber": {
+          "type": "string",
+          "description": "The guest\u0027s additional identification number for the given identificationType.",
+          "x-nullable": true
+        },
+        "identificationIssueDate": {
+          "type": "string",
+          "description": "The issue date of the guest\u0027s identification document.",
+          "format": "date",
+          "example": "2020-10-10",
+          "x-nullable": true
+        },
+        "identificationExpiryDate": {
+          "type": "string",
+          "description": "The expiry date of the guest\u0027s identification document.",
+          "format": "date",
+          "example": "2020-10-10",
+          "x-nullable": true
+        },
+        "identificationIssuePlace": {
+          "type": "string",
+          "description": "The issue place of the guest\u0027s identification document.",
+          "x-nullable": true
+        },
+        "identificationType": {
+          "type": "string",
+          "description": "The type of the identificationNumber",
+          "enum": [
+            "SocialInsuranceNumber",
+            "PassportNumber",
+            "IdNumber",
+            "DriverLicenseNumber",
+            "VisaNumber",
+            "ForeignerIdentityNumber",
+            "TaxIdentificationNumber",
+            "Other"
+          ],
+          "x-nullable": true
+        },
+        "personalTaxId": {
+          "type": "string",
+          "description": "The personal tax id of the guest",
+          "x-nullable": true
+        },
+        "company": {
+          "$ref": "#/definitions/PersonCompanyMigrationModel"
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "description": "Two-letter code (ISO Alpha-2) of a language preferred for contact",
+          "x-nullable": true
+        },
+        "birthDate": {
+          "type": "string",
+          "description": "Guest\u0027s birthdate",
+          "format": "date",
+          "example": "2020-10-10",
+          "x-nullable": true
+        },
+        "birthPlace": {
+          "type": "string",
+          "description": "Guest\u0027s place of birth",
+          "x-nullable": true
+        },
+        "birthFirstName": {
+          "type": "string",
+          "description": "Guest\u0027s first name right after birth",
+          "x-nullable": true
+        },
+        "birthLastName": {
+          "type": "string",
+          "description": "Guest\u0027s last name right after birth",
+          "x-nullable": true
+        },
+        "motherFirstName": {
+          "type": "string",
+          "description": "Guest\u0027s mother\u0027s first name",
+          "x-nullable": true
+        },
+        "motherLastName": {
+          "type": "string",
+          "description": "Guest\u0027s mother\u0027s last name",
+          "x-nullable": true
+        },
+        "borderCrossingPlace": {
+          "type": "string",
+          "description": "The place through which the guest crossed the border",
+          "x-nullable": true
+        },
+        "borderCrossingDate": {
+          "type": "string",
+          "description": "Date on which the guest crossed the border",
+          "format": "date",
+          "example": "2020-10-10",
+          "x-nullable": true
+        },
+        "nextDestination": {
+          "type": "string",
+          "description": "The guest\u0027s next destination address",
+          "x-nullable": true
+        },
+        "relationshipToPrimaryGuest": {
+          "type": "string",
+          "description": "The relationship of the guest to the primary guest",
+          "enum": [
+            "Grandparent",
+            "Grandchild",
+            "GreatGrandparent",
+            "GreatGrandchild",
+            "Parent",
+            "Child",
+            "Sibling",
+            "ParentInLaw",
+            "ChildInLaw",
+            "SiblingInLaw",
+            "Spouse",
+            "UncleOrAunt",
+            "NephewOrNiece",
+            "Guardian",
+            "Other"
+          ],
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "MessageItemCollection": {
+      "type": "object",
+      "properties": {
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "readOnly": true,
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "MigrationBatchCreatedModel": {
+      "type": "object",
+      "required": [
+        "batchId"
+      ],
+      "properties": {
+        "batchId": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "MigrationBatchModel": {
+      "type": "object",
+      "required": [
+        "created",
+        "id",
+        "items",
+        "status",
+        "type",
+        "updated"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "ReservationImport"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Uploaded",
+            "Running",
+            "Successful",
+            "Failure"
+          ]
+        },
+        "created": {
+          "type": "string",
+          "description": "\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "updated": {
+          "type": "string",
+          "description": "\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MigrationItemModel"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "id": "ID",
+        "type": "ReservationImport",
+        "status": "Uploaded",
+        "created": "0001-01-01T00:00:00Z",
+        "updated": "0001-01-01T00:00:00Z",
+        "items": [
+          {
+            "status": "SuccessfulWithWarning",
+            "created": "2026-09-29T16:29:47.1371423\u002B02:00",
+            "updated": "2026-09-29T16:29:47.1371423\u002B02:00",
+            "data": {
+              "payload": "data"
+            }
+          }
+        ]
+      }
+    },
+    "MigrationItemModel": {
+      "type": "object",
+      "required": [
+        "created",
+        "data",
+        "status",
+        "updated"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "Uploaded",
+            "Successful",
+            "SuccessfulWithWarning",
+            "Failure"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "created": {
+          "type": "string",
+          "description": "\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "updated": {
+          "type": "string",
+          "description": "\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "data": {}
+      },
+      "additionalProperties": false
+    },
+    "MonetaryValueModel": {
+      "type": "object",
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "properties": {
+        "amount": {
+          "type": "number",
+          "format": "double"
+        },
+        "currency": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "PersonAddressModel": {
+      "type": "object",
+      "properties": {
+        "addressLine1": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "addressLine2": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "postalCode": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "city": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "regionCode": {
+          "type": "string",
+          "description": "ISO 3166-2 region code including the country prefix (e.g. US-CA, DE-BY).",
+          "x-nullable": true
+        },
+        "countryCode": {
+          "type": "string",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "PersonCompanyMigrationModel": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the company",
+          "x-nullable": true
+        },
+        "taxId": {
+          "type": "string",
+          "description": "Tax or Vat ID of the company",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "RegisteredCardModel": {
+      "type": "object",
+      "description": "Use registered card when you need to show details about a card you intend to add to\nthe booking/reservation in the future as a real payment account.\nIt is NOT a replacement of the deprecated PaymentAccount field.",
+      "properties": {
+        "cardNumber": {
+          "type": "string",
+          "description": "The last 4 characters of the card number",
+          "maxLength": 4,
+          "x-nullable": true
+        },
+        "cardHolder": {
+          "type": "string",
+          "description": "The account holder (e.g. cardholder)",
+          "x-nullable": true
+        },
+        "expiryMonth": {
+          "type": "string",
+          "description": "The credit card\u0027s expiration month",
+          "x-nullable": true
+        },
+        "expiryYear": {
+          "type": "string",
+          "description": "The credit card\u0027s expiration year",
+          "x-nullable": true
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "The payment method (e.g. Visa)",
+          "x-nullable": true
+        },
+        "payerEmail": {
+          "type": "string",
+          "description": "The email address of the shopper / customer",
+          "x-nullable": true
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional information, e.g. about card activation or failure to do so",
+          "x-nullable": true
+        },
+        "isVirtual": {
+          "type": "boolean",
+          "description": "Indicates if the payment account is a virtual credit card."
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReservationCreatedMigrationModel": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Id of the reservation"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TriggerBatchModel": {
+      "type": "object",
+      "required": [
+        "batchId"
+      ],
+      "properties": {
+        "batchId": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://identity.apaleo.com/connect/authorize",
+      "scopes": {
+        "admin": "Full access",
+        "reservations.import": "Import reservations"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "BookingMigration"
+    },
+    {
+      "name": "Import"
+    }
+  ]
+}

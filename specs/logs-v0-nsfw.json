@@ -1,0 +1,2715 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "apaleo logs API - not safe for work",
+    "description": "Continuously evolving version - use at your own risk! Different logs: night audit, transactions export, folio change log",
+    "version": "v0-nsfw"
+  },
+  "paths": {
+    "/logs/v0-nsfw/audit-logs": {
+      "get": {
+        "tags": [
+          "AuditLogs"
+        ],
+        "summary": "Returns a list of audit log entries.",
+        "description": "\u003Cbr\u003EYou must have this scope: \u0027logs.read\u0027.",
+        "operationId": "LogsAudit-logsGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "from",
+            "description": "The start of the time interval\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "The end of the time interval, must be larger than \u0027from\u0027\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "in": "query",
+            "name": "aggregateTypes",
+            "description": "The types of entities being tracked as a group.\nExample: If a unit maintenance is created, the AggregateType would be Unit.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "aggregateIds",
+            "description": "A unique identifiers for the groups of related changes.\nExample: If a unit maintenance is created, the AggregateId would be the unique ID of that unit.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "entityTypes",
+            "description": "The types of the specific objects that were changed.\nExample: If a unit maintenance is created, the EntityType would be Maintenance.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "entityIds",
+            "description": "A unique identifiers for the specific objects that were changed.\nExample: If a unit maintenance is created, the EntityId would be the unique ID of that maintenance.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "propertyIds",
+            "description": "Filter result by requested properties",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "clientIds",
+            "description": "Filter result by requested clients",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "subjectIds",
+            "description": "Filter result by requested subjects",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "actions",
+            "description": "Filter result by requested actions",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Created",
+                "Updated",
+                "Deleted"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "description": "Cursor to get next data page. Results in 204 if there are no items on that page.",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Page size. Default value is 50. Maximal value is 500",
+            "type": "integer",
+            "format": "int32",
+            "maximum": 500
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/LogEntryListModel"
+            }
+          },
+          "204": {
+            "description": "No audit log entries found."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "logs.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/logs/v0-nsfw/booking/reservation": {
+      "get": {
+        "tags": [
+          "BookingLogs"
+        ],
+        "summary": "Returns reservation change log entries sorted by the timestamp",
+        "description": "\u003Cbr\u003EYou must have this scope: \u0027logs.read\u0027.",
+        "operationId": "LogsBookingReservationGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "reservationIds",
+            "description": "Filter the log entries by reservation IDs",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "eventTypes",
+            "description": "Filter the log entries by event types.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Created",
+                "Amended",
+                "CheckedIn",
+                "CheckedOut",
+                "Canceled",
+                "SetToNoShow",
+                "CityTaxAdded",
+                "CityTaxRemoved",
+                "UnitAssigned",
+                "UnitUnassigned",
+                "PaymentAccountSet",
+                "PaymentAccountRemoved",
+                "InvoiceStatusChanged",
+                "Changed",
+                "CheckInReverted",
+                "UnitLocked",
+                "UnitUnlocked",
+                "PickedUpFromBlock"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "clientIds",
+            "description": "Filter the log entries by client IDs (which application triggered this event)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "propertyIds",
+            "description": "Filter the log entries by property IDs",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "subjectIds",
+            "description": "Filter the log entries by subject IDs (which user triggered this event)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "dateFilter",
+            "description": "Filter by event date and time\u003Cbr /\u003EYou can provide an array of string expressions which all need to apply.\u003Cbr /\u003EEach expression has the form of \u0027OPERATION_VALUE\u0027 where VALUE needs to be of the valid format of the property type and OPERATION can be:\u003Cbr /\u003E\u0027eq\u0027 for equals\u003Cbr /\u003E\u0027neq\u0027 for not equals\u003Cbr /\u003E\u0027lt\u0027 for less than\u003Cbr /\u003E\u0027gt\u0027 for greater than\u003Cbr /\u003E\u0027lte\u0027 for less than or equals\u003Cbr /\u003E\u0027gte\u0027 for greater than or equals\u003Cbr /\u003EFor instance\u003Cbr /\u003E\u0027eq_5\u0027 would mean the value should equal 5\u003Cbr /\u003E\u0027lte_7\u0027 would mean the value should be less than or equal to 7",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "description": "Page number to retrieve. Default: 1. If the page has no items, the API returns 204 No Content.",
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Items per page. Default: 500. Maximum: 500.",
+            "type": "integer",
+            "default": 500
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "List of all embedded resources that should be expanded in the response. Possible values are: changes. All other values will be silently ignored.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "changes"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/ReservationChangeLogListModel"
+            }
+          },
+          "204": {
+            "description": "No reservation change logs found."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "logs.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/logs/v0-nsfw/finance/folio": {
+      "get": {
+        "tags": [
+          "FinanceLogs"
+        ],
+        "summary": "Returns folio change log entries sorted by the timestamp.",
+        "description": "\u003Cbr\u003EYou must have this scope: \u0027logs.read\u0027.",
+        "operationId": "LogsFinanceFolioGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "folioIds",
+            "description": "Filter the log entries by folio IDs",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "eventTypes",
+            "description": "Filter the log entries by event types.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Created",
+                "ChargePosted",
+                "TransitoryChargePosted",
+                "AllowancePosted",
+                "PaymentPosted",
+                "ChargeMovedFromFolio",
+                "TransitoryChargeMovedFromFolio",
+                "PaymentMovedFromFolio",
+                "ChargeMovedToFolio",
+                "TransitoryChargeMovedToFolio",
+                "PaymentMovedToFolio",
+                "Closed",
+                "Reopened",
+                "Deleted",
+                "DebitorChanged",
+                "AllowanceMovedFromFolio",
+                "AllowanceMovedToFolio",
+                "RefundPosted",
+                "RefundMovedFromFolio",
+                "RefundMovedToFolio",
+                "InvoiceCreated",
+                "InvoiceCanceled",
+                "InvoicePaid",
+                "ChargesChanged",
+                "PaymentAdded",
+                "PaymentFailed",
+                "PaymentCanceled",
+                "RefundAdded",
+                "RefundFailed",
+                "InvoiceWrittenOff",
+                "DepositItemAdded",
+                "DepositItemChanged",
+                "DepositItemDeleted",
+                "InvoiceFailed"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "clientIds",
+            "description": "Filter the log entries by client IDs (which application triggered this event)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "propertyIds",
+            "description": "Filter the log entries by property IDs",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "subjectIds",
+            "description": "Filter the log entries by subject IDs (which user triggered this event)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "dateFilter",
+            "description": "Filter by event date and time\u003Cbr /\u003EYou can provide an array of string expressions which all need to apply.\u003Cbr /\u003EEach expression has the form of \u0027OPERATION_VALUE\u0027 where VALUE needs to be of the valid format of the property type and OPERATION can be:\u003Cbr /\u003E\u0027eq\u0027 for equals\u003Cbr /\u003E\u0027neq\u0027 for not equals\u003Cbr /\u003E\u0027lt\u0027 for less than\u003Cbr /\u003E\u0027gt\u0027 for greater than\u003Cbr /\u003E\u0027lte\u0027 for less than or equals\u003Cbr /\u003E\u0027gte\u0027 for greater than or equals\u003Cbr /\u003EFor instance\u003Cbr /\u003E\u0027eq_5\u0027 would mean the value should equal 5\u003Cbr /\u003E\u0027lte_7\u0027 would mean the value should be less than or equal to 7",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "description": "Page number to retrieve. Default: 1. If the page has no items, the API returns 204 No Content.",
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Items per page. Default: 500. Maximum: 500.",
+            "type": "integer",
+            "default": 500
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/FolioChangeLogListModel"
+            }
+          },
+          "204": {
+            "description": "No folio change logs found."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "logs.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/logs/v0-nsfw/finance/night-audit": {
+      "get": {
+        "tags": [
+          "FinanceLogs"
+        ],
+        "summary": "Returns the night audit logs.",
+        "description": "Returns a log of all night audits\nNewest log entries are returned first.\u003Cbr\u003EYou must have this scope: \u0027logs.read\u0027.",
+        "operationId": "LogsFinanceNight-auditGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "statuses",
+            "description": "Filter the log entries by status.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "InProgress",
+                "Success",
+                "Failure"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "propertyIds",
+            "description": "Filter the log entries by property IDs",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "subjectIds",
+            "description": "Filter the log entries by subject IDs (which user triggered this event)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "dateFilter",
+            "description": "Filter by event date and time\u003Cbr /\u003EYou can provide an array of string expressions which all need to apply.\u003Cbr /\u003EEach expression has the form of \u0027OPERATION_VALUE\u0027 where VALUE needs to be of the valid format of the property type and OPERATION can be:\u003Cbr /\u003E\u0027eq\u0027 for equals\u003Cbr /\u003E\u0027neq\u0027 for not equals\u003Cbr /\u003E\u0027lt\u0027 for less than\u003Cbr /\u003E\u0027gt\u0027 for greater than\u003Cbr /\u003E\u0027lte\u0027 for less than or equals\u003Cbr /\u003E\u0027gte\u0027 for greater than or equals\u003Cbr /\u003EFor instance\u003Cbr /\u003E\u0027eq_5\u0027 would mean the value should equal 5\u003Cbr /\u003E\u0027lte_7\u0027 would mean the value should be less than or equal to 7",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "description": "Page number to retrieve. Default: 1. If the page has no items, the API returns 204 No Content.",
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Items per page. Default: 500. Maximum: 500.",
+            "type": "integer",
+            "default": 500
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/NightAuditLogListModel"
+            }
+          },
+          "204": {
+            "description": "No night audit logs found."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "logs.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/logs/v0-nsfw/finance/city-tax-recalculation": {
+      "get": {
+        "tags": [
+          "FinanceLogs"
+        ],
+        "summary": "Returns the city tax recalculation logs.",
+        "description": "Returns a log of all city tax recalculations\nNewest log entries are returned first.\u003Cbr\u003EYou must have this scope: \u0027logs.read\u0027.",
+        "operationId": "LogsFinanceCity-tax-recalculationGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "statuses",
+            "description": "Filter the log entries by status.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Unknown",
+                "Scheduled",
+                "InProgress",
+                "Success",
+                "Failure"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "cityTaxIds",
+            "description": "Filter the log entries by city tax IDs.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "propertyIds",
+            "description": "Filter the log entries by property IDs",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "subjectIds",
+            "description": "Filter the log entries by subject IDs (which user triggered this event)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "dateFilter",
+            "description": "Filter by event date and time\u003Cbr /\u003EYou can provide an array of string expressions which all need to apply.\u003Cbr /\u003EEach expression has the form of \u0027OPERATION_VALUE\u0027 where VALUE needs to be of the valid format of the property type and OPERATION can be:\u003Cbr /\u003E\u0027eq\u0027 for equals\u003Cbr /\u003E\u0027neq\u0027 for not equals\u003Cbr /\u003E\u0027lt\u0027 for less than\u003Cbr /\u003E\u0027gt\u0027 for greater than\u003Cbr /\u003E\u0027lte\u0027 for less than or equals\u003Cbr /\u003E\u0027gte\u0027 for greater than or equals\u003Cbr /\u003EFor instance\u003Cbr /\u003E\u0027eq_5\u0027 would mean the value should equal 5\u003Cbr /\u003E\u0027lte_7\u0027 would mean the value should be less than or equal to 7",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "description": "Page number to retrieve. Default: 1. If the page has no items, the API returns 204 No Content.",
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Items per page. Default: 500. Maximum: 500.",
+            "type": "integer",
+            "default": 500
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/CityTaxRecalculationLogListModel"
+            }
+          },
+          "204": {
+            "description": "No city tax recalculation logs found."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "logs.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/logs/v0-nsfw/finance/transactions-export": {
+      "get": {
+        "tags": [
+          "FinanceLogs"
+        ],
+        "summary": "Returns the audit log for all accounting exports that have been done.",
+        "description": "Returns the audit log for all exports if accounting data that have been done.\u003Cbr\u003EYou must have this scope: \u0027logs.read\u0027.",
+        "operationId": "LogsFinanceTransactions-exportGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "types",
+            "description": "Filter the log entries by export log types.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Raw",
+                "Aggregate",
+                "AggregatePairs"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "propertyIds",
+            "description": "Filter the log entries by property IDs",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "subjectIds",
+            "description": "Filter the log entries by subject IDs (which user triggered this event)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "dateFilter",
+            "description": "Filter by event date and time\u003Cbr /\u003EYou can provide an array of string expressions which all need to apply.\u003Cbr /\u003EEach expression has the form of \u0027OPERATION_VALUE\u0027 where VALUE needs to be of the valid format of the property type and OPERATION can be:\u003Cbr /\u003E\u0027eq\u0027 for equals\u003Cbr /\u003E\u0027neq\u0027 for not equals\u003Cbr /\u003E\u0027lt\u0027 for less than\u003Cbr /\u003E\u0027gt\u0027 for greater than\u003Cbr /\u003E\u0027lte\u0027 for less than or equals\u003Cbr /\u003E\u0027gte\u0027 for greater than or equals\u003Cbr /\u003EFor instance\u003Cbr /\u003E\u0027eq_5\u0027 would mean the value should equal 5\u003Cbr /\u003E\u0027lte_7\u0027 would mean the value should be less than or equal to 7",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "description": "Page number to retrieve. Default: 1. If the page has no items, the API returns 204 No Content.",
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Items per page. Default: 500. Maximum: 500.",
+            "type": "integer",
+            "default": 500
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/TransactionsExportLogListModel"
+            }
+          },
+          "204": {
+            "description": "No transactions export logs found."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "logs.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/logs/v0-nsfw/finance/accounting-config-updates": {
+      "get": {
+        "tags": [
+          "FinanceLogs"
+        ],
+        "summary": "Returns the accounting config updates logs.",
+        "description": "Returns a log of all accounting config updates\nNewest log entries are returned first.\u003Cbr\u003EYou must have this scope: \u0027logs.read\u0027.",
+        "operationId": "LogsFinanceAccounting-config-updatesGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "statuses",
+            "description": "Filter the log entries by status.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "InProgress",
+                "Success",
+                "Failure"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "propertyIds",
+            "description": "Filter the log entries by property IDs",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "subjectIds",
+            "description": "Filter the log entries by subject IDs (which user triggered this event)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "dateFilter",
+            "description": "Filter by event date and time\u003Cbr /\u003EYou can provide an array of string expressions which all need to apply.\u003Cbr /\u003EEach expression has the form of \u0027OPERATION_VALUE\u0027 where VALUE needs to be of the valid format of the property type and OPERATION can be:\u003Cbr /\u003E\u0027eq\u0027 for equals\u003Cbr /\u003E\u0027neq\u0027 for not equals\u003Cbr /\u003E\u0027lt\u0027 for less than\u003Cbr /\u003E\u0027gt\u0027 for greater than\u003Cbr /\u003E\u0027lte\u0027 for less than or equals\u003Cbr /\u003E\u0027gte\u0027 for greater than or equals\u003Cbr /\u003EFor instance\u003Cbr /\u003E\u0027eq_5\u0027 would mean the value should equal 5\u003Cbr /\u003E\u0027lte_7\u0027 would mean the value should be less than or equal to 7",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "description": "Page number to retrieve. Default: 1. If the page has no items, the API returns 204 No Content.",
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Items per page. Default: 500. Maximum: 500.",
+            "type": "integer",
+            "default": 500
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/AccountingConfigUpdateListModel"
+            }
+          },
+          "204": {
+            "description": "No accounting config updates logs found."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "logs.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AccountingConfigUpdateListModel": {
+      "type": "object",
+      "required": [
+        "count",
+        "logEntries"
+      ],
+      "properties": {
+        "logEntries": {
+          "type": "array",
+          "description": "List of the log entries.",
+          "items": {
+            "$ref": "#/definitions/AccountingConfigUpdateLogItemModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "logEntries": [
+          {
+            "ended": "2026-09-30T11:21:49.9655106\u002B02:00",
+            "status": "Success",
+            "propertyId": "MUC",
+            "created": "2026-09-30T11:21:49.9655106\u002B02:00",
+            "subjectId": "d4f55fe0-672c-43d9-839a-7d57489475df"
+          }
+        ],
+        "count": 2
+      }
+    },
+    "AccountingConfigUpdateLogItemModel": {
+      "type": "object",
+      "required": [
+        "created",
+        "ended",
+        "propertyId",
+        "status"
+      ],
+      "properties": {
+        "ended": {
+          "type": "string",
+          "description": "Date and time when the night audit ended\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of the update job",
+          "enum": [
+            "InProgress",
+            "Success",
+            "Failure"
+          ]
+        },
+        "failureCode": {
+          "type": "string",
+          "description": "Failure code of the job",
+          "enum": [
+            "NotSpecified",
+            "Other"
+          ],
+          "x-nullable": true
+        },
+        "failureReason": {
+          "type": "string",
+          "description": "Why the job failed",
+          "x-nullable": true
+        },
+        "propertyId": {
+          "type": "string",
+          "description": "The ID of the property"
+        },
+        "created": {
+          "type": "string",
+          "description": "Date and time when the operation has been executed\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "subjectId": {
+          "type": "string",
+          "description": "The ID of the user that triggered this event",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "AmountModel": {
+      "type": "object",
+      "required": [
+        "currency",
+        "grossAmount",
+        "netAmount",
+        "vatPercent",
+        "vatType"
+      ],
+      "properties": {
+        "grossAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "netAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "vatType": {
+          "type": "string",
+          "enum": [
+            "Null",
+            "VeryReduced",
+            "Reduced",
+            "Normal",
+            "Without",
+            "Special",
+            "Special1",
+            "Special2",
+            "ReducedCovid19",
+            "NormalCovid19",
+            "Mixed"
+          ]
+        },
+        "vatPercent": {
+          "type": "number",
+          "format": "double"
+        },
+        "currency": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "grossAmount": 107.0,
+        "netAmount": 100.0,
+        "vatType": "Reduced",
+        "vatPercent": 7.0,
+        "currency": "USD"
+      }
+    },
+    "CityTaxRecalculationLogItemModel": {
+      "type": "object",
+      "required": [
+        "cityTaxId",
+        "created",
+        "failedReservationsCount",
+        "processedReservationsCount",
+        "propertyId",
+        "status"
+      ],
+      "properties": {
+        "ended": {
+          "type": "string",
+          "description": "Date and time when the city tax recalculation ended\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of the city tax recalculation",
+          "enum": [
+            "Unknown",
+            "Scheduled",
+            "InProgress",
+            "Success",
+            "Failure"
+          ]
+        },
+        "failureCode": {
+          "type": "string",
+          "description": "Failure code of the city tax recalculation",
+          "enum": [
+            "Unknown",
+            "NoReservationsFound",
+            "FeatureDisabled",
+            "ProcessingError",
+            "InvalidConfiguration"
+          ],
+          "x-nullable": true
+        },
+        "failureReason": {
+          "type": "string",
+          "description": "Why the city tax recalculation failed",
+          "x-nullable": true
+        },
+        "cityTaxId": {
+          "type": "string",
+          "description": "City tax ID that was recalculated"
+        },
+        "processedReservationsCount": {
+          "type": "integer",
+          "description": "Number of reservations that were successfully processed",
+          "format": "int32"
+        },
+        "failedReservationsCount": {
+          "type": "integer",
+          "description": "Number of reservations that failed to process",
+          "format": "int32"
+        },
+        "propertyId": {
+          "type": "string",
+          "description": "The ID of the property"
+        },
+        "created": {
+          "type": "string",
+          "description": "Date and time when the operation has been executed\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "subjectId": {
+          "type": "string",
+          "description": "The ID of the user that triggered this event",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "CityTaxRecalculationLogListModel": {
+      "type": "object",
+      "required": [
+        "count",
+        "logEntries"
+      ],
+      "properties": {
+        "logEntries": {
+          "type": "array",
+          "description": "List of the log entries.",
+          "items": {
+            "$ref": "#/definitions/CityTaxRecalculationLogItemModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "logEntries": [
+          {
+            "ended": "2026-09-30T11:21:49.9655106\u002B02:00",
+            "status": "Success",
+            "cityTaxId": "CT1",
+            "processedReservationsCount": 15,
+            "failedReservationsCount": 0,
+            "propertyId": "MUC",
+            "created": "2026-09-30T11:21:49.9655106\u002B02:00",
+            "subjectId": "d4f55fe0-672c-43d9-839a-7d57489475df"
+          }
+        ],
+        "count": 1
+      }
+    },
+    "ExternalReferencesChangeModel": {
+      "type": "object",
+      "properties": {
+        "globalDistributionSystemId": {
+          "type": "string",
+          "description": "The ID of the global distribution system.",
+          "x-nullable": true
+        },
+        "onlineTravelAgencyId": {
+          "type": "string",
+          "description": "The ID of the online travel agency.",
+          "x-nullable": true
+        },
+        "onlineBookingToolId": {
+          "type": "string",
+          "description": "The ID of the online booking tool.",
+          "x-nullable": true
+        },
+        "channelManagerId": {
+          "type": "string",
+          "description": "The ID of the channel manager.",
+          "x-nullable": true
+        },
+        "centralReservationSystemId": {
+          "type": "string",
+          "description": "The Central Reservation System Identifier",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "FolioChangeLogItemModel": {
+      "type": "object",
+      "required": [
+        "clientId",
+        "created",
+        "eventType",
+        "folioId",
+        "propertyId"
+      ],
+      "properties": {
+        "folioId": {
+          "type": "string",
+          "description": "The ID of the folio"
+        },
+        "eventType": {
+          "type": "string",
+          "description": "The type of the operation",
+          "enum": [
+            "Created",
+            "ChargePosted",
+            "TransitoryChargePosted",
+            "AllowancePosted",
+            "PaymentPosted",
+            "ChargeMovedFromFolio",
+            "TransitoryChargeMovedFromFolio",
+            "PaymentMovedFromFolio",
+            "ChargeMovedToFolio",
+            "TransitoryChargeMovedToFolio",
+            "PaymentMovedToFolio",
+            "Closed",
+            "Reopened",
+            "Deleted",
+            "DebitorChanged",
+            "AllowanceMovedFromFolio",
+            "AllowanceMovedToFolio",
+            "RefundPosted",
+            "RefundMovedFromFolio",
+            "RefundMovedToFolio",
+            "InvoiceCreated",
+            "InvoiceCanceled",
+            "InvoicePaid",
+            "ChargesChanged",
+            "PaymentAdded",
+            "PaymentFailed",
+            "PaymentCanceled",
+            "RefundAdded",
+            "RefundFailed",
+            "InvoiceWrittenOff",
+            "DepositItemAdded",
+            "DepositItemChanged",
+            "DepositItemDeleted",
+            "InvoiceFailed"
+          ]
+        },
+        "relatedEntityId": {
+          "type": "string",
+          "description": "The ID of related entity, if there is any (e.g. the ID of the charge posted)",
+          "x-nullable": true
+        },
+        "relatedEntityDescription": {
+          "type": "string",
+          "description": "The description of related entity, if there is any (e.g. the name of the charge posted or the payment method)",
+          "x-nullable": true
+        },
+        "amount": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "clientId": {
+          "type": "string",
+          "description": "The ID of the client that triggered this event",
+          "minLength": 1
+        },
+        "serviceDate": {
+          "type": "string",
+          "description": "The date the service is expected to be provided",
+          "format": "date",
+          "example": "2020-10-10",
+          "x-nullable": true
+        },
+        "propertyId": {
+          "type": "string",
+          "description": "The ID of the property"
+        },
+        "created": {
+          "type": "string",
+          "description": "Date and time when the operation has been executed\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "subjectId": {
+          "type": "string",
+          "description": "The ID of the user that triggered this event",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "FolioChangeLogListModel": {
+      "type": "object",
+      "required": [
+        "count",
+        "logEntries"
+      ],
+      "properties": {
+        "logEntries": {
+          "type": "array",
+          "description": "List of the log entries.",
+          "items": {
+            "$ref": "#/definitions/FolioChangeLogItemModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "logEntries": [
+          {
+            "folioId": "GEKFSD-1-1",
+            "eventType": "ChargePosted",
+            "relatedEntityId": "GEKFSD-1-1-TS-1",
+            "relatedEntityDescription": "Double room",
+            "amount": {
+              "amount": 10.0,
+              "currency": "EUR"
+            },
+            "clientId": "app-apaleo",
+            "propertyId": "MUC",
+            "created": "2026-09-30T11:21:49.9655106\u002B02:00",
+            "subjectId": "d4f55fe0-672c-43d9-839a-7d57489475df"
+          }
+        ],
+        "count": 1
+      }
+    },
+    "LogEntryItemModel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The id of the log entry",
+          "format": "uuid"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "The log entry timestamp\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "clientId": {
+          "type": "string",
+          "description": "The client initiated the logged action",
+          "x-nullable": true
+        },
+        "subjectId": {
+          "type": "string",
+          "description": "The subject (user) initiated the logged action",
+          "x-nullable": true
+        },
+        "actionType": {
+          "type": "string",
+          "description": "The logged action type",
+          "enum": [
+            "Created",
+            "Updated",
+            "Deleted"
+          ]
+        },
+        "propertyId": {
+          "type": "string",
+          "description": "The entity property",
+          "x-nullable": true
+        },
+        "aggregateType": {
+          "type": "string",
+          "description": "The type of entity being tracked as a group.\nExample: If a unit maintenance is created, the AggregateType would be Unit.",
+          "x-nullable": true
+        },
+        "aggregateId": {
+          "type": "string",
+          "description": "A unique identifier for a group of related changes.\nUse this to track multiple changes that belong to the same context or process.\nExample: If a unit maintenance is created, the AggregateId would be the unique ID of that unit.",
+          "x-nullable": true
+        },
+        "entityType": {
+          "type": "string",
+          "description": "The type of the specific object that was changed.\nExample: If a unit maintenance is created, the EntityType would be Maintenance.",
+          "x-nullable": true
+        },
+        "entityId": {
+          "type": "string",
+          "description": "A unique identifier for the specific object that was changed.\nUse this to track which exact item was updated within a group of changes.\nExample: If a unit maintenance is created, the EntityId would be the unique ID of that maintenance.",
+          "x-nullable": true
+        },
+        "previousData": {
+          "type": "object",
+          "description": "The entity data before change",
+          "additionalProperties": {
+            "x-nullable": true
+          },
+          "x-nullable": true
+        },
+        "currentData": {
+          "type": "object",
+          "description": "The new entity data after change",
+          "additionalProperties": {
+            "x-nullable": true
+          },
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "LogEntryListModel": {
+      "type": "object",
+      "required": [
+        "logs",
+        "pageSize"
+      ],
+      "properties": {
+        "logs": {
+          "type": "array",
+          "description": "List of log entries",
+          "items": {
+            "$ref": "#/definitions/LogEntryItemModel"
+          }
+        },
+        "nextCursor": {
+          "type": "string",
+          "description": "Cursor to the next page",
+          "format": "uuid",
+          "x-nullable": true
+        },
+        "pageSize": {
+          "type": "integer",
+          "description": "Size of the current page",
+          "format": "int32"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "logs": [
+          {
+            "id": "4166de07-a4e7-4231-90b8-9d0bd43967d3",
+            "timestamp": "2026-09-30T09:21:53.1327385Z",
+            "clientId": "client",
+            "subjectId": "subjectId",
+            "actionType": "Updated",
+            "propertyId": "MUC",
+            "aggregateType": "Unit",
+            "aggregateId": "MUC-UDF",
+            "entityType": "Condition",
+            "entityId": "MUC-UDF",
+            "previousData": {
+              "condition": "Clean"
+            },
+            "currentData": {
+              "condition": "Dirty"
+            }
+          },
+          {
+            "id": "4166de07-a4e7-4231-90b8-9d0bd43967d4",
+            "timestamp": "2026-09-30T09:21:53.1352565Z",
+            "clientId": "client",
+            "subjectId": "subjectId",
+            "actionType": "Created",
+            "propertyId": "MUC",
+            "aggregateType": "Unit",
+            "aggregateId": "MUC-UDF",
+            "entityType": "Maintenance",
+            "entityId": "MUC-UDF-SGHZD",
+            "currentData": {
+              "from": "2026-09-30T00:00:00Z",
+              "to": "2026-10-02T00:00:00Z",
+              "type": "OutOfService",
+              "description": "The remote control for the TV needs to be replaced."
+            }
+          }
+        ],
+        "nextCursor": "4166de07-a4e7-4231-90b8-9d0bd43967d4",
+        "pageSize": 2
+      }
+    },
+    "MessageItemCollection": {
+      "type": "object",
+      "properties": {
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "readOnly": true,
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "MonetaryValueModel": {
+      "type": "object",
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "properties": {
+        "amount": {
+          "type": "number",
+          "format": "double"
+        },
+        "currency": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "NightAuditLogItemModel": {
+      "type": "object",
+      "required": [
+        "created",
+        "ended",
+        "propertyId",
+        "setReservationsToNoShow",
+        "status"
+      ],
+      "properties": {
+        "ended": {
+          "type": "string",
+          "description": "Date and time when the night audit ended\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "setReservationsToNoShow": {
+          "type": "boolean",
+          "description": "Night audit settings - whether reservations were set to no-show"
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of the night audit",
+          "enum": [
+            "InProgress",
+            "Success",
+            "Failure"
+          ]
+        },
+        "failureCode": {
+          "type": "string",
+          "description": "Failure code of the night audit",
+          "enum": [
+            "None",
+            "ProcessNoShowsFailed",
+            "ProcessFoliosFailed",
+            "ProcessOccupiedUnitsFailed",
+            "Unknown"
+          ],
+          "x-nullable": true
+        },
+        "failureReason": {
+          "type": "string",
+          "description": "Why the night audit failed",
+          "x-nullable": true
+        },
+        "reservationIdsSetToNoShow": {
+          "type": "array",
+          "description": "List of reservations that were set to no-show",
+          "items": {
+            "type": "string"
+          },
+          "x-nullable": true
+        },
+        "propertyId": {
+          "type": "string",
+          "description": "The ID of the property"
+        },
+        "created": {
+          "type": "string",
+          "description": "Date and time when the operation has been executed\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "subjectId": {
+          "type": "string",
+          "description": "The ID of the user that triggered this event",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "NightAuditLogListModel": {
+      "type": "object",
+      "required": [
+        "count",
+        "logEntries"
+      ],
+      "properties": {
+        "logEntries": {
+          "type": "array",
+          "description": "List of the log entries.",
+          "items": {
+            "$ref": "#/definitions/NightAuditLogItemModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "logEntries": [
+          {
+            "ended": "2026-09-30T11:21:49.9655106\u002B02:00",
+            "setReservationsToNoShow": false,
+            "status": "Success",
+            "propertyId": "MUC",
+            "created": "2026-09-30T11:21:49.9655106\u002B02:00",
+            "subjectId": "d4f55fe0-672c-43d9-839a-7d57489475df"
+          }
+        ],
+        "count": 2
+      }
+    },
+    "ReservationAddedChangeModel": {
+      "type": "object",
+      "required": [
+        "adults",
+        "arrival",
+        "cancellationFee",
+        "channelCode",
+        "departure",
+        "guaranteeType",
+        "hasCityTax",
+        "noShowFee",
+        "status",
+        "timeSlices",
+        "totalGrossAmount"
+      ],
+      "properties": {
+        "externalReferences": {
+          "$ref": "#/definitions/ExternalReferencesChangeModel"
+        },
+        "isOpenForCharges": {
+          "type": "boolean",
+          "description": "Indicates whether the reservation is marked as open-for-charges or not.",
+          "x-nullable": true
+        },
+        "arrival": {
+          "type": "string",
+          "description": "Date of arrival\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "departure": {
+          "type": "string",
+          "description": "Date of departure\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the reservation",
+          "enum": [
+            "Confirmed",
+            "InHouse",
+            "CheckedOut",
+            "Canceled",
+            "NoShow"
+          ]
+        },
+        "blockId": {
+          "type": "string",
+          "description": "Block id",
+          "x-nullable": true
+        },
+        "totalGrossAmount": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "adults": {
+          "type": "integer",
+          "description": "Number of adults",
+          "format": "int32"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Additional information and comments",
+          "x-nullable": true
+        },
+        "guestComment": {
+          "type": "string",
+          "description": "Additional information and comment by the guest",
+          "x-nullable": true
+        },
+        "externalCode": {
+          "type": "string",
+          "description": "Code in external system",
+          "x-nullable": true
+        },
+        "channelCode": {
+          "type": "string",
+          "description": "Channel code\u003Cbr /\u003E\u003Cb\u003EDeprecated values:\u003C/b\u003E Homelike: Homelike channel is deprecated and no longer accepts new bookings or rate plans.",
+          "enum": [
+            "Direct",
+            "BookingCom",
+            "Ibe",
+            "ChannelManager",
+            "Expedia",
+            "Homelike",
+            "Hrs",
+            "AltoVita",
+            "DesVu",
+            "Gimsi"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "description": "Source of the reservation (e.g Hotels.com, Orbitz, etc.)",
+          "x-nullable": true
+        },
+        "primaryGuest": {
+          "$ref": "#/definitions/ReservationPersonChangeModel"
+        },
+        "childrenAges": {
+          "type": "array",
+          "description": "The ages of the children",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "x-nullable": true
+        },
+        "additionalGuests": {
+          "type": "array",
+          "description": "Additional guests of the reservation.",
+          "items": {
+            "$ref": "#/definitions/ReservationPersonChangeModel"
+          },
+          "x-nullable": true
+        },
+        "paymentAccount": {
+          "$ref": "#/definitions/ReservationPaymentAccountChangeModel"
+        },
+        "timeSlices": {
+          "type": "array",
+          "description": "The list of time slices",
+          "items": {
+            "$ref": "#/definitions/ReservationTimeSliceChangeModel"
+          }
+        },
+        "extraServices": {
+          "type": "array",
+          "description": "The list of additional services (extras, add-ons) reserved for the stay",
+          "items": {
+            "$ref": "#/definitions/ReservationServiceChangeModel"
+          },
+          "x-nullable": true
+        },
+        "guaranteeType": {
+          "type": "string",
+          "description": "The strongest guarantee for the rate plans booked in this reservation",
+          "enum": [
+            "PM6Hold",
+            "CreditCard",
+            "Prepayment",
+            "Company",
+            "Ota"
+          ]
+        },
+        "cancellationFee": {
+          "$ref": "#/definitions/ReservationCancellationFeeChangeModel"
+        },
+        "noShowFee": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "travelPurpose": {
+          "type": "string",
+          "description": "The purpose of the trip, leisure or business",
+          "enum": [
+            "Business",
+            "Leisure"
+          ],
+          "x-nullable": true
+        },
+        "prePaymentAmount": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "validationMessages": {
+          "type": "array",
+          "description": "The list of validation messages",
+          "items": {
+            "$ref": "#/definitions/ReservationValidationMessageChangeModel"
+          },
+          "x-nullable": true
+        },
+        "companyId": {
+          "type": "string",
+          "description": "Company id for this reservation",
+          "x-nullable": true
+        },
+        "hasCityTax": {
+          "type": "boolean",
+          "description": "Whether the city tax has already been added to the reservation. Set to false, if the property does not have city tax configured"
+        },
+        "marketSegmentId": {
+          "type": "string",
+          "description": "Market segment id for this reservation",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReservationAddressChangeModel": {
+      "type": "object",
+      "properties": {
+        "addressLine1": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "addressLine2": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "postalCode": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "city": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "regionCode": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "countryCode": {
+          "type": "string",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReservationCancellationFeeChangeModel": {
+      "type": "object",
+      "properties": {
+        "dueDateTime": {
+          "type": "string",
+          "description": "The date and time the cancellation fee will be due. After that time this fee will\nbe charged in case of cancellation\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "fee": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReservationChangeLogItemModel": {
+      "type": "object",
+      "required": [
+        "clientId",
+        "created",
+        "eventType",
+        "propertyId",
+        "reservationId"
+      ],
+      "properties": {
+        "reservationId": {
+          "type": "string",
+          "description": "The ID of the reservation"
+        },
+        "eventType": {
+          "type": "string",
+          "description": "The type of the operation",
+          "enum": [
+            "Created",
+            "Amended",
+            "CheckedIn",
+            "CheckedOut",
+            "Canceled",
+            "SetToNoShow",
+            "CityTaxAdded",
+            "CityTaxRemoved",
+            "UnitAssigned",
+            "UnitUnassigned",
+            "PaymentAccountSet",
+            "PaymentAccountRemoved",
+            "InvoiceStatusChanged",
+            "Changed",
+            "CheckInReverted",
+            "UnitLocked",
+            "UnitUnlocked",
+            "PickedUpFromBlock"
+          ]
+        },
+        "changes": {
+          "type": "array",
+          "description": "The list of changes",
+          "items": {
+            "$ref": "#/definitions/ReservationChangeModel"
+          },
+          "x-nullable": true
+        },
+        "clientId": {
+          "type": "string",
+          "description": "The ID of the client that triggered this event",
+          "minLength": 1
+        },
+        "propertyId": {
+          "type": "string",
+          "description": "The ID of the property"
+        },
+        "created": {
+          "type": "string",
+          "description": "Date and time when the operation has been executed\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "subjectId": {
+          "type": "string",
+          "description": "The ID of the user that triggered this event",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReservationChangeLogListModel": {
+      "type": "object",
+      "required": [
+        "count",
+        "logEntries"
+      ],
+      "properties": {
+        "logEntries": {
+          "type": "array",
+          "description": "List of the log entries.",
+          "items": {
+            "$ref": "#/definitions/ReservationChangeLogItemModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "logEntries": [
+          {
+            "reservationId": "XFDRTG-1",
+            "eventType": "Created",
+            "clientId": "app-apaleo",
+            "propertyId": "MUC",
+            "created": "2026-09-30T11:21:49.9655106\u002B02:00",
+            "subjectId": "d4f55fe0-672c-43d9-839a-7d57489475df"
+          }
+        ],
+        "count": 1
+      }
+    },
+    "ReservationChangeModel": {
+      "type": "object",
+      "required": [
+        "changeType"
+      ],
+      "properties": {
+        "changeType": {
+          "type": "string",
+          "description": "The type of the change",
+          "enum": [
+            "ReservationAdded",
+            "ReservationChanged",
+            "AdditionalGuestAdded",
+            "AdditionalGuestRemoved",
+            "AdditionalGuestChanged",
+            "TimeSliceAdded",
+            "TimeSliceRemoved",
+            "TimeSliceChanged",
+            "ExtraServiceAdded",
+            "ExtraServiceRemoved",
+            "ExtraServiceChanged",
+            "ValidationMessageAdded",
+            "ValidationMessageRemoved",
+            "UnitAssignmentLockChanged"
+          ]
+        },
+        "reservationAddedValue": {
+          "$ref": "#/definitions/ReservationAddedChangeModel"
+        },
+        "newReservationChangedValue": {
+          "$ref": "#/definitions/ReservationChangedChangeModel"
+        },
+        "oldReservationChangedValue": {
+          "$ref": "#/definitions/ReservationChangedChangeModel"
+        },
+        "newAdditionalGuestValue": {
+          "$ref": "#/definitions/ReservationPersonChangeModel"
+        },
+        "oldAdditionalGuestValue": {
+          "$ref": "#/definitions/ReservationPersonChangeModel"
+        },
+        "newTimeSliceValue": {
+          "$ref": "#/definitions/ReservationTimeSliceChangeModel"
+        },
+        "oldTimeSliceValue": {
+          "$ref": "#/definitions/ReservationTimeSliceChangeModel"
+        },
+        "newExtraServiceValue": {
+          "$ref": "#/definitions/ReservationServiceChangeModel"
+        },
+        "oldExtraServiceValue": {
+          "$ref": "#/definitions/ReservationServiceChangeModel"
+        },
+        "newValidationMessageValue": {
+          "$ref": "#/definitions/ReservationValidationMessageChangeModel"
+        },
+        "oldValidationMessageValue": {
+          "$ref": "#/definitions/ReservationValidationMessageChangeModel"
+        },
+        "unitLockTimeSliceValue": {
+          "$ref": "#/definitions/ReservationTimeSliceUnitAssignmentLockChangeModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReservationChangedChangeModel": {
+      "type": "object",
+      "properties": {
+        "isOpenForCharges": {
+          "type": "boolean",
+          "description": "Indicates whether the reservation is marked as open-for-charges or not.",
+          "x-nullable": true
+        },
+        "isPreCheckedIn": {
+          "type": "boolean",
+          "description": "Indicates whether the reservation is marked as pre-checked-in or not.",
+          "x-nullable": true
+        },
+        "externalReferences": {
+          "$ref": "#/definitions/ExternalReferencesChangeModel"
+        },
+        "isUnitAssignmentLocked": {
+          "type": "boolean",
+          "description": "Indicates whether the reservation units are locked",
+          "x-nullable": true
+        },
+        "arrival": {
+          "type": "string",
+          "description": "Date of arrival\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "departure": {
+          "type": "string",
+          "description": "Date of departure\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "adults": {
+          "type": "integer",
+          "description": "Number of adults",
+          "format": "int32",
+          "x-nullable": true
+        },
+        "childrenAges": {
+          "type": "array",
+          "description": "Value of ages of the children",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "x-nullable": true
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comment",
+          "x-nullable": true
+        },
+        "guestComment": {
+          "type": "string",
+          "description": "Guest comment",
+          "x-nullable": true
+        },
+        "totalGrossAmount": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "primaryGuest": {
+          "$ref": "#/definitions/ReservationPersonChangeModel"
+        },
+        "paymentAccount": {
+          "$ref": "#/definitions/ReservationPaymentAccountChangeModel"
+        },
+        "guaranteeType": {
+          "type": "string",
+          "description": "Guarantee type",
+          "enum": [
+            "PM6Hold",
+            "CreditCard",
+            "Prepayment",
+            "Company",
+            "Ota"
+          ],
+          "x-nullable": true
+        },
+        "travelPurpose": {
+          "type": "string",
+          "description": "Travel purpose",
+          "enum": [
+            "Business",
+            "Leisure"
+          ],
+          "x-nullable": true
+        },
+        "companyId": {
+          "type": "string",
+          "description": "Company id for this reservation",
+          "x-nullable": true
+        },
+        "noShowFee": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "cancellationFee": {
+          "$ref": "#/definitions/ReservationCancellationFeeChangeModel"
+        },
+        "commissionAmount": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "hasCityTax": {
+          "type": "boolean",
+          "description": "Whether the city tax has already been added to the reservation",
+          "x-nullable": true
+        },
+        "marketSegmentId": {
+          "type": "string",
+          "description": "Market segment id for this reservation",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReservationCompanyChangeModel": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the company",
+          "x-nullable": true
+        },
+        "taxId": {
+          "type": "string",
+          "description": "Tax or Vat ID of the company",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReservationPaymentAccountChangeModel": {
+      "type": "object",
+      "properties": {
+        "accountNumber": {
+          "type": "string",
+          "description": "The account number (e.g. masked credit card number or last 4 digits)",
+          "x-nullable": true
+        },
+        "accountHolder": {
+          "type": "string",
+          "description": "The account holder (e.g. card holder)",
+          "x-nullable": true
+        },
+        "expiryMonth": {
+          "type": "string",
+          "description": "The credit card\u0027s expiration month",
+          "x-nullable": true
+        },
+        "expiryYear": {
+          "type": "string",
+          "description": "The credit card\u0027s expiration year",
+          "x-nullable": true
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "The payment method (e.g. visa)",
+          "x-nullable": true
+        },
+        "payerEmail": {
+          "type": "string",
+          "description": "The email address of the shopper / customer",
+          "x-nullable": true
+        },
+        "isVirtual": {
+          "type": "boolean",
+          "description": "Indicates if the payment account is a virtual credit card",
+          "x-nullable": true
+        },
+        "isActive": {
+          "type": "boolean",
+          "description": "Indicates if the payment account can be used for capturing payments. A payment account is active, when it has a valid payer reference set",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReservationPersonChangeModel": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title of the guest",
+          "enum": [
+            "Mr",
+            "Ms",
+            "Dr",
+            "Prof",
+            "Mrs",
+            "Other"
+          ],
+          "x-nullable": true
+        },
+        "gender": {
+          "type": "string",
+          "description": "Gender of the booker",
+          "enum": [
+            "Female",
+            "Male",
+            "Other",
+            "Unknown"
+          ],
+          "x-nullable": true
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of the guest",
+          "x-nullable": true
+        },
+        "middleInitial": {
+          "type": "string",
+          "description": "Middle initial of the guest",
+          "x-nullable": true
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the guest",
+          "x-nullable": true
+        },
+        "secondLastName": {
+          "type": "string",
+          "description": "Second last name of the guest",
+          "x-nullable": true
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the guest",
+          "x-nullable": true
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the guest",
+          "x-nullable": true
+        },
+        "address": {
+          "$ref": "#/definitions/ReservationAddressChangeModel"
+        },
+        "nationalityCountryCode": {
+          "type": "string",
+          "description": "The guest\u0027s nationality, in ISO 3166-1 alpha-2 code",
+          "x-nullable": true
+        },
+        "identificationNumber": {
+          "type": "string",
+          "description": "The guest\u0027s identification number for the given identificationType.",
+          "x-nullable": true
+        },
+        "identificationAdditionalNumber": {
+          "type": "string",
+          "description": "The guest\u0027s additional identification number for the given identificationType.",
+          "x-nullable": true
+        },
+        "identificationIssueDate": {
+          "type": "string",
+          "description": "The issue date of the guest\u0027s identification document.",
+          "format": "date",
+          "example": "2020-10-10",
+          "x-nullable": true
+        },
+        "identificationExpiryDate": {
+          "type": "string",
+          "description": "The expiry date of the guest\u0027s identification document.",
+          "format": "date",
+          "example": "2020-10-10",
+          "x-nullable": true
+        },
+        "identificationIssuePlace": {
+          "type": "string",
+          "description": "The issue place of the guest\u0027s identification document.",
+          "x-nullable": true
+        },
+        "identificationType": {
+          "type": "string",
+          "description": "The type of the identificationNumber",
+          "enum": [
+            "SocialInsuranceNumber",
+            "PassportNumber",
+            "IdNumber",
+            "DriverLicenseNumber",
+            "VisaNumber",
+            "ForeignerIdentityNumber",
+            "TaxIdentificationNumber",
+            "Other"
+          ],
+          "x-nullable": true
+        },
+        "personalTaxId": {
+          "type": "string",
+          "description": "The personal tax id of the guest",
+          "x-nullable": true
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "description": "Two-letter code (ISO Alpha-2) of a language preferred for contact",
+          "x-nullable": true
+        },
+        "birthDate": {
+          "type": "string",
+          "description": "Guest\u0027s birthdate",
+          "format": "date",
+          "example": "2020-10-10",
+          "x-nullable": true
+        },
+        "birthPlace": {
+          "type": "string",
+          "description": "Guest\u0027s place of birth",
+          "x-nullable": true
+        },
+        "birthFirstName": {
+          "type": "string",
+          "description": "Guest\u0027s first name right after birth",
+          "x-nullable": true
+        },
+        "birthLastName": {
+          "type": "string",
+          "description": "Guest\u0027s last name right after birth",
+          "x-nullable": true
+        },
+        "motherFirstName": {
+          "type": "string",
+          "description": "Guest\u0027s mother\u0027s first name",
+          "x-nullable": true
+        },
+        "motherLastName": {
+          "type": "string",
+          "description": "Guest\u0027s mother\u0027s last name",
+          "x-nullable": true
+        },
+        "borderCrossingPlace": {
+          "type": "string",
+          "description": "The place through which the guest crossed the border",
+          "x-nullable": true
+        },
+        "borderCrossingDate": {
+          "type": "string",
+          "description": "Date on which the guest crossed the border",
+          "format": "date",
+          "example": "2020-10-10",
+          "x-nullable": true
+        },
+        "nextDestination": {
+          "type": "string",
+          "description": "The guest\u0027s next destination address",
+          "x-nullable": true
+        },
+        "company": {
+          "$ref": "#/definitions/ReservationCompanyChangeModel"
+        },
+        "relationshipToPrimaryGuest": {
+          "type": "string",
+          "description": "The relationship of the guest to the primary guest",
+          "enum": [
+            "Grandparent",
+            "Grandchild",
+            "GreatGrandparent",
+            "GreatGrandchild",
+            "Parent",
+            "Child",
+            "Sibling",
+            "ParentInLaw",
+            "ChildInLaw",
+            "SiblingInLaw",
+            "Spouse",
+            "UncleOrAunt",
+            "NephewOrNiece",
+            "Guardian",
+            "Other"
+          ],
+          "x-nullable": true
+        },
+        "vehicleRegistration": {
+          "$ref": "#/definitions/ReservationVehicleRegistrationChangeModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReservationServiceChangeModel": {
+      "type": "object",
+      "required": [
+        "serviceDate",
+        "serviceId"
+      ],
+      "properties": {
+        "serviceId": {
+          "type": "string",
+          "description": "The id of the service booked",
+          "minLength": 1
+        },
+        "count": {
+          "type": "integer",
+          "description": "The number of services booked for each service date",
+          "format": "int32",
+          "x-nullable": true
+        },
+        "amount": {
+          "$ref": "#/definitions/AmountModel"
+        },
+        "totalAmount": {
+          "$ref": "#/definitions/AmountModel"
+        },
+        "serviceDate": {
+          "type": "string",
+          "description": "The service date",
+          "format": "date",
+          "example": "2020-10-10"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReservationTimeSliceChangeModel": {
+      "type": "object",
+      "required": [
+        "from",
+        "to"
+      ],
+      "properties": {
+        "ratePlanId": {
+          "type": "string",
+          "description": "The rate plan id for this time slice",
+          "x-nullable": true
+        },
+        "from": {
+          "type": "string",
+          "description": "The start date and time for this time slice\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "to": {
+          "type": "string",
+          "description": "The end date and time for this time slice\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "unitId": {
+          "type": "string",
+          "description": "The assigned unit id for this time slice",
+          "x-nullable": true
+        },
+        "amount": {
+          "$ref": "#/definitions/AmountModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReservationTimeSliceUnitAssignmentLockChangeModel": {
+      "type": "object",
+      "required": [
+        "from",
+        "to"
+      ],
+      "properties": {
+        "from": {
+          "type": "string",
+          "description": "The start date and time for this time slice\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "to": {
+          "type": "string",
+          "description": "The end date and time for this time slice\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "unitId": {
+          "type": "string",
+          "description": "The assigned unit id for this time slice",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReservationValidationMessageChangeModel": {
+      "type": "object",
+      "required": [
+        "category",
+        "code",
+        "message"
+      ],
+      "properties": {
+        "category": {
+          "type": "string",
+          "description": "The message category",
+          "enum": [
+            "OfferNotAvailable",
+            "AutoUnitAssignment",
+            "GuestLoyalty"
+          ]
+        },
+        "code": {
+          "type": "string",
+          "description": "The message code",
+          "enum": [
+            "UnitGroupFullyBooked",
+            "UnitGroupCapacityExceeded",
+            "RatePlanRestrictionsViolated",
+            "RatePlanSurchargesNotSet",
+            "RateRestrictionsViolated",
+            "RatePlanChannelNotSet",
+            "RatesNotSet",
+            "BlockFullyBooked",
+            "UnitMoved",
+            "IncludedServicesAmountExceededRateAmount",
+            "RatePlanCompanyRestrictionsViolated",
+            "ServiceFullyBooked",
+            "RateDoesNotSatifyHurdles",
+            "LoyaltyMembershipNotRecognized"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "description": "The message description",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReservationVehicleRegistrationChangeModel": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "countryCode": {
+          "type": "string",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "TransactionsExportLogItemModel": {
+      "type": "object",
+      "required": [
+        "created",
+        "periodEnd",
+        "periodStart",
+        "propertyId",
+        "type"
+      ],
+      "properties": {
+        "periodStart": {
+          "type": "string",
+          "description": "Export params - period start\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "periodEnd": {
+          "type": "string",
+          "description": "Export params - period end\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "type": {
+          "type": "string",
+          "description": "Export params - export type",
+          "enum": [
+            "Raw",
+            "Aggregate",
+            "AggregatePairs"
+          ]
+        },
+        "clientId": {
+          "type": "string",
+          "description": "The ID of the client that triggered this event",
+          "x-nullable": true
+        },
+        "propertyId": {
+          "type": "string",
+          "description": "The ID of the property"
+        },
+        "created": {
+          "type": "string",
+          "description": "Date and time when the operation has been executed\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "subjectId": {
+          "type": "string",
+          "description": "The ID of the user that triggered this event",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "TransactionsExportLogListModel": {
+      "type": "object",
+      "required": [
+        "count",
+        "logEntries"
+      ],
+      "properties": {
+        "logEntries": {
+          "type": "array",
+          "description": "List of the log entries.",
+          "items": {
+            "$ref": "#/definitions/TransactionsExportLogItemModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "logEntries": [
+          {
+            "periodStart": "2026-09-30T11:21:49.9655106\u002B02:00",
+            "periodEnd": "2026-09-30T11:21:49.9655106\u002B02:00",
+            "type": "AggregatePairs",
+            "clientId": "app-apaleo",
+            "propertyId": "MUC",
+            "created": "2026-09-30T11:21:49.9655106\u002B02:00",
+            "subjectId": "d4f55fe0-672c-43d9-839a-7d57489475df"
+          }
+        ],
+        "count": 2
+      }
+    }
+  },
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://identity.apaleo.com/connect/authorize",
+      "scopes": {
+        "admin": "Full access",
+        "reservations.import": "Import reservations"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "AuditLogs"
+    },
+    {
+      "name": "BookingLogs"
+    },
+    {
+      "name": "FinanceLogs"
+    }
+  ]
+}

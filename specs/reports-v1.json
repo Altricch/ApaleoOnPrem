@@ -1,0 +1,2402 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "apaleo Reports API",
+    "description": "Management reports, guest statistics and similar aggregated reports.",
+    "version": "v1"
+  },
+  "paths": {
+    "/reports/v1/reports/ordered-services": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "List of ordered services",
+        "description": "Returns a list of ordered services per day with information about the guest and the reservation this service was ordered for.\u003Cbr\u003EYou must have this scope: \u0027reports.read\u0027.",
+        "operationId": "ReportsReportsOrdered-servicesGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyId",
+            "description": "Property Id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "serviceIds",
+            "description": "Service ids the report should be generated for",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "The inclusive start date of the interval.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "The exclusive end date of the interval.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/OrderedServicesListModel"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "reports.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/reports/v1/reports/arrivals": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Returns the number of arrivals in a month for a property",
+        "description": "Returns number of arriving guests for a property for a certain month. Only over-night time slices are considered.\n\nIncludes statistical information on purpose of travel, and nationality. The data is taken from the primary guest only.\nThe status considered are: in-house, confirmed, and checked out.\u003Cbr\u003EYou must have this scope: \u0027reports.read\u0027.",
+        "operationId": "ReportsReportsArrivalsGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyId",
+            "description": "Requested property.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "description": "Requested month for the report.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "description": "Requested year for the report.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ArrivalsReportModel"
+            }
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "reports.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/reports/v1/reports/property-performance": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Returns the property performance report which includes the ADR and the RevPAR for each business day.",
+        "description": "The property performance API return you key performance indicator for the selected property like occupancy, ADR and RevPAR.\nIt only considers the originally booked amounts for sold units excluding any additional services or manually posted charges\nor allowances. The results can be filterd to only show you data for a certain part of the business. For example you can exclude\nday-use reservations or complimentary rate plans.\u003Cbr\u003EYou must have this scope: \u0027reports.read\u0027.",
+        "operationId": "ReportsReportsProperty-performanceGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyId",
+            "description": "The ID of the property",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "The inclusive start date of the interval",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "The inclusive end date of the interval",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "companyIds",
+            "description": "The company IDs used to filter the retrieved data",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "ratePlanIds",
+            "description": "The rate plan IDs used to filter the retrieved data",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "unitGroupTypes",
+            "description": "The unit group types used to filter the retrieved data",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BedRoom",
+                "MeetingRoom",
+                "EventSpace",
+                "ParkingLot",
+                "Other"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "unitGroupIds",
+            "description": "The unit group IDs used to filter the retrieved data",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "timeSliceDefinitionIds",
+            "description": "The time slice definition IDs used to filter the retrieved data",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "channelCodes",
+            "description": "The channel codes used to filter the retrieved data",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Direct",
+                "BookingCom",
+                "Ibe",
+                "ChannelManager",
+                "Expedia",
+                "Homelike",
+                "Hrs",
+                "AltoVita",
+                "DesVu",
+                "Gimsi"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "sources",
+            "description": "The sources used to filter the retrieved data",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "marketSegmentIds",
+            "description": "The market segment IDs used to filter the retrieved data",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "travelPurpose",
+            "description": "The travel purpose to filter the retrieved data",
+            "type": "string",
+            "enum": [
+              "Business",
+              "Leisure"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "List of all embedded resources that should be expanded in the response. Possible values are: businessDays. All other values will be silently ignored.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "businessDays"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PropertyPerformanceReportModel"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "reports.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/reports/v1/reports/company-invoices-vat": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Returns the list of company invoices with information on the company and the VAT breakdown",
+        "description": "\u003Cbr\u003EYou must have this scope: \u0027reports.read\u0027.",
+        "operationId": "ReportsReportsCompany-invoices-vatGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyId",
+            "description": "Property ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "companyIds",
+            "description": "Company IDs the report should be generated for",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "dateFilter",
+            "description": "Set a date interval to get the report for. Cannot be more than 1 month.\u003Cbr /\u003EYou can provide an array of string expressions which all need to apply.\u003Cbr /\u003EEach expression has the form of \u0027OPERATION_VALUE\u0027 where VALUE needs to be of the valid format of the property type and OPERATION can be:\u003Cbr /\u003E\u0027eq\u0027 for equals\u003Cbr /\u003E\u0027neq\u0027 for not equals\u003Cbr /\u003E\u0027lt\u0027 for less than\u003Cbr /\u003E\u0027gt\u0027 for greater than\u003Cbr /\u003E\u0027lte\u0027 for less than or equals\u003Cbr /\u003E\u0027gte\u0027 for greater than or equals\u003Cbr /\u003EFor instance\u003Cbr /\u003E\u0027eq_5\u0027 would mean the value should equal 5\u003Cbr /\u003E\u0027lte_7\u0027 would mean the value should be less than or equal to 7",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CompaniesVatReportListModel"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "reports.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/reports/v1/reports/revenues": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Returns the revenues report for a property",
+        "description": "\u003Cbr\u003EYou must have this scope: \u0027reports.read\u0027.",
+        "operationId": "ReportsReportsRevenuesGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyId",
+            "description": "Property ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "The inclusive start date of the interval.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "The exclusive end date of the interval. The interval is limited to one year.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "languageCode",
+            "description": "The language for the the report",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/RevenuesReportItemModel"
+            }
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "reports.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AddressModel": {
+      "type": "object",
+      "required": [
+        "addressLine1",
+        "city",
+        "countryCode",
+        "postalCode"
+      ],
+      "properties": {
+        "addressLine1": {
+          "type": "string",
+          "minLength": 1
+        },
+        "addressLine2": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "postalCode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "city": {
+          "type": "string",
+          "minLength": 1
+        },
+        "regionCode": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "countryCode": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ArrivalsReportModel": {
+      "type": "object",
+      "required": [
+        "total",
+        "totalAdults",
+        "totalChildren"
+      ],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "description": "Total number for all guests.",
+          "format": "int32"
+        },
+        "totalAdults": {
+          "type": "integer",
+          "description": "Total number of adults.",
+          "format": "int32"
+        },
+        "totalChildren": {
+          "type": "integer",
+          "description": "Total number of children.",
+          "format": "int32"
+        },
+        "travelPurposeBreakdown": {
+          "type": "array",
+          "description": "Breakdown by travel purpose.",
+          "items": {
+            "$ref": "#/definitions/TravelPurposeEntry"
+          },
+          "x-nullable": true
+        },
+        "nationalityBreakdown": {
+          "type": "array",
+          "description": "Breakdown by nationality.",
+          "items": {
+            "$ref": "#/definitions/CountryEntry"
+          },
+          "x-nullable": true
+        },
+        "countryOfResidenceBreakdown": {
+          "type": "array",
+          "description": "Breakdown by country of residence.",
+          "items": {
+            "$ref": "#/definitions/CountryEntry"
+          },
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "total": 279,
+        "totalAdults": 245,
+        "totalChildren": 34,
+        "travelPurposeBreakdown": [
+          {
+            "purpose": "Leisure",
+            "number": 274,
+            "percent": 98.20,
+            "reservationIds": [
+              "AHSJFHSH-1",
+              "HFNDHSKA-2"
+            ]
+          },
+          {
+            "purpose": "Business",
+            "number": 2,
+            "percent": 0.72,
+            "reservationIds": [
+              "AHSJFHSH-1",
+              "HFNDHSKA-2"
+            ]
+          },
+          {
+            "number": 2,
+            "percent": 0.72,
+            "reservationIds": [
+              "AHSJFHSH-1",
+              "HFNDHSKA-2"
+            ]
+          }
+        ],
+        "nationalityBreakdown": [
+          {
+            "countryCode": "DE",
+            "number": 118,
+            "percent": 42.29,
+            "reservationIds": [
+              "AHSJFHSH-1",
+              "HFNDHSKA-2"
+            ]
+          },
+          {
+            "countryCode": "GB",
+            "number": 18,
+            "percent": 6.45,
+            "reservationIds": [
+              "AHSJFHSH-1",
+              "HFNDHSKA-2"
+            ]
+          },
+          {
+            "number": 143,
+            "percent": 51.26,
+            "reservationIds": [
+              "AHSJFHSH-1",
+              "HFNDHSKA-2"
+            ]
+          }
+        ],
+        "countryOfResidenceBreakdown": [
+          {
+            "countryCode": "DE",
+            "number": 132,
+            "percent": 47.31,
+            "reservationIds": [
+              "AHSJFHSH-1",
+              "HFNDHSKA-2"
+            ]
+          },
+          {
+            "countryCode": "GB",
+            "number": 9,
+            "percent": 3.23,
+            "reservationIds": [
+              "AHSJFHSH-1",
+              "HFNDHSKA-2"
+            ]
+          },
+          {
+            "number": 138,
+            "percent": 49.46,
+            "reservationIds": [
+              "AHSJFHSH-1",
+              "HFNDHSKA-2"
+            ]
+          }
+        ]
+      }
+    },
+    "CompaniesVatReportItemModel": {
+      "type": "object",
+      "required": [
+        "company",
+        "invoice"
+      ],
+      "properties": {
+        "company": {
+          "$ref": "#/definitions/CompanyModel"
+        },
+        "invoice": {
+          "$ref": "#/definitions/InvoiceModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CompaniesVatReportListModel": {
+      "type": "object",
+      "required": [
+        "companyInvoices",
+        "count"
+      ],
+      "properties": {
+        "companyInvoices": {
+          "type": "array",
+          "description": "List of company invoices",
+          "items": {
+            "$ref": "#/definitions/CompaniesVatReportItemModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "companyInvoices": [
+          {
+            "company": {
+              "id": "MUC-APALEO",
+              "code": "APALEO",
+              "name": "APALEO Company",
+              "taxId": "DE311046461",
+              "address": {
+                "addressLine1": "Dachauerstr. 15 A",
+                "postalCode": "80335",
+                "city": "Munich",
+                "countryCode": "DE"
+              }
+            },
+            "invoice": {
+              "number": "2019050000009",
+              "date": "2026-09-30",
+              "subTotal": {
+                "amount": 114.0,
+                "currency": "EUR"
+              },
+              "outstandingPayment": {
+                "amount": 50.0,
+                "currency": "EUR"
+              },
+              "taxDetails": [
+                {
+                  "vatType": "Reduced",
+                  "vatPercent": 14.0,
+                  "net": {
+                    "amount": 100.0,
+                    "currency": "EUR"
+                  },
+                  "tax": {
+                    "amount": 14.0,
+                    "currency": "EUR"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "count": 1
+      }
+    },
+    "CompanyModel": {
+      "type": "object",
+      "required": [
+        "address",
+        "code",
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The ID of the company"
+        },
+        "code": {
+          "type": "string",
+          "description": "The code for the company"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the company",
+          "minLength": 1
+        },
+        "taxId": {
+          "type": "string",
+          "description": "The tax ID of the company",
+          "x-nullable": true
+        },
+        "address": {
+          "$ref": "#/definitions/AddressModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CountryEntry": {
+      "type": "object",
+      "required": [
+        "number",
+        "percent"
+      ],
+      "properties": {
+        "countryCode": {
+          "type": "string",
+          "description": "2 letter ISO country code",
+          "x-nullable": true
+        },
+        "number": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "percent": {
+          "type": "number",
+          "format": "double"
+        },
+        "reservationIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "EmbeddedUnitGroupModel": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unit group id"
+        },
+        "code": {
+          "type": "string",
+          "description": "The code for the unit group that can be shown in reports and table views",
+          "x-nullable": true
+        },
+        "name": {
+          "type": "string",
+          "description": "The name for the unit group",
+          "x-nullable": true
+        },
+        "description": {
+          "type": "string",
+          "description": "The description for the unit group",
+          "x-nullable": true
+        },
+        "type": {
+          "type": "string",
+          "description": "The unit group type",
+          "enum": [
+            "BedRoom",
+            "MeetingRoom",
+            "EventSpace",
+            "ParkingLot",
+            "Other"
+          ],
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "ExportAccountModel": {
+      "type": "object",
+      "required": [
+        "name",
+        "number",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The account name",
+          "minLength": 1
+        },
+        "number": {
+          "type": "string",
+          "description": "The account number",
+          "minLength": 1
+        },
+        "parentNumber": {
+          "type": "string",
+          "description": "The number of the parent account",
+          "x-nullable": true
+        },
+        "type": {
+          "type": "string",
+          "description": "The account type",
+          "enum": [
+            "Revenues",
+            "Payments",
+            "Liabilities",
+            "Receivables",
+            "Vat",
+            "House",
+            "AccountsReceivable",
+            "CityTaxes",
+            "TransitoryItems",
+            "VatOnLiabilities",
+            "LossOfAccountsReceivable",
+            "SecondCityTax",
+            "GuestLevies"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "InvoiceModel": {
+      "type": "object",
+      "required": [
+        "date",
+        "subTotal"
+      ],
+      "properties": {
+        "number": {
+          "type": "string",
+          "description": "Invoice number",
+          "x-nullable": true
+        },
+        "date": {
+          "type": "string",
+          "description": "Date the invoice has been created",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "subTotal": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "outstandingPayment": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "taxDetails": {
+          "type": "array",
+          "description": "The subtotal, displaying net and tax amount for each VAT type",
+          "items": {
+            "$ref": "#/definitions/TaxDetailModel"
+          },
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "MessageItemCollection": {
+      "type": "object",
+      "properties": {
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "readOnly": true,
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "MonetaryValueModel": {
+      "type": "object",
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "properties": {
+        "amount": {
+          "type": "number",
+          "format": "double"
+        },
+        "currency": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "OrderedServicesGuestModel": {
+      "type": "object",
+      "required": [
+        "lastName"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title of the guest",
+          "enum": [
+            "Mr",
+            "Ms",
+            "Dr",
+            "Prof",
+            "Mrs",
+            "Other"
+          ],
+          "x-nullable": true
+        },
+        "gender": {
+          "type": "string",
+          "description": "Gender of the guest",
+          "enum": [
+            "Female",
+            "Male",
+            "Other",
+            "Unknown"
+          ],
+          "x-nullable": true
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of the guest",
+          "x-nullable": true
+        },
+        "middleInitial": {
+          "type": "string",
+          "description": "Middle initial of the guest",
+          "x-nullable": true
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the guest",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "OrderedServicesItemModel": {
+      "type": "object",
+      "required": [
+        "code",
+        "count",
+        "id",
+        "name",
+        "reservation",
+        "serviceDate",
+        "unitGroup"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The service id"
+        },
+        "code": {
+          "type": "string",
+          "description": "The code for the service"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name for the service",
+          "minLength": 1
+        },
+        "serviceDate": {
+          "type": "string",
+          "description": "The date this service is delivered",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "count": {
+          "type": "integer",
+          "description": "The count of services ordered",
+          "format": "int32"
+        },
+        "guest": {
+          "$ref": "#/definitions/OrderedServicesGuestModel"
+        },
+        "reservation": {
+          "$ref": "#/definitions/OrderedServicesReservationModel"
+        },
+        "unit": {
+          "$ref": "#/definitions/OrderedServicesUnitModel"
+        },
+        "unitGroup": {
+          "$ref": "#/definitions/OrderedServicesUnitGroupModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "OrderedServicesListModel": {
+      "type": "object",
+      "required": [
+        "count",
+        "orderedServices"
+      ],
+      "properties": {
+        "orderedServices": {
+          "type": "array",
+          "description": "List of ordered services",
+          "items": {
+            "$ref": "#/definitions/OrderedServicesItemModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "orderedServices": [
+          {
+            "id": "MUC-BRK",
+            "code": "BRK",
+            "name": "Breakfast",
+            "serviceDate": "2026-10-02",
+            "count": 1,
+            "guest": {
+              "title": "Mr",
+              "gender": "Male",
+              "firstName": "John",
+              "middleInitial": "G.",
+              "lastName": "Doe"
+            },
+            "reservation": {
+              "id": "XPGMSXGF-1",
+              "arrival": "2026-10-01T17:00:00\u002B02:00",
+              "departure": "2026-10-03T17:00:00\u002B02:00",
+              "persons": 2
+            },
+            "unit": {
+              "id": "HDHD",
+              "name": "A.001"
+            },
+            "unitGroup": {
+              "id": "MUC-SGL",
+              "code": "SGL",
+              "name": "Single room"
+            }
+          }
+        ],
+        "count": 1
+      }
+    },
+    "OrderedServicesReservationModel": {
+      "type": "object",
+      "required": [
+        "arrival",
+        "departure",
+        "id",
+        "persons"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Reservation id"
+        },
+        "arrival": {
+          "type": "string",
+          "description": "Date of arrival\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "departure": {
+          "type": "string",
+          "description": "Date of departure\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "persons": {
+          "type": "integer",
+          "description": "Number of persons",
+          "format": "int32"
+        }
+      },
+      "additionalProperties": false
+    },
+    "OrderedServicesUnitGroupModel": {
+      "type": "object",
+      "required": [
+        "code",
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unit group id"
+        },
+        "code": {
+          "type": "string",
+          "description": "The code for the unit group"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name for the unit group",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "OrderedServicesUnitModel": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unit id"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name for the unit",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "PropertyPerformancePerUnitGroupModel": {
+      "type": "object",
+      "required": [
+        "arrivalsCount",
+        "cancellationsCount",
+        "definitelyBlockedCount",
+        "departuresCount",
+        "grossAccommodationRevenue",
+        "grossAdr",
+        "grossFoodAndBeveragesRevenue",
+        "grossOtherRevenue",
+        "grossUnitRevenue",
+        "houseCount",
+        "houseItemsCount",
+        "netAccommodationRevenue",
+        "netAdr",
+        "netFoodAndBeveragesRevenue",
+        "netOtherRevenue",
+        "netUnitRevenue",
+        "noShowsCount",
+        "occupancyPercentage",
+        "optionallyBlockedCount",
+        "outOfOrderCount",
+        "outOfOrderItemsCount",
+        "revPar",
+        "soldCount",
+        "soldItemsCount",
+        "tentativelyBlockedCount",
+        "tentativelyBlockedItemsCount",
+        "unitGroup",
+        "unsoldCount",
+        "unsoldItemsCount"
+      ],
+      "properties": {
+        "unitGroup": {
+          "$ref": "#/definitions/EmbeddedUnitGroupModel"
+        },
+        "houseCount": {
+          "type": "integer",
+          "description": "The number of units physically existing excluding the ones which are out of inventory",
+          "format": "int32"
+        },
+        "houseItemsCount": {
+          "type": "integer",
+          "description": "The number of items (e.g. beds, seats, etc.) physically existing excluding the ones which are out of inventory",
+          "format": "int32"
+        },
+        "soldCount": {
+          "type": "integer",
+          "description": "The number of sold units plus definitely blocked units from group bookings",
+          "format": "int32"
+        },
+        "soldItemsCount": {
+          "type": "integer",
+          "description": "The number of sold items (e.g. beds, seats, etc.) plus definitely blocked items from group bookings",
+          "format": "int32"
+        },
+        "unsoldCount": {
+          "type": "integer",
+          "description": "The number of unsold units: house count minus sold units and out of order units",
+          "format": "int32"
+        },
+        "unsoldItemsCount": {
+          "type": "integer",
+          "description": "The number of unsold items (e.g. beds, seats, etc.): house items count minus sold items and out of order items",
+          "format": "int32"
+        },
+        "outOfOrderCount": {
+          "type": "integer",
+          "description": "The number of units which are out of order",
+          "format": "int32"
+        },
+        "outOfOrderItemsCount": {
+          "type": "integer",
+          "description": "The number of items (e.g. beds, seats, etc.) which are out of order",
+          "format": "int32"
+        },
+        "tentativelyBlockedCount": {
+          "type": "integer",
+          "description": "The number of units which are tentatively blocked",
+          "format": "int32"
+        },
+        "tentativelyBlockedItemsCount": {
+          "type": "integer",
+          "description": "The number of items (beds, seats, etc.) which are tentatively blocked",
+          "format": "int32"
+        },
+        "definitelyBlockedCount": {
+          "type": "integer",
+          "description": "The number of definitely blocked units from group bookings",
+          "format": "int32"
+        },
+        "optionallyBlockedCount": {
+          "type": "integer",
+          "description": "The number of optionally blocked units from group bookings",
+          "format": "int32"
+        },
+        "arrivalsCount": {
+          "type": "integer",
+          "description": "The number of arrivals units",
+          "format": "int32"
+        },
+        "departuresCount": {
+          "type": "integer",
+          "description": "The number of departures units",
+          "format": "int32"
+        },
+        "noShowsCount": {
+          "type": "integer",
+          "description": "The number of no-show units",
+          "format": "int32"
+        },
+        "cancellationsCount": {
+          "type": "integer",
+          "description": "The number of cancelled units",
+          "format": "int32"
+        },
+        "occupancyPercentage": {
+          "type": "number",
+          "description": "The occupancy in percent, which is the ratio of sold units in relation to house count minus out of order units",
+          "format": "double"
+        },
+        "grossUnitRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netUnitRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "grossAccommodationRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netAccommodationRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "grossFoodAndBeveragesRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netFoodAndBeveragesRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "grossOtherRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netOtherRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "grossAdr": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netAdr": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "revPar": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "PropertyPerformanceReportItemModel": {
+      "type": "object",
+      "required": [
+        "arrivalsCount",
+        "businessDay",
+        "cancellationsCount",
+        "definitelyBlockedCount",
+        "departuresCount",
+        "grossAccommodationRevenue",
+        "grossAdr",
+        "grossFoodAndBeveragesRevenue",
+        "grossOtherRevenue",
+        "grossUnitRevenue",
+        "houseCount",
+        "houseItemsCount",
+        "netAccommodationRevenue",
+        "netAdr",
+        "netFoodAndBeveragesRevenue",
+        "netOtherRevenue",
+        "netUnitRevenue",
+        "noShowsCount",
+        "occupancyPercentage",
+        "optionallyBlockedCount",
+        "outOfOrderCount",
+        "outOfOrderItemsCount",
+        "revPar",
+        "soldCount",
+        "soldItemsCount",
+        "tentativelyBlockedCount",
+        "tentativelyBlockedItemsCount",
+        "unitGroups",
+        "unsoldCount",
+        "unsoldItemsCount"
+      ],
+      "properties": {
+        "businessDay": {
+          "type": "string",
+          "description": "The business day",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "houseCount": {
+          "type": "integer",
+          "description": "The number of units physically existing excluding the ones which are out of inventory",
+          "format": "int32"
+        },
+        "houseItemsCount": {
+          "type": "integer",
+          "description": "The number of items (e.g. beds, seats, etc.) physically existing excluding the ones which are out of inventory",
+          "format": "int32"
+        },
+        "soldCount": {
+          "type": "integer",
+          "description": "The number of sold units plus definitely blocked units from group bookings",
+          "format": "int32"
+        },
+        "soldItemsCount": {
+          "type": "integer",
+          "description": "The number of sold items (e.g. beds, seats, etc.) plus definitely blocked items from group bookings",
+          "format": "int32"
+        },
+        "unsoldCount": {
+          "type": "integer",
+          "description": "The number of unsold units: house count minus sold units and out of order units",
+          "format": "int32"
+        },
+        "unsoldItemsCount": {
+          "type": "integer",
+          "description": "The number of unsold items (e.g. beds, seats, etc.): house items count minus sold items and out of order items",
+          "format": "int32"
+        },
+        "outOfOrderCount": {
+          "type": "integer",
+          "description": "The number of units which are out of order",
+          "format": "int32"
+        },
+        "outOfOrderItemsCount": {
+          "type": "integer",
+          "description": "The number of items (e.g. beds, seats, etc.) which are out of order",
+          "format": "int32"
+        },
+        "tentativelyBlockedCount": {
+          "type": "integer",
+          "description": "The number of units which are tentatively blocked",
+          "format": "int32"
+        },
+        "tentativelyBlockedItemsCount": {
+          "type": "integer",
+          "description": "The number of items (beds, seats, etc.) which are tentatively blocked",
+          "format": "int32"
+        },
+        "definitelyBlockedCount": {
+          "type": "integer",
+          "description": "The number of definitely blocked units from group bookings",
+          "format": "int32"
+        },
+        "optionallyBlockedCount": {
+          "type": "integer",
+          "description": "The number of optionally blocked units from group bookings",
+          "format": "int32"
+        },
+        "arrivalsCount": {
+          "type": "integer",
+          "description": "The number of arrivals units",
+          "format": "int32"
+        },
+        "departuresCount": {
+          "type": "integer",
+          "description": "The number of departures units",
+          "format": "int32"
+        },
+        "noShowsCount": {
+          "type": "integer",
+          "description": "The number of no-show units",
+          "format": "int32"
+        },
+        "cancellationsCount": {
+          "type": "integer",
+          "description": "The number of cancelled units",
+          "format": "int32"
+        },
+        "occupancyPercentage": {
+          "type": "number",
+          "description": "The occupancy in percent, which is the ratio of sold units in relation to house count minus out of order units",
+          "format": "double"
+        },
+        "grossUnitRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netUnitRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "grossAccommodationRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netAccommodationRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "grossFoodAndBeveragesRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netFoodAndBeveragesRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "grossOtherRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netOtherRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "grossAdr": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netAdr": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "revPar": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "unitGroups": {
+          "type": "array",
+          "description": "The breakdown per unit group",
+          "items": {
+            "$ref": "#/definitions/PropertyPerformancePerUnitGroupModel"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "PropertyPerformanceReportModel": {
+      "type": "object",
+      "required": [
+        "arrivalsCount",
+        "cancellationsCount",
+        "definitelyBlockedCount",
+        "departuresCount",
+        "grossAccommodationRevenue",
+        "grossAdr",
+        "grossFoodAndBeveragesRevenue",
+        "grossOtherRevenue",
+        "grossUnitRevenue",
+        "houseCount",
+        "houseItemsCount",
+        "netAccommodationRevenue",
+        "netAdr",
+        "netFoodAndBeveragesRevenue",
+        "netOtherRevenue",
+        "netUnitRevenue",
+        "noShowsCount",
+        "occupancyPercentage",
+        "optionallyBlockedCount",
+        "outOfOrderCount",
+        "outOfOrderItemsCount",
+        "revPar",
+        "soldCount",
+        "soldItemsCount",
+        "tentativelyBlockedCount",
+        "tentativelyBlockedItemsCount",
+        "unsoldCount",
+        "unsoldItemsCount"
+      ],
+      "properties": {
+        "houseCount": {
+          "type": "integer",
+          "description": "The number of units physically existing excluding the ones which are out of inventory",
+          "format": "int32"
+        },
+        "houseItemsCount": {
+          "type": "integer",
+          "description": "The number of items (e.g. beds, seats, etc.) physically existing excluding the ones which are out of inventory",
+          "format": "int32"
+        },
+        "soldCount": {
+          "type": "integer",
+          "description": "The number of sold units plus definitely blocked units from group bookings",
+          "format": "int32"
+        },
+        "soldItemsCount": {
+          "type": "integer",
+          "description": "The number of sold items (e.g. beds, seats, etc.) plus definitely blocked items from group bookings",
+          "format": "int32"
+        },
+        "unsoldCount": {
+          "type": "integer",
+          "description": "The number of unsold units: house count minus sold units and out of order units",
+          "format": "int32"
+        },
+        "unsoldItemsCount": {
+          "type": "integer",
+          "description": "The number of unsold items (e.g. beds, seats, etc.): house items count minus sold items and out of order items",
+          "format": "int32"
+        },
+        "outOfOrderCount": {
+          "type": "integer",
+          "description": "The number of units which are out of order",
+          "format": "int32"
+        },
+        "outOfOrderItemsCount": {
+          "type": "integer",
+          "description": "The number of items (e.g. beds, seats, etc.) which are out of order",
+          "format": "int32"
+        },
+        "tentativelyBlockedCount": {
+          "type": "integer",
+          "description": "The number of units which are tentatively blocked",
+          "format": "int32"
+        },
+        "tentativelyBlockedItemsCount": {
+          "type": "integer",
+          "description": "The number of items (beds, seats, etc.) which are tentatively blocked",
+          "format": "int32"
+        },
+        "definitelyBlockedCount": {
+          "type": "integer",
+          "description": "The number of units which are definitely blocked",
+          "format": "int32"
+        },
+        "optionallyBlockedCount": {
+          "type": "integer",
+          "description": "The number of units which are optionally blocked",
+          "format": "int32"
+        },
+        "arrivalsCount": {
+          "type": "integer",
+          "description": "The number of arrivals units",
+          "format": "int32"
+        },
+        "departuresCount": {
+          "type": "integer",
+          "description": "The number of departures units",
+          "format": "int32"
+        },
+        "noShowsCount": {
+          "type": "integer",
+          "description": "The number of no-show units",
+          "format": "int32"
+        },
+        "cancellationsCount": {
+          "type": "integer",
+          "description": "The number of cancelled units",
+          "format": "int32"
+        },
+        "occupancyPercentage": {
+          "type": "number",
+          "description": "The occupancy in percent, which is the ratio of sold units in relation to house count minus out of order units",
+          "format": "double"
+        },
+        "grossUnitRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netUnitRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "grossAccommodationRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netAccommodationRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "grossFoodAndBeveragesRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netFoodAndBeveragesRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "grossOtherRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netOtherRevenue": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "grossAdr": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "netAdr": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "revPar": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "businessDays": {
+          "type": "array",
+          "description": "The breakdown by business day for the specified filter criteria",
+          "items": {
+            "$ref": "#/definitions/PropertyPerformanceReportItemModel"
+          },
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "houseCount": 10,
+        "houseItemsCount": 0,
+        "soldCount": 6,
+        "soldItemsCount": 0,
+        "unsoldCount": 2,
+        "unsoldItemsCount": 0,
+        "outOfOrderCount": 2,
+        "outOfOrderItemsCount": 0,
+        "tentativelyBlockedCount": 0,
+        "tentativelyBlockedItemsCount": 0,
+        "definitelyBlockedCount": 0,
+        "optionallyBlockedCount": 0,
+        "arrivalsCount": 0,
+        "departuresCount": 0,
+        "noShowsCount": 0,
+        "cancellationsCount": 0,
+        "occupancyPercentage": 75.00,
+        "grossUnitRevenue": {
+          "amount": 830.00,
+          "currency": "EUR"
+        },
+        "netUnitRevenue": {
+          "amount": 775.70,
+          "currency": "EUR"
+        },
+        "grossAccommodationRevenue": {
+          "amount": 26.00,
+          "currency": "EUR"
+        },
+        "netAccommodationRevenue": {
+          "amount": 24.00,
+          "currency": "EUR"
+        },
+        "grossFoodAndBeveragesRevenue": {
+          "amount": 134.00,
+          "currency": "EUR"
+        },
+        "netFoodAndBeveragesRevenue": {
+          "amount": 16.00,
+          "currency": "EUR"
+        },
+        "grossOtherRevenue": {
+          "amount": 194.00,
+          "currency": "EUR"
+        },
+        "netOtherRevenue": {
+          "amount": 126.00,
+          "currency": "EUR"
+        },
+        "grossAdr": {
+          "amount": 138.33,
+          "currency": "EUR"
+        },
+        "netAdr": {
+          "amount": 129.28,
+          "currency": "EUR"
+        },
+        "revPar": {
+          "amount": 96.96,
+          "currency": "EUR"
+        },
+        "businessDays": [
+          {
+            "businessDay": "2026-09-29",
+            "houseCount": 5,
+            "houseItemsCount": 0,
+            "soldCount": 3,
+            "soldItemsCount": 0,
+            "unsoldCount": 1,
+            "unsoldItemsCount": 0,
+            "outOfOrderCount": 1,
+            "outOfOrderItemsCount": 0,
+            "tentativelyBlockedCount": 0,
+            "tentativelyBlockedItemsCount": 0,
+            "definitelyBlockedCount": 0,
+            "optionallyBlockedCount": 0,
+            "arrivalsCount": 0,
+            "departuresCount": 0,
+            "noShowsCount": 0,
+            "cancellationsCount": 0,
+            "occupancyPercentage": 75.0,
+            "grossUnitRevenue": {
+              "amount": 350.00,
+              "currency": "EUR"
+            },
+            "netUnitRevenue": {
+              "amount": 327.10,
+              "currency": "EUR"
+            },
+            "grossAccommodationRevenue": {
+              "amount": 8.00,
+              "currency": "EUR"
+            },
+            "netAccommodationRevenue": {
+              "amount": 7.00,
+              "currency": "EUR"
+            },
+            "grossFoodAndBeveragesRevenue": {
+              "amount": 17.00,
+              "currency": "EUR"
+            },
+            "netFoodAndBeveragesRevenue": {
+              "amount": 3.00,
+              "currency": "EUR"
+            },
+            "grossOtherRevenue": {
+              "amount": 47.00,
+              "currency": "EUR"
+            },
+            "netOtherRevenue": {
+              "amount": 13.00,
+              "currency": "EUR"
+            },
+            "grossAdr": {
+              "amount": 116.67,
+              "currency": "EUR"
+            },
+            "netAdr": {
+              "amount": 109.03,
+              "currency": "EUR"
+            },
+            "revPar": {
+              "amount": 81.78,
+              "currency": "EUR"
+            },
+            "unitGroups": [
+              {
+                "unitGroup": {
+                  "id": "MUC-DBL",
+                  "code": "DBL",
+                  "name": "Double",
+                  "description": "Double",
+                  "type": "BedRoom"
+                },
+                "houseCount": 4,
+                "houseItemsCount": 0,
+                "soldCount": 2,
+                "soldItemsCount": 0,
+                "unsoldCount": 1,
+                "unsoldItemsCount": 0,
+                "outOfOrderCount": 1,
+                "outOfOrderItemsCount": 0,
+                "tentativelyBlockedCount": 0,
+                "tentativelyBlockedItemsCount": 0,
+                "definitelyBlockedCount": 0,
+                "optionallyBlockedCount": 0,
+                "arrivalsCount": 0,
+                "departuresCount": 0,
+                "noShowsCount": 0,
+                "cancellationsCount": 0,
+                "occupancyPercentage": 66.67,
+                "grossUnitRevenue": {
+                  "amount": 230.00,
+                  "currency": "EUR"
+                },
+                "netUnitRevenue": {
+                  "amount": 214.95,
+                  "currency": "EUR"
+                },
+                "grossAccommodationRevenue": {
+                  "amount": 4.00,
+                  "currency": "EUR"
+                },
+                "netAccommodationRevenue": {
+                  "amount": 3.50,
+                  "currency": "EUR"
+                },
+                "grossFoodAndBeveragesRevenue": {
+                  "amount": 8.50,
+                  "currency": "EUR"
+                },
+                "netFoodAndBeveragesRevenue": {
+                  "amount": 1.50,
+                  "currency": "EUR"
+                },
+                "grossOtherRevenue": {
+                  "amount": 23.50,
+                  "currency": "EUR"
+                },
+                "netOtherRevenue": {
+                  "amount": 6.50,
+                  "currency": "EUR"
+                },
+                "grossAdr": {
+                  "amount": 115.00,
+                  "currency": "EUR"
+                },
+                "netAdr": {
+                  "amount": 107.48,
+                  "currency": "EUR"
+                },
+                "revPar": {
+                  "amount": 71.65,
+                  "currency": "EUR"
+                }
+              },
+              {
+                "unitGroup": {
+                  "id": "MUC-SGL",
+                  "code": "SGL",
+                  "name": "Single",
+                  "description": "Single",
+                  "type": "BedRoom"
+                },
+                "houseCount": 1,
+                "houseItemsCount": 0,
+                "soldCount": 1,
+                "soldItemsCount": 0,
+                "unsoldCount": 0,
+                "unsoldItemsCount": 0,
+                "outOfOrderCount": 0,
+                "outOfOrderItemsCount": 0,
+                "tentativelyBlockedCount": 0,
+                "tentativelyBlockedItemsCount": 0,
+                "definitelyBlockedCount": 0,
+                "optionallyBlockedCount": 0,
+                "arrivalsCount": 0,
+                "departuresCount": 0,
+                "noShowsCount": 0,
+                "cancellationsCount": 0,
+                "occupancyPercentage": 100.00,
+                "grossUnitRevenue": {
+                  "amount": 120.00,
+                  "currency": "EUR"
+                },
+                "netUnitRevenue": {
+                  "amount": 112.15,
+                  "currency": "EUR"
+                },
+                "grossAccommodationRevenue": {
+                  "amount": 4.00,
+                  "currency": "EUR"
+                },
+                "netAccommodationRevenue": {
+                  "amount": 3.50,
+                  "currency": "EUR"
+                },
+                "grossFoodAndBeveragesRevenue": {
+                  "amount": 8.50,
+                  "currency": "EUR"
+                },
+                "netFoodAndBeveragesRevenue": {
+                  "amount": 1.50,
+                  "currency": "EUR"
+                },
+                "grossOtherRevenue": {
+                  "amount": 23.50,
+                  "currency": "EUR"
+                },
+                "netOtherRevenue": {
+                  "amount": 6.50,
+                  "currency": "EUR"
+                },
+                "grossAdr": {
+                  "amount": 120.00,
+                  "currency": "EUR"
+                },
+                "netAdr": {
+                  "amount": 112.15,
+                  "currency": "EUR"
+                },
+                "revPar": {
+                  "amount": 112.15,
+                  "currency": "EUR"
+                }
+              }
+            ]
+          },
+          {
+            "businessDay": "2026-09-30",
+            "houseCount": 5,
+            "houseItemsCount": 0,
+            "soldCount": 3,
+            "soldItemsCount": 0,
+            "unsoldCount": 1,
+            "unsoldItemsCount": 0,
+            "outOfOrderCount": 1,
+            "outOfOrderItemsCount": 0,
+            "tentativelyBlockedCount": 0,
+            "tentativelyBlockedItemsCount": 0,
+            "definitelyBlockedCount": 0,
+            "optionallyBlockedCount": 0,
+            "arrivalsCount": 0,
+            "departuresCount": 0,
+            "noShowsCount": 0,
+            "cancellationsCount": 0,
+            "occupancyPercentage": 75.00,
+            "grossUnitRevenue": {
+              "amount": 480.00,
+              "currency": "EUR"
+            },
+            "netUnitRevenue": {
+              "amount": 448.60,
+              "currency": "EUR"
+            },
+            "grossAccommodationRevenue": {
+              "amount": 18.00,
+              "currency": "EUR"
+            },
+            "netAccommodationRevenue": {
+              "amount": 17.00,
+              "currency": "EUR"
+            },
+            "grossFoodAndBeveragesRevenue": {
+              "amount": 117.00,
+              "currency": "EUR"
+            },
+            "netFoodAndBeveragesRevenue": {
+              "amount": 13.00,
+              "currency": "EUR"
+            },
+            "grossOtherRevenue": {
+              "amount": 147.00,
+              "currency": "EUR"
+            },
+            "netOtherRevenue": {
+              "amount": 113.00,
+              "currency": "EUR"
+            },
+            "grossAdr": {
+              "amount": 160.00,
+              "currency": "EUR"
+            },
+            "netAdr": {
+              "amount": 149.53,
+              "currency": "EUR"
+            },
+            "revPar": {
+              "amount": 112.15,
+              "currency": "EUR"
+            },
+            "unitGroups": [
+              {
+                "unitGroup": {
+                  "id": "MUC-DBL",
+                  "code": "DBL",
+                  "name": "Double",
+                  "description": "Double",
+                  "type": "BedRoom"
+                },
+                "houseCount": 4,
+                "houseItemsCount": 0,
+                "soldCount": 3,
+                "soldItemsCount": 0,
+                "unsoldCount": 0,
+                "unsoldItemsCount": 0,
+                "outOfOrderCount": 1,
+                "outOfOrderItemsCount": 0,
+                "tentativelyBlockedCount": 0,
+                "tentativelyBlockedItemsCount": 0,
+                "definitelyBlockedCount": 0,
+                "optionallyBlockedCount": 0,
+                "arrivalsCount": 0,
+                "departuresCount": 0,
+                "noShowsCount": 0,
+                "cancellationsCount": 0,
+                "occupancyPercentage": 100.00,
+                "grossUnitRevenue": {
+                  "amount": 370.00,
+                  "currency": "EUR"
+                },
+                "netUnitRevenue": {
+                  "amount": 345.79,
+                  "currency": "EUR"
+                },
+                "grossAccommodationRevenue": {
+                  "amount": 9.00,
+                  "currency": "EUR"
+                },
+                "netAccommodationRevenue": {
+                  "amount": 8.50,
+                  "currency": "EUR"
+                },
+                "grossFoodAndBeveragesRevenue": {
+                  "amount": 56.50,
+                  "currency": "EUR"
+                },
+                "netFoodAndBeveragesRevenue": {
+                  "amount": 7.50,
+                  "currency": "EUR"
+                },
+                "grossOtherRevenue": {
+                  "amount": 73.50,
+                  "currency": "EUR"
+                },
+                "netOtherRevenue": {
+                  "amount": 56.50,
+                  "currency": "EUR"
+                },
+                "grossAdr": {
+                  "amount": 123.33,
+                  "currency": "EUR"
+                },
+                "netAdr": {
+                  "amount": 115.26,
+                  "currency": "EUR"
+                },
+                "revPar": {
+                  "amount": 215.26,
+                  "currency": "EUR"
+                }
+              },
+              {
+                "unitGroup": {
+                  "id": "MUC-SGL",
+                  "code": "SGL",
+                  "name": "Single",
+                  "description": "Single",
+                  "type": "BedRoom"
+                },
+                "houseCount": 1,
+                "houseItemsCount": 0,
+                "soldCount": 1,
+                "soldItemsCount": 0,
+                "unsoldCount": 0,
+                "unsoldItemsCount": 0,
+                "outOfOrderCount": 0,
+                "outOfOrderItemsCount": 0,
+                "tentativelyBlockedCount": 0,
+                "tentativelyBlockedItemsCount": 0,
+                "definitelyBlockedCount": 0,
+                "optionallyBlockedCount": 0,
+                "arrivalsCount": 0,
+                "departuresCount": 0,
+                "noShowsCount": 0,
+                "cancellationsCount": 0,
+                "occupancyPercentage": 100.00,
+                "grossUnitRevenue": {
+                  "amount": 110.00,
+                  "currency": "EUR"
+                },
+                "netUnitRevenue": {
+                  "amount": 102.80,
+                  "currency": "EUR"
+                },
+                "grossAccommodationRevenue": {
+                  "amount": 9.00,
+                  "currency": "EUR"
+                },
+                "netAccommodationRevenue": {
+                  "amount": 8.50,
+                  "currency": "EUR"
+                },
+                "grossFoodAndBeveragesRevenue": {
+                  "amount": 56.50,
+                  "currency": "EUR"
+                },
+                "netFoodAndBeveragesRevenue": {
+                  "amount": 7.50,
+                  "currency": "EUR"
+                },
+                "grossOtherRevenue": {
+                  "amount": 73.50,
+                  "currency": "EUR"
+                },
+                "netOtherRevenue": {
+                  "amount": 56.50,
+                  "currency": "EUR"
+                },
+                "grossAdr": {
+                  "amount": 110.00,
+                  "currency": "EUR"
+                },
+                "netAdr": {
+                  "amount": 102.80,
+                  "currency": "EUR"
+                },
+                "revPar": {
+                  "amount": 102.80,
+                  "currency": "EUR"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "RevenuesReportItemModel": {
+      "type": "object",
+      "required": [
+        "account",
+        "grossAmount",
+        "netAmount"
+      ],
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/ExportAccountModel"
+        },
+        "netAmount": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "grossAmount": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "children": {
+          "type": "array",
+          "description": "Child accounts of this account",
+          "items": {
+            "$ref": "#/definitions/RevenuesReportItemModel"
+          },
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "account": {
+          "name": "Revenues",
+          "number": "5000",
+          "type": "Revenues"
+        },
+        "netAmount": {
+          "amount": 8000.0,
+          "currency": "EUR"
+        },
+        "grossAmount": {
+          "amount": 10000.0,
+          "currency": "EUR"
+        },
+        "children": [
+          {
+            "account": {
+              "name": "Revenues Accommodation",
+              "number": "RevenueAccommodation",
+              "type": "Revenues"
+            },
+            "netAmount": {
+              "amount": 5000.0,
+              "currency": "EUR"
+            },
+            "grossAmount": {
+              "amount": 6000.0,
+              "currency": "EUR"
+            },
+            "children": [
+              {
+                "account": {
+                  "name": "Revenues Accommodation (7%)",
+                  "number": "RevenuesAccommodation_Reduced",
+                  "type": "Revenues"
+                },
+                "netAmount": {
+                  "amount": 5000.0,
+                  "currency": "EUR"
+                },
+                "grossAmount": {
+                  "amount": 6000.0,
+                  "currency": "EUR"
+                }
+              }
+            ]
+          },
+          {
+            "account": {
+              "name": "Revenues F\u0026B",
+              "number": "RevenueFoodAndBeverages",
+              "type": "Revenues"
+            },
+            "netAmount": {
+              "amount": 3000.0,
+              "currency": "EUR"
+            },
+            "grossAmount": {
+              "amount": 4000.0,
+              "currency": "EUR"
+            }
+          }
+        ]
+      }
+    },
+    "TaxDetailModel": {
+      "type": "object",
+      "required": [
+        "net",
+        "tax",
+        "vatPercent",
+        "vatType"
+      ],
+      "properties": {
+        "vatType": {
+          "type": "string",
+          "enum": [
+            "Null",
+            "VeryReduced",
+            "Reduced",
+            "Normal",
+            "Without",
+            "Special",
+            "Special1",
+            "Special2",
+            "ReducedCovid19",
+            "NormalCovid19",
+            "Mixed"
+          ]
+        },
+        "vatPercent": {
+          "type": "number",
+          "format": "double"
+        },
+        "net": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        },
+        "tax": {
+          "$ref": "#/definitions/MonetaryValueModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TravelPurposeEntry": {
+      "type": "object",
+      "required": [
+        "number",
+        "percent"
+      ],
+      "properties": {
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "Business",
+            "Leisure"
+          ],
+          "x-nullable": true
+        },
+        "number": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "percent": {
+          "type": "number",
+          "format": "double"
+        },
+        "reservationIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://identity.apaleo.com/connect/authorize",
+      "scopes": {
+        "admin": "Full access",
+        "reservations.import": "Import reservations"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Reports"
+    }
+  ]
+}

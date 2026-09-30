@@ -1,0 +1,46 @@
+{
+  "name": "apaleo-clone",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A local, self-hosted clone of the apaleo PMS core API",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/copy-web.js",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "seed": "npm run build && node dist/cli/seed.js --reset",
+    "test": "npm run build && APALEO_DB=:memory: node --test dist/test/*.test.js",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "specs:refresh": "node dist/cli/fetch-specs.js",
+    "demo": "npm run build && node dist/cli/demo.js",
+    "mcp": "npm run build && node dist/mcp/bin.js",
+    "mcp:http": "npm run build && node dist/mcp/bin.js --http",
+    "mcp:list": "npm run build && node dist/mcp/bin.js --list"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.129.0",
+    "@modelcontextprotocol/sdk": "^1.31.0",
+    "better-sqlite3": "^12.11.1",
+    "cors": "^2.8.6",
+    "dayjs": "^1.11.23",
+    "express": "^4.22.3",
+    "jsonwebtoken": "^9.0.3",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.25",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.6.3",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "bin": {
+    "apaleo-mcp": "dist/mcp/bin.js"
+  }
+}

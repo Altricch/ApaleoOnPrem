@@ -1,0 +1,1235 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "apaleo Operations API",
+    "description": "Operational tasks like posting revenues, setting housekeeping status and processing no shows, etc.",
+    "version": "v1"
+  },
+  "paths": {
+    "/operations/v1/maintenances": {
+      "get": {
+        "tags": [
+          "Maintenance"
+        ],
+        "summary": "Get list of maintenances",
+        "description": "Get a list of maintenances matching your filter.\u003Cbr\u003EYou must have at least one of these scopes: \u0027maintenances.read, maintenances.manage\u0027.",
+        "operationId": "OperationsMaintenancesGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyId",
+            "description": "Filter result by property id",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "unitId",
+            "description": "Filter result by unit id",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "Filter all maintenance windows that end after the specified date and time\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "Filter all maintenance windows that start before the specified date and time\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "in": "query",
+            "name": "types",
+            "description": "Filter result by maintenance types",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "OutOfService",
+                "OutOfOrder",
+                "OutOfInventory"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "description": "Page number to retrieve. Default: 1. If the page has no items, the API returns 204 No Content.",
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Items per page. Default: 500. Maximum: 500.",
+            "type": "integer",
+            "default": 500
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "List of all embedded resources that should be expanded in the response. Possible values are: unit. All other values will be silently ignored.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "unit"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all maintenances.",
+            "schema": {
+              "$ref": "#/definitions/MaintenanceListModel"
+            }
+          },
+          "204": {
+            "description": "No maintenances for this unit could be found."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "maintenances.read",
+              "maintenances.manage",
+              "admin"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Maintenance"
+        ],
+        "summary": "Create a new maintenance window",
+        "description": "Use this call to create a new maintenance window for the given unit. You can only create maintenances for today and days in the future.\u003Cbr\u003EYou must have at least one of these scopes: \u0027maintenances.create, maintenances.manage\u0027.",
+        "operationId": "OperationsMaintenancesPost",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "description": "Unique key for safely retrying requests without accidentally performing the same operation twice. \nWe\u0027ll always send back the same response for requests made with the same key, \nand keys can\u0027t be reused with different request parameters. Keys expire after 24 hours.",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The definition of the maintenance.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateMaintenanceModel"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Creation of the new maintenance was successful.",
+            "schema": {
+              "$ref": "#/definitions/MaintenanceCreatedModel"
+            },
+            "headers": {
+              "Location": {
+                "description": "The location of the created resource.",
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "maintenances.create",
+              "maintenances.manage",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/operations/v1/maintenances/$count": {
+      "get": {
+        "tags": [
+          "Maintenance"
+        ],
+        "summary": "Returns number of maintenances",
+        "description": "Returns the number of maintenances matching your filter.\u003Cbr\u003EYou must have at least one of these scopes: \u0027maintenances.read, maintenances.manage\u0027.",
+        "operationId": "OperationsMaintenances$countGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyId",
+            "description": "Filter result by property id",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "unitId",
+            "description": "Filter result by unit id",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "Filter all maintenance windows that end after the specified date and time\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "Filter all maintenance windows that start before the specified date and time\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "in": "query",
+            "name": "types",
+            "description": "Filter result by maintenance types",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "OutOfService",
+                "OutOfOrder",
+                "OutOfInventory"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Count of maintenances",
+            "schema": {
+              "$ref": "#/definitions/CountModel"
+            }
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "maintenances.read",
+              "maintenances.manage",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/operations/v1/maintenances/bulk": {
+      "post": {
+        "tags": [
+          "Maintenance"
+        ],
+        "summary": "Create multiple maintenances",
+        "description": "Use this call to create multiple maintenances.\u003Cbr\u003EYou must have at least one of these scopes: \u0027maintenances.create, setup.manage\u0027.",
+        "operationId": "OperationsMaintenancesBulkPost",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "description": "Unique key for safely retrying requests without accidentally performing the same operation twice. \nWe\u0027ll always send back the same response for requests made with the same key, \nand keys can\u0027t be reused with different request parameters. Keys expire after 24 hours.",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The definition of the maintenances.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BulkCreateMaintenancesModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/BulkMaintenancesCreatedModel"
+            }
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "maintenances.create",
+              "setup.manage",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/operations/v1/maintenances/{id}": {
+      "patch": {
+        "tags": [
+          "Maintenance"
+        ],
+        "summary": "Modify a maintenance",
+        "description": "You can only change maintenances which are in the future or still ongoing today.\nHere is the list of operations that are currently allowed:\n- Add, replace and remove Description\n- Replace From and To. \u0027From\u0027 cannot be changed, if the maintenance started yesterday or before.\u003Cbr\u003EYou must have this scope: \u0027maintenances.manage\u0027.",
+        "operationId": "OperationsMaintenancesByIdPatch",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The ID of the maintenance.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Define the list of operations to be applied to the resource. Learn more about JSON Patch here: http://jsonpatch.com/.",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Operation"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The maintenance was successfully modified."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "maintenances.manage",
+              "admin"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Maintenance"
+        ],
+        "summary": "Delete a maintenance",
+        "description": "Use this call to delete a maintenance. It is not possible to delete maintenances that started yesterday or earlier.\u003Cbr\u003EYou must have at least one of these scopes: \u0027maintenances.delete, maintenances.manage\u0027.",
+        "operationId": "OperationsMaintenancesByIdDelete",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The ID of the maintenance.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deletion of the maintenance was successful."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "maintenances.delete",
+              "maintenances.manage",
+              "admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Maintenance"
+        ],
+        "summary": "Get a specific maintenance",
+        "description": "Get a specific maintenance by ID.\u003Cbr\u003EYou must have at least one of these scopes: \u0027maintenances.read, maintenances.manage\u0027.",
+        "operationId": "OperationsMaintenancesByIdGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The ID of the maintenance.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "List of all embedded resources that should be expanded in the response. Possible values are: unit. All other values will be silently ignored.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "unit"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all the data for the maintenance.",
+            "schema": {
+              "$ref": "#/definitions/MaintenanceModel"
+            }
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "maintenances.read",
+              "maintenances.manage",
+              "admin"
+            ]
+          }
+        ]
+      },
+      "head": {
+        "tags": [
+          "Maintenance"
+        ],
+        "summary": "Check if a maintenance exists",
+        "description": "Check if a maintenance exists by ID.\u003Cbr\u003EYou must have at least one of these scopes: \u0027maintenances.read, maintenances.manage\u0027.",
+        "operationId": "OperationsMaintenancesByIdHead",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The ID of the maintenance.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The maintenance exists."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "maintenances.read",
+              "maintenances.manage",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/operations/v1/night-audit": {
+      "put": {
+        "tags": [
+          "Operations"
+        ],
+        "summary": "Performs the night audit for one property.",
+        "description": "The night audit will post all charges for services that were delivered on the past business day in the folio and set all occupied rooms to \u0027Dirty\u0027\u003Cbr\u003EYou must have at least one of these scopes: \u0027operations.manage, operations.trigger-night-audit\u0027.",
+        "operationId": "OperationsNight-auditPut",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyId",
+            "description": "The property the night audit should be performed for",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "setReservationsToNoShow",
+            "description": "Flag if reservations in the state confirmed, which should have been checked in by now, should be marked as no show.\n            \nThe default value is true and we strongly advise against setting it to false,\nbecause different reports rely on setting reservations which were not checked in correctly to no show.",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "operations.manage",
+              "operations.trigger-night-audit",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/operations/v1/units-condition": {
+      "put": {
+        "tags": [
+          "Operations"
+        ],
+        "summary": "Change the condition of a unit",
+        "description": "\u003Cbr\u003EYou must have this scope: \u0027operations.change-room-state\u0027.",
+        "operationId": "OperationsUnits-conditionPut",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Array of unit Ids with their respective new condition",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReplaceUnitConditionListModel"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The unit condition has been updated"
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "operations.change-room-state",
+              "admin"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "BulkCreateMaintenancesModel": {
+      "type": "object",
+      "required": [
+        "maintenances"
+      ],
+      "properties": {
+        "maintenances": {
+          "type": "array",
+          "description": "The list of maintenances",
+          "items": {
+            "$ref": "#/definitions/CreateMaintenanceModel"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "maintenances": [
+          {
+            "unitId": "MUC-JQI",
+            "from": "2026-09-29T16:16:16\u002B02:00",
+            "to": "2026-10-01T16:16:16\u002B02:00",
+            "type": "OutOfService",
+            "description": "The remote control for the TV needs to be replaced."
+          },
+          {
+            "unitId": "MUC-MTA",
+            "from": "2026-09-29T16:16:16\u002B02:00",
+            "to": "2026-10-01T16:16:16\u002B02:00",
+            "type": "OutOfService",
+            "description": "The remote control for the TV needs to be replaced."
+          }
+        ]
+      }
+    },
+    "BulkMaintenancesCreatedModel": {
+      "type": "object",
+      "required": [
+        "ids"
+      ],
+      "properties": {
+        "ids": {
+          "type": "array",
+          "description": "The maintenance ids",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "ids": [
+          "MUC-JQI-SGHZD",
+          "MUC-JQI-GSZGK"
+        ]
+      }
+    },
+    "CountModel": {
+      "type": "object",
+      "required": [
+        "count"
+      ],
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "count": 50
+      }
+    },
+    "CreateMaintenanceModel": {
+      "type": "object",
+      "description": "With this request you can create a maintenance window for a unit",
+      "required": [
+        "from",
+        "to",
+        "type",
+        "unitId"
+      ],
+      "properties": {
+        "unitId": {
+          "type": "string",
+          "description": "The id of the unit"
+        },
+        "from": {
+          "type": "string",
+          "description": "Date and time the maintenance begins. Has to be today or on a day in the future\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "to": {
+          "type": "string",
+          "description": "Date and time the maintenance ends. Has to be later than from\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of maintenance that is planned for the unit. A small repair (OutOfService),\na bigger disfunction that does not allow to sell the unit (OutOfOrder) or is it\nunder construction (OutOfInventory)",
+          "enum": [
+            "OutOfService",
+            "OutOfOrder",
+            "OutOfInventory"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the maintenance",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "unitId": "MUC-JQI",
+        "from": "2026-09-29T16:16:16\u002B02:00",
+        "to": "2026-10-01T16:16:16\u002B02:00",
+        "type": "OutOfService",
+        "description": "The remote control for the TV needs to be replaced."
+      }
+    },
+    "EmbeddedUnitModel": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unit id"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name for the unit",
+          "x-nullable": true
+        },
+        "description": {
+          "type": "string",
+          "description": "The description for the unit",
+          "x-nullable": true
+        },
+        "unitGroupId": {
+          "type": "string",
+          "description": "The unit group id",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "MaintenanceCreatedModel": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The id for the scheduled maintenance"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "id": "MUC-JQI-SGHZD"
+      }
+    },
+    "MaintenanceItemModel": {
+      "type": "object",
+      "required": [
+        "from",
+        "id",
+        "to",
+        "type",
+        "unit"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The id for the scheduled maintenance"
+        },
+        "unit": {
+          "$ref": "#/definitions/EmbeddedUnitModel"
+        },
+        "from": {
+          "type": "string",
+          "description": "Date and time the scheduled maintenance window starts\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "to": {
+          "type": "string",
+          "description": "Date and time the scheduled maintenance window ends\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of maintenance that is planned for the unit. A small repair (OutOfService),\na bigger disfunction that does not allow to sell the unit (OutOfOrder) or is it\neven under construction and should reduce the house count (OutOfInventory)",
+          "enum": [
+            "OutOfService",
+            "OutOfOrder",
+            "OutOfInventory"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "description": "The description text for the maintenance",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "MaintenanceListModel": {
+      "type": "object",
+      "required": [
+        "count",
+        "maintenances"
+      ],
+      "properties": {
+        "maintenances": {
+          "type": "array",
+          "description": "List of maintenances",
+          "items": {
+            "$ref": "#/definitions/MaintenanceItemModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "maintenances": [
+          {
+            "id": "MUC-JQI-SGHZD",
+            "unit": {
+              "id": "MUC-JQI",
+              "name": "A.102",
+              "description": "Double room",
+              "unitGroupId": "MUC-DBL"
+            },
+            "from": "2026-09-29T16:16:16.0956935\u002B02:00",
+            "to": "2026-10-01T16:16:16.0956935\u002B02:00",
+            "type": "OutOfService",
+            "description": "The remote control for the TV needs to be replaced."
+          },
+          {
+            "id": "MUC-MTA-GSZGK",
+            "unit": {
+              "id": "MUC-MTA",
+              "name": "A.101",
+              "description": "Single room",
+              "unitGroupId": "MUC-SGL"
+            },
+            "from": "2026-10-03T18:16:16.0956935\u002B02:00",
+            "to": "2026-10-05T16:16:16.0956935\u002B02:00",
+            "type": "OutOfOrder",
+            "description": "Wall tiles came down in the bathroom, needs some refurbishment."
+          }
+        ],
+        "count": 0
+      }
+    },
+    "MaintenanceModel": {
+      "type": "object",
+      "required": [
+        "from",
+        "id",
+        "to",
+        "type",
+        "unit"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The id for the scheduled maintenance"
+        },
+        "unit": {
+          "$ref": "#/definitions/EmbeddedUnitModel"
+        },
+        "from": {
+          "type": "string",
+          "description": "Date and time the scheduled maintenance window starts\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "to": {
+          "type": "string",
+          "description": "Date and time the scheduled maintenance window ends\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of maintenance that is planned for the unit. A small repair (OutOfService),\na bigger disfunction that does not allow to sell the unit (OutOfOrder) or is it\neven under construction and should reduce the house count (OutOfInventory)",
+          "enum": [
+            "OutOfService",
+            "OutOfOrder",
+            "OutOfInventory"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "description": "The description text for the maintenance",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "id": "APALEO.API.MODULES.COMMON.MODELS.REFERENCES.EMBEDDEDUNITMODEL-SGHZD",
+        "unit": {
+          "id": "MUC-JQI",
+          "name": "A.102",
+          "description": "Double room",
+          "unitGroupId": "MUC-DBL"
+        },
+        "from": "2026-09-29T16:16:16\u002B02:00",
+        "to": "2026-10-01T16:16:16\u002B02:00",
+        "type": "OutOfService",
+        "description": "The remote control for the TV needs to be replaced."
+      }
+    },
+    "MessageItemCollection": {
+      "type": "object",
+      "properties": {
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "readOnly": true,
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "Operation": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "x-nullable": true
+        },
+        "path": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "op": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "from": {
+          "type": "string",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReplaceUnitConditionListModel": {
+      "type": "object",
+      "required": [
+        "unitsConditions"
+      ],
+      "properties": {
+        "unitsConditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReplaceUnitConditionModel"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "unitsConditions": [
+          {
+            "id": "UNI-EXA",
+            "condition": "Clean"
+          },
+          {
+            "id": "UNI-DBL",
+            "condition": "Dirty"
+          }
+        ]
+      }
+    },
+    "ReplaceUnitConditionModel": {
+      "type": "object",
+      "required": [
+        "condition",
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "condition": {
+          "type": "string",
+          "enum": [
+            "Clean",
+            "CleanToBeInspected",
+            "Dirty"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "id": "UNI-EXA",
+        "condition": "Clean"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://identity.apaleo.com/connect/authorize",
+      "scopes": {
+        "admin": "Full access",
+        "reservations.import": "Import reservations"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Maintenance"
+    },
+    {
+      "name": "Operations"
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "apaleo Company API - not safe for work",
+    "description": "Continuously evolving version - use at your own risk! Manage companies and company-related data.",
+    "version": "v0-nsfw"
+  },
+  "paths": {
+    "/company/v0-nsfw/identifier-schemes": {
+      "get": {
+        "tags": [
+          "IdentifierScheme"
+        ],
+        "summary": "Get the identifier schemes applicable to a company.",
+        "description": "\u003Cbr\u003EYou must have at least one of these scopes: \u0027companies.read, companies.manage\u0027.",
+        "operationId": "CompanyIdentifier-schemesGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyCountryCode",
+            "description": "The property\u0027s 2-letter ISO country code.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "companyCountryCode",
+            "description": "The company\u0027s 2-letter ISO country code.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "companyType",
+            "description": "The company type.",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "CorporateClient",
+              "TravelAgency",
+              "GovernmentBuyer"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/IdentifierSchemeListModel"
+            }
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "companies.read",
+              "companies.manage",
+              "admin"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "IdentifierSchemeListModel": {
+      "type": "object",
+      "required": [
+        "count"
+      ],
+      "properties": {
+        "identifierSchemes": {
+          "type": "array",
+          "description": "The applicable identifier schemes.",
+          "items": {
+            "$ref": "#/definitions/IdentifierSchemeModel"
+          },
+          "x-nullable": true
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false
+    },
+    "IdentifierSchemeModel": {
+      "type": "object",
+      "required": [
+        "format",
+        "label",
+        "scheme"
+      ],
+      "properties": {
+        "scheme": {
+          "type": "string",
+          "description": "The identifier scheme.",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "description": "The human-readable scheme label.",
+          "minLength": 1
+        },
+        "format": {
+          "type": "string",
+          "description": "The regular expression used to validate identifiers.",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "MessageItemCollection": {
+      "type": "object",
+      "properties": {
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "readOnly": true,
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://identity.apaleo.com/connect/authorize",
+      "scopes": {
+        "admin": "Full access",
+        "reservations.import": "Import reservations"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "IdentifierScheme"
+    }
+  ]
+}

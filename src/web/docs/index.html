@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>apaleo clone · API explorer</title>
+<link rel="stylesheet" href="./styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='14'>🏨</text></svg>">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="mark" aria-hidden="true">◖</span>
+    <span>
+      <strong>apaleo clone</strong>
+      <em id="subtitle">local property management API</em>
+    </span>
+  </div>
+  <div class="topbar-right">
+    <span class="pill" id="coverage">loading…</span>
+    <span class="pill" id="health"></span>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" aria-label="APIs">
+    <input id="search" type="search" placeholder="Filter operations…" autocomplete="off" spellcheck="false">
+    <div id="nav"></div>
+  </nav>
+
+  <main id="main">
+    <section class="intro" id="intro">
+      <h1>Local apaleo core API</h1>
+      <p>
+        Every operation documented in apaleo's ten <code>v1</code> specifications, implemented
+        against a local database. Pick an operation on the left to see its contract and run it
+        against this server.
+      </p>
+      <div class="cards">
+        <article>
+          <h3>Authentication</h3>
+          <p>
+            Anonymous access is enabled by default, so you can call any endpoint straight away.
+            To exercise the real flow, request a token and send it as a bearer header.
+          </p>
+          <pre><code>curl -s -X POST http://localhost:8088/connect/token \
+  -d grant_type=client_credentials \
+  -d client_id=apaleo-clone \
+  -d client_secret=secret</code></pre>
+        </article>
+        <article>
+          <h3>Demo data</h3>
+          <p>
+            <code>npm run seed</code> loads two properties, 24 units, ten rate plans with a year
+            of rates, and reservations spread across past, present and future.
+          </p>
+          <pre><code>curl -s "http://localhost:8088/booking/v1/offers\
+?propertyId=MUC&arrival=2026-06-01\
+&departure=2026-06-03&adults=2"</code></pre>
+        </article>
+        <article>
+          <h3>Raw specifications</h3>
+          <p>
+            The original apaleo documents are served unchanged, with the host rewritten to this
+            server so any OpenAPI tool can point at them.
+          </p>
+          <pre><code>GET /swagger/index.json
+GET /swagger/booking-v1/swagger.json</code></pre>
+        </article>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="./app.js"></script>
+</body>
+</html>

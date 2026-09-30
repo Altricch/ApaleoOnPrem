@@ -1,0 +1,1851 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "apaleo Availability API - not safe for work",
+    "description": "Continuously evolving version - Control over availability",
+    "version": "v0-nsfw"
+  },
+  "paths": {
+    "/availability/v0-nsfw/units": {
+      "get": {
+        "tags": [
+          "Availability"
+        ],
+        "summary": "Get a list of all available units in a property",
+        "description": "Get the list of available units for a specific property and time period.\u003Cbr\u003EYou must have this scope: \u0027availability.read\u0027.",
+        "operationId": "AvailabilityUnitsGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyId",
+            "description": "The property id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "unitGroupId",
+            "description": "The unit group id",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "The from date and time\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "The to date and time\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "in": "query",
+            "name": "includeOutOfService",
+            "description": "Should units that are set OutOfService in the defined time period be returned as available.",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "unitCondition",
+            "description": "The unit condition",
+            "type": "string",
+            "enum": [
+              "Clean",
+              "CleanToBeInspected",
+              "Dirty"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "unitAttributeIds",
+            "description": "Return units with the specific unit attributes",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "description": "Page number to retrieve. Default: 1. If the page has no items, the API returns 204 No Content.",
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Items per page. Default: 500. Maximum: 500.",
+            "type": "integer",
+            "default": 500
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all available units.",
+            "schema": {
+              "$ref": "#/definitions/AvailableUnitListModel"
+            }
+          },
+          "204": {
+            "description": "There are no available units matching your criteria."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "availability.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/availability/v0-nsfw/unit-groups": {
+      "get": {
+        "tags": [
+          "Availability"
+        ],
+        "summary": "Get a list of all available unit groups in a property",
+        "description": "Get the list of available unit groups for a specific property and time period.\u003Cbr\u003EYou must have this scope: \u0027availability.read\u0027.",
+        "operationId": "AvailabilityUnit-groupsGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyId",
+            "description": "The property id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "First day of the requested time period. The given day will be included in the response.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "Last day of the requested time period. The given day will be included in the response.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "timeSliceTemplate",
+            "description": "The time slice template, defaults to \u0027over night\u0027",
+            "type": "string",
+            "enum": [
+              "DayUse",
+              "OverNight"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "unitGroupTypes",
+            "description": "Filter result by requested unit group types",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BedRoom",
+                "MeetingRoom",
+                "EventSpace",
+                "ParkingLot",
+                "Other"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "timeSliceDefinitionIds",
+            "description": "The time slice definition ids",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "unitGroupIds",
+            "description": "The unit group ids",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "adults",
+            "description": "The number of adults you want availability for, defaults to 1",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "childrenAges",
+            "description": "The ages of the children you want availability for",
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "query",
+            "name": "onlySellable",
+            "description": "When set to \u0027true\u0027, only the unit groups sold by the specified time slice template and time slice definition ids are returned,\notherwise all unit groups are returned",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "description": "Page number to retrieve. Default: 1. If the page has no items, the API returns 204 No Content.",
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Items per page. Default: 500. Maximum: 500.",
+            "type": "integer",
+            "default": 500
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all available unit groups.",
+            "schema": {
+              "$ref": "#/definitions/AvailableUnitGroupListModel"
+            }
+          },
+          "204": {
+            "description": "There are no available unit groups matching your criteria."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "availability.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/availability/v0-nsfw/unit-groups/{id}": {
+      "patch": {
+        "tags": [
+          "Availability"
+        ],
+        "summary": "Allows to modify the unit group availability",
+        "description": "You can replace AllowedOverbooking for a unit group\u003Cbr\u003EYou must have this scope: \u0027availability.manage\u0027.",
+        "operationId": "AvailabilityUnit-groupsByIdPatch",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the unit group to be modified.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "First day of the time period from which availability will be modified",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "Last day of the time period until which availability will be modified",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "timeSliceTemplate",
+            "description": "The time slice template",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "DayUse",
+              "OverNight"
+            ]
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Define the list of operations to be applied to the resource. Learn more about JSON Patch here: http://jsonpatch.com/.",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Operation"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "availability.manage",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/availability/v0-nsfw/services": {
+      "get": {
+        "tags": [
+          "Availability"
+        ],
+        "summary": "Get a list of all available services in a property",
+        "description": "Get the list of available services for a specific property and time period.\u003Cbr\u003EYou must have this scope: \u0027availability.read\u0027.",
+        "operationId": "AvailabilityServicesGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyId",
+            "description": "The property id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "First day of the requested time period. The given day will be included in the response.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "Last day of the requested time period. The given day will be included in the response.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "timeSliceTemplate",
+            "description": "The time slice template, defaults to \u0027over night\u0027",
+            "type": "string",
+            "enum": [
+              "DayUse",
+              "OverNight"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "timeSliceDefinitionIds",
+            "description": "The time slice definition ids",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "channelCodes",
+            "description": "The channel code used to filter the services",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Direct",
+                "BookingCom",
+                "Ibe",
+                "ChannelManager",
+                "Expedia",
+                "Homelike",
+                "Hrs",
+                "AltoVita",
+                "DesVu",
+                "Gimsi"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "description": "Page number to retrieve. Default: 1. If the page has no items, the API returns 204 No Content.",
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Items per page. Default: 500. Maximum: 500.",
+            "type": "integer",
+            "default": 500
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all available services.",
+            "schema": {
+              "$ref": "#/definitions/AvailableServiceListModel"
+            }
+          },
+          "204": {
+            "description": "There are no available services matching your criteria."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "availability.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/availability/v0-nsfw/properties/{id}": {
+      "patch": {
+        "tags": [
+          "Availability"
+        ],
+        "summary": "Allows to modify availability of a given property.",
+        "description": "You can replace HouseOverbookingLimit on the property-level.\u003Cbr\u003EYou must have this scope: \u0027availability.manage\u0027.",
+        "operationId": "AvailabilityPropertiesByIdPatch",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The ID of the property to be updated.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "The first day of the time period from which availability will be modified.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "The last day of the time period until which availability will be modified.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "timeSliceTemplate",
+            "description": "The time slice template.",
+            "required": true,
+            "type": "string",
+            "default": "OverNight",
+            "enum": [
+              "DayUse",
+              "OverNight"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "unitGroupType",
+            "description": "The unit group type.",
+            "required": true,
+            "type": "string",
+            "default": "BedRoom",
+            "enum": [
+              "BedRoom",
+              "MeetingRoom",
+              "EventSpace",
+              "ParkingLot",
+              "Other"
+            ]
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Operation"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "availability.manage",
+              "admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Availability"
+        ],
+        "summary": "Get house-level overbooking for a given property.",
+        "description": "\u003Cbr\u003EYou must have this scope: \u0027availability.read\u0027.",
+        "operationId": "AvailabilityPropertiesByIdGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The ID of the property.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "The first day of the time period from which availability will be modified.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "The last day of the time period until which availability will be modified.",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "timeSliceTemplate",
+            "description": "The time slice template.",
+            "required": true,
+            "type": "string",
+            "default": "OverNight",
+            "enum": [
+              "DayUse",
+              "OverNight"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "unitGroupType",
+            "description": "The unit group type.",
+            "required": true,
+            "type": "string",
+            "default": "BedRoom",
+            "enum": [
+              "BedRoom",
+              "MeetingRoom",
+              "EventSpace",
+              "ParkingLot",
+              "Other"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/HouseOverbookingListModel"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "availability.read",
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/availability/v0-nsfw/reservations/{id}/units": {
+      "get": {
+        "tags": [
+          "ReservationAvailability"
+        ],
+        "summary": "Get a list of all available units for a reservation",
+        "description": "Get the list of available units for a specific reservation and time period.\u003Cbr\u003EYou must have at least one of these scopes: \u0027availability.read, reservations.manage\u0027.",
+        "operationId": "AvailabilityReservationsByIdUnitsGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The id of the reservation",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "unitGroupId",
+            "description": "The unit group id",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "The from date and time\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "The to date and time\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "in": "query",
+            "name": "includeOutOfService",
+            "description": "Should units that are set OutOfService in the defined time period be returned as available.",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "unitCondition",
+            "description": "The unit condition",
+            "type": "string",
+            "enum": [
+              "Clean",
+              "CleanToBeInspected",
+              "Dirty"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "unitAttributeIds",
+            "description": "Return units with the specific unit attributes",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "description": "Page number to retrieve. Default: 1. If the page has no items, the API returns 204 No Content.",
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Items per page. Default: 500. Maximum: 500.",
+            "type": "integer",
+            "default": 500
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all available units for the reservation.",
+            "schema": {
+              "$ref": "#/definitions/AvailableUnitListModel"
+            }
+          },
+          "204": {
+            "description": "There are no available units matching your criteria."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "499": {
+            "description": "Client closed request."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "availability.read",
+              "reservations.manage",
+              "admin"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AvailableServiceListModel": {
+      "type": "object",
+      "required": [
+        "count",
+        "timeSlices"
+      ],
+      "properties": {
+        "timeSlices": {
+          "type": "array",
+          "description": "List of time slices",
+          "items": {
+            "$ref": "#/definitions/ServiceAvailabilityTimeSliceItemModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "timeSlices": [
+          {
+            "from": "2026-09-30T17:00:00\u002B02:00",
+            "to": "2026-10-01T11:00:00\u002B02:00",
+            "services": [
+              {
+                "service": {
+                  "id": "MUC-YOGA",
+                  "code": "YOGA",
+                  "name": "Sun Salutation",
+                  "description": "Start the day with a private Yoga session with one of our certified trainers."
+                },
+                "quantity": 8,
+                "soldCount": 5,
+                "availableCount": 3,
+                "serviceDate": "2026-09-30",
+                "block": {
+                  "definite": 1,
+                  "tentative": 4,
+                  "optional": 1,
+                  "optionalDeducting": 1,
+                  "picked": 2,
+                  "remaining": 3
+                }
+              }
+            ]
+          },
+          {
+            "from": "2026-10-01T11:00:00\u002B02:00",
+            "to": "2026-10-02T11:00:00\u002B02:00",
+            "services": [
+              {
+                "service": {
+                  "id": "MUC-BRKF",
+                  "code": "BRKF",
+                  "name": "Breakfast",
+                  "description": "Best breakfast on this side of the Wei\u00DFwurst\u00E4quator."
+                },
+                "quantity": 11,
+                "soldCount": 4,
+                "availableCount": 7,
+                "serviceDate": "2026-10-02",
+                "block": {
+                  "definite": 4,
+                  "tentative": 1,
+                  "optional": 2,
+                  "optionalDeducting": 1,
+                  "picked": 3,
+                  "remaining": 2
+                }
+              }
+            ]
+          }
+        ],
+        "count": 2
+      }
+    },
+    "AvailableUnitGroupListModel": {
+      "type": "object",
+      "required": [
+        "count",
+        "timeSlices"
+      ],
+      "properties": {
+        "timeSlices": {
+          "type": "array",
+          "description": "List of time slices",
+          "items": {
+            "$ref": "#/definitions/UnitGroupAvailabilityTimeSliceItemModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "timeSlices": [
+          {
+            "from": "2026-09-30T17:00:00\u002B02:00",
+            "to": "2026-10-01T11:00:00\u002B02:00",
+            "property": {
+              "physicalCount": 30,
+              "houseCount": 26,
+              "soldCount": 13,
+              "occupancy": 50.0,
+              "sellableCount": 9,
+              "allowedOverbookingCount": 1,
+              "houseOverbookingLimit": 2,
+              "maintenance": {
+                "outOfService": 2,
+                "outOfOrder": 4,
+                "outOfInventory": 4
+              },
+              "block": {
+                "definite": 1,
+                "tentative": 1,
+                "optional": 1,
+                "optionalDeducting": 1,
+                "picked": 3,
+                "remaining": 1
+              }
+            },
+            "unitGroups": [
+              {
+                "unitGroup": {
+                  "id": "MUC-SGL",
+                  "code": "SGL",
+                  "name": "Single",
+                  "description": "Single",
+                  "type": "BedRoom"
+                },
+                "physicalCount": 10,
+                "houseCount": 8,
+                "soldCount": 3,
+                "occupancy": 37.5,
+                "availableCount": 0,
+                "sellableCount": 3,
+                "allowedOverbookingCount": 0,
+                "maintenance": {
+                  "outOfService": 1,
+                  "outOfOrder": 2,
+                  "outOfInventory": 2
+                },
+                "block": {
+                  "definite": 2,
+                  "tentative": 5,
+                  "optional": 1,
+                  "optionalDeducting": 0,
+                  "picked": 1,
+                  "remaining": 2
+                }
+              },
+              {
+                "unitGroup": {
+                  "id": "MUC-DBL",
+                  "code": "DBL",
+                  "name": "Double",
+                  "description": "Double",
+                  "type": "BedRoom"
+                },
+                "physicalCount": 20,
+                "houseCount": 18,
+                "soldCount": 10,
+                "occupancy": 55.55,
+                "availableCount": 0,
+                "sellableCount": 6,
+                "allowedOverbookingCount": 1,
+                "maintenance": {
+                  "outOfService": 1,
+                  "outOfOrder": 2,
+                  "outOfInventory": 2
+                },
+                "block": {
+                  "definite": 6,
+                  "tentative": 1,
+                  "optional": 2,
+                  "optionalDeducting": 1,
+                  "picked": 3,
+                  "remaining": 2
+                }
+              }
+            ]
+          }
+        ],
+        "count": 1
+      }
+    },
+    "AvailableUnitItemModel": {
+      "type": "object",
+      "required": [
+        "description",
+        "id",
+        "maxPersons",
+        "name",
+        "property",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unit id"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name for the unit",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "description": "The description for the unit",
+          "minLength": 1
+        },
+        "property": {
+          "$ref": "#/definitions/EmbeddedPropertyModel"
+        },
+        "unitGroup": {
+          "$ref": "#/definitions/EmbeddedUnitGroupModel"
+        },
+        "status": {
+          "$ref": "#/definitions/AvailableUnitItemStatusModel"
+        },
+        "maxPersons": {
+          "type": "integer",
+          "description": "Maximum number of persons for the unit",
+          "format": "int32"
+        },
+        "attributes": {
+          "type": "array",
+          "description": "Collection of user defined attributes of unit",
+          "items": {
+            "$ref": "#/definitions/UnitAttributeModel"
+          },
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "AvailableUnitItemStatusModel": {
+      "type": "object",
+      "required": [
+        "condition",
+        "isOccupied"
+      ],
+      "properties": {
+        "isOccupied": {
+          "type": "boolean"
+        },
+        "condition": {
+          "type": "string",
+          "enum": [
+            "Clean",
+            "CleanToBeInspected",
+            "Dirty"
+          ]
+        },
+        "maintenanceType": {
+          "type": "string",
+          "enum": [
+            "OutOfService",
+            "OutOfOrder",
+            "OutOfInventory"
+          ],
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "AvailableUnitListModel": {
+      "type": "object",
+      "required": [
+        "count",
+        "units"
+      ],
+      "properties": {
+        "units": {
+          "type": "array",
+          "description": "List of units",
+          "items": {
+            "$ref": "#/definitions/AvailableUnitItemModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "units": [
+          {
+            "id": "MUC-MTA",
+            "name": "A.101",
+            "description": "Single room",
+            "property": {
+              "id": "MUC",
+              "code": "MUC",
+              "name": "Demo Hotel Munich",
+              "description": "This is the demo hotel Munich"
+            },
+            "unitGroup": {
+              "id": "MUC-SGL",
+              "code": "SGL",
+              "name": "Single",
+              "description": "Single",
+              "type": "BedRoom"
+            },
+            "status": {
+              "isOccupied": true,
+              "condition": "Dirty",
+              "maintenanceType": "OutOfService"
+            },
+            "maxPersons": 1,
+            "attributes": [
+              {
+                "id": "KQOSXHLS",
+                "name": "Floor 1",
+                "description": "Floor number"
+              },
+              {
+                "id": "ADVFSSUL",
+                "name": "Street view",
+                "description": "View from the room"
+              }
+            ]
+          },
+          {
+            "id": "MUC-JQI",
+            "name": "A.102",
+            "description": "Double room",
+            "property": {
+              "id": "MUC",
+              "code": "MUC",
+              "name": "Demo Hotel Munich",
+              "description": "This is the demo hotel Munich"
+            },
+            "unitGroup": {
+              "id": "MUC-DBL",
+              "code": "DBL",
+              "name": "Double",
+              "description": "Double",
+              "type": "BedRoom"
+            },
+            "status": {
+              "isOccupied": false,
+              "condition": "Clean"
+            },
+            "maxPersons": 2,
+            "attributes": [
+              {
+                "id": "KQOSXHLS",
+                "name": "Floor 1",
+                "description": "Floor number"
+              }
+            ]
+          }
+        ],
+        "count": 2
+      }
+    },
+    "BlockServicesModel": {
+      "type": "object",
+      "required": [
+        "definite",
+        "optional",
+        "optionalDeducting",
+        "picked",
+        "remaining",
+        "tentative"
+      ],
+      "properties": {
+        "definite": {
+          "type": "integer",
+          "description": "The number of services which are definitely blocked",
+          "format": "int32"
+        },
+        "tentative": {
+          "type": "integer",
+          "description": "The number of services which are tentatively blocked",
+          "format": "int32"
+        },
+        "optional": {
+          "type": "integer",
+          "description": "The number of services which are optionally blocked",
+          "format": "int32"
+        },
+        "optionalDeducting": {
+          "type": "integer",
+          "description": "The number of services which are optionally blocked and reduce availability",
+          "format": "int32"
+        },
+        "picked": {
+          "type": "integer",
+          "description": "The number of services which are picked from blocked",
+          "format": "int32"
+        },
+        "remaining": {
+          "type": "integer",
+          "description": "The number of services which are not yet picked",
+          "format": "int32"
+        }
+      },
+      "additionalProperties": false
+    },
+    "BlockUnitsModel": {
+      "type": "object",
+      "required": [
+        "definite",
+        "optional",
+        "optionalDeducting",
+        "picked",
+        "remaining",
+        "tentative"
+      ],
+      "properties": {
+        "definite": {
+          "type": "integer",
+          "description": "The number of units which are definitely blocked",
+          "format": "int32"
+        },
+        "tentative": {
+          "type": "integer",
+          "description": "The number of units which are tentatively blocked",
+          "format": "int32"
+        },
+        "optional": {
+          "type": "integer",
+          "description": "The number of units which are optionally blocked",
+          "format": "int32"
+        },
+        "optionalDeducting": {
+          "type": "integer",
+          "description": "The number of units which are optionally blocked and reduce availability",
+          "format": "int32"
+        },
+        "picked": {
+          "type": "integer",
+          "description": "The number of units which are picked from blocked",
+          "format": "int32"
+        },
+        "remaining": {
+          "type": "integer",
+          "description": "The number of units which are not yet picked",
+          "format": "int32"
+        }
+      },
+      "additionalProperties": false
+    },
+    "EmbeddedPropertyModel": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The property id"
+        },
+        "code": {
+          "type": "string",
+          "description": "The code for the property that can be shown in reports and table views",
+          "x-nullable": true
+        },
+        "name": {
+          "type": "string",
+          "description": "The name for the property",
+          "x-nullable": true
+        },
+        "description": {
+          "type": "string",
+          "description": "The description for the property",
+          "readOnly": true,
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "EmbeddedServiceModel": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The service id"
+        },
+        "code": {
+          "type": "string",
+          "description": "The code for the service",
+          "x-nullable": true
+        },
+        "name": {
+          "type": "string",
+          "description": "The name for the service",
+          "x-nullable": true
+        },
+        "description": {
+          "type": "string",
+          "description": "The description for the service",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "EmbeddedUnitGroupModel": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unit group id"
+        },
+        "code": {
+          "type": "string",
+          "description": "The code for the unit group that can be shown in reports and table views",
+          "x-nullable": true
+        },
+        "name": {
+          "type": "string",
+          "description": "The name for the unit group",
+          "x-nullable": true
+        },
+        "description": {
+          "type": "string",
+          "description": "The description for the unit group",
+          "x-nullable": true
+        },
+        "type": {
+          "type": "string",
+          "description": "The unit group type",
+          "enum": [
+            "BedRoom",
+            "MeetingRoom",
+            "EventSpace",
+            "ParkingLot",
+            "Other"
+          ],
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "HouseOverbookingListModel": {
+      "type": "object",
+      "required": [
+        "count",
+        "timeSlices"
+      ],
+      "properties": {
+        "timeSlices": {
+          "type": "array",
+          "description": "A list of time slices where house-level overbooking is applied",
+          "items": {
+            "$ref": "#/definitions/HouseOverbookingTimeSliceModel"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "description": "Total count of items",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "example": {
+        "timeSlices": [
+          {
+            "from": "2025-01-01T00:00:00Z",
+            "to": "2025-01-02T00:00:00Z",
+            "houseOverbookingLimit": 5
+          },
+          {
+            "from": "2025-01-04T00:00:00Z",
+            "to": "2025-01-05T00:00:00Z",
+            "houseOverbookingLimit": 5
+          }
+        ],
+        "count": 2
+      }
+    },
+    "HouseOverbookingTimeSliceModel": {
+      "type": "object",
+      "required": [
+        "from",
+        "houseOverbookingLimit",
+        "to"
+      ],
+      "properties": {
+        "from": {
+          "type": "string",
+          "description": "The time the slice starts.\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "to": {
+          "type": "string",
+          "description": "The time the slice ends.\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "houseOverbookingLimit": {
+          "type": "integer",
+          "description": "The overbooking limit applied.",
+          "format": "int32"
+        }
+      },
+      "additionalProperties": false
+    },
+    "MaintenanceModel": {
+      "type": "object",
+      "required": [
+        "outOfInventory",
+        "outOfOrder",
+        "outOfService"
+      ],
+      "properties": {
+        "outOfService": {
+          "type": "integer",
+          "description": "The number of units which are out of service",
+          "format": "int32"
+        },
+        "outOfOrder": {
+          "type": "integer",
+          "description": "The number of units which are out of order",
+          "format": "int32"
+        },
+        "outOfInventory": {
+          "type": "integer",
+          "description": "The number of units which are out of inventory",
+          "format": "int32"
+        }
+      },
+      "additionalProperties": false
+    },
+    "MessageItemCollection": {
+      "type": "object",
+      "properties": {
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "readOnly": true,
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "Operation": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "x-nullable": true
+        },
+        "path": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "op": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "from": {
+          "type": "string",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "PropertyAvailabilityModel": {
+      "type": "object",
+      "required": [
+        "allowedOverbookingCount",
+        "block",
+        "houseCount",
+        "maintenance",
+        "occupancy",
+        "physicalCount",
+        "sellableCount",
+        "soldCount"
+      ],
+      "properties": {
+        "physicalCount": {
+          "type": "integer",
+          "description": "The number of units physically existing on the property",
+          "format": "int32"
+        },
+        "houseCount": {
+          "type": "integer",
+          "description": "The number of units physically existing excluding the ones which are out of inventory",
+          "format": "int32"
+        },
+        "soldCount": {
+          "type": "integer",
+          "description": "The number of sold units including units picked up from blocks",
+          "format": "int32"
+        },
+        "occupancy": {
+          "type": "number",
+          "description": "The percent value indicating the occupancy",
+          "format": "double"
+        },
+        "sellableCount": {
+          "type": "integer",
+          "description": "The number of units available for selling. This is the house count excluding the out of order and the already sold units.\nAny defined overbooking limits are also already considered",
+          "format": "int32"
+        },
+        "allowedOverbookingCount": {
+          "type": "integer",
+          "description": "The number of units which are allowed for overbooking",
+          "format": "int32"
+        },
+        "houseOverbookingLimit": {
+          "type": "integer",
+          "description": "The overbooking limit set on the property level.",
+          "format": "int32",
+          "x-nullable": true
+        },
+        "maintenance": {
+          "$ref": "#/definitions/MaintenanceModel"
+        },
+        "block": {
+          "$ref": "#/definitions/BlockUnitsModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ServiceAvailabilityItemModel": {
+      "type": "object",
+      "required": [
+        "availableCount",
+        "block",
+        "quantity",
+        "service",
+        "serviceDate",
+        "soldCount"
+      ],
+      "properties": {
+        "service": {
+          "$ref": "#/definitions/EmbeddedServiceModel"
+        },
+        "quantity": {
+          "type": "integer",
+          "description": "The total number of services available.",
+          "format": "int32"
+        },
+        "soldCount": {
+          "type": "integer",
+          "description": "The number of sold services including included services picked up from blocks",
+          "format": "int32"
+        },
+        "availableCount": {
+          "type": "integer",
+          "description": "The number of services still available. This is the total quantity excluding the already sold services.",
+          "format": "int32"
+        },
+        "serviceDate": {
+          "type": "string",
+          "description": "The date this service is delivered",
+          "format": "date",
+          "example": "2020-10-10"
+        },
+        "block": {
+          "$ref": "#/definitions/BlockServicesModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ServiceAvailabilityTimeSliceItemModel": {
+      "type": "object",
+      "required": [
+        "from",
+        "services",
+        "to"
+      ],
+      "properties": {
+        "from": {
+          "type": "string",
+          "description": "Date and time the time slice begins\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "to": {
+          "type": "string",
+          "description": "Date and time the time slice ends\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "services": {
+          "type": "array",
+          "description": "List of services availabilities for this time slice",
+          "items": {
+            "$ref": "#/definitions/ServiceAvailabilityItemModel"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "UnitAttributeModel": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Id of unit attribute"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the unit attribute",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of unit attribute",
+          "x-nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "UnitGroupAvailabilityItemModel": {
+      "type": "object",
+      "required": [
+        "allowedOverbookingCount",
+        "availableCount",
+        "block",
+        "houseCount",
+        "maintenance",
+        "occupancy",
+        "physicalCount",
+        "sellableCount",
+        "soldCount",
+        "unitGroup"
+      ],
+      "properties": {
+        "unitGroup": {
+          "$ref": "#/definitions/EmbeddedUnitGroupModel"
+        },
+        "physicalCount": {
+          "type": "integer",
+          "description": "The number of units physically existing on the property",
+          "format": "int32"
+        },
+        "houseCount": {
+          "type": "integer",
+          "description": "The number of units physically existing excluding the ones which are out of inventory",
+          "format": "int32"
+        },
+        "soldCount": {
+          "type": "integer",
+          "description": "The number of sold units including units picked up from blocks",
+          "format": "int32"
+        },
+        "occupancy": {
+          "type": "number",
+          "description": "The percent value indicating the occupancy",
+          "format": "double"
+        },
+        "availableCount": {
+          "type": "integer",
+          "description": "The number of units still available. This is the house count excluding the out of order units minus\nthe already sold units.",
+          "format": "int32"
+        },
+        "sellableCount": {
+          "type": "integer",
+          "description": "The number of units available for selling already considering any defined overbooking limits.\nThis number is the minimum of sellable units for the whole property\n(or house-level overbooking, if defined) and the sellable units of this unit group.\nIf there are only 3 units sellable on the property, but 5 units sellable for\nthis unit group, the sellable count will be 3. This situation can occur if another unit group\nor the whole house is overbooked.",
+          "format": "int32"
+        },
+        "allowedOverbookingCount": {
+          "type": "integer",
+          "description": "The number of units allowed for overbooking.",
+          "format": "int32"
+        },
+        "maintenance": {
+          "$ref": "#/definitions/MaintenanceModel"
+        },
+        "block": {
+          "$ref": "#/definitions/BlockUnitsModel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "UnitGroupAvailabilityTimeSliceItemModel": {
+      "type": "object",
+      "required": [
+        "from",
+        "property",
+        "to",
+        "unitGroups"
+      ],
+      "properties": {
+        "from": {
+          "type": "string",
+          "description": "Date and time the time slice begins\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "to": {
+          "type": "string",
+          "description": "Date and time the time slice ends\u003Cbr /\u003EA date and time (without fractional second part) in UTC or with UTC offset as defined in \u003Ca href=\u0022https://en.wikipedia.org/wiki/ISO_8601\u0022\u003EISO8601:2004\u003C/a\u003E",
+          "format": "date-time"
+        },
+        "property": {
+          "$ref": "#/definitions/PropertyAvailabilityModel"
+        },
+        "unitGroups": {
+          "type": "array",
+          "description": "List of unit group availabilities for this time slice",
+          "items": {
+            "$ref": "#/definitions/UnitGroupAvailabilityItemModel"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://identity.apaleo.com/connect/authorize",
+      "scopes": {
+        "admin": "Full access",
+        "reservations.import": "Import reservations"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Availability"
+    },
+    {
+      "name": "ReservationAvailability"
+    }
+  ]
+}

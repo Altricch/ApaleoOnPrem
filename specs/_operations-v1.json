@@ -1,0 +1,3392 @@
+[
+ {
+  "spec": "account-v1",
+  "method": "GET",
+  "path": "/account/v1/accounts/current",
+  "operationId": "AccountAccountsCurrentGet",
+  "tag": "Account",
+  "summary": "Returns the current account.",
+  "scopes": []
+ },
+ {
+  "spec": "account-v1",
+  "method": "PUT",
+  "path": "/account/v1/accounts/current",
+  "operationId": "AccountAccountsCurrentPut",
+  "tag": "Account",
+  "summary": "Replaces an existing account.",
+  "scopes": [
+   "account.manage"
+  ]
+ },
+ {
+  "spec": "account-v1",
+  "method": "GET",
+  "path": "/account/v1/accounts",
+  "operationId": "AccountAccountsGet",
+  "tag": "Account",
+  "summary": "Returns all accounts.",
+  "scopes": [
+   "accounts.read"
+  ]
+ },
+ {
+  "spec": "account-v1",
+  "method": "POST",
+  "path": "/account/v1/accounts",
+  "operationId": "AccountAccountsPost",
+  "tag": "Account",
+  "summary": "Creates an account with an admin user.",
+  "scopes": [
+   "account.create"
+  ]
+ },
+ {
+  "spec": "account-v1",
+  "method": "PUT",
+  "path": "/account/v1/account-actions/current/suspend",
+  "operationId": "AccountAccount-actionsCurrentSuspendPut",
+  "tag": "AccountActions",
+  "summary": "Suspend the account.",
+  "scopes": [
+   "account.manage"
+  ]
+ },
+ {
+  "spec": "account-v1",
+  "method": "PUT",
+  "path": "/account/v1/account-actions/current/set-live",
+  "operationId": "AccountAccount-actionsCurrentSet-livePut",
+  "tag": "AccountActions",
+  "summary": "Move the account to live.",
+  "scopes": [
+   "account.manage"
+  ]
+ },
+ {
+  "spec": "availability-v1",
+  "method": "GET",
+  "path": "/availability/v1/units",
+  "operationId": "AvailabilityUnitsGet",
+  "tag": "Availability",
+  "summary": "Get a list of all available units in a property",
+  "scopes": [
+   "availability.read"
+  ]
+ },
+ {
+  "spec": "availability-v1",
+  "method": "GET",
+  "path": "/availability/v1/unit-groups",
+  "operationId": "AvailabilityUnit-groupsGet",
+  "tag": "Availability",
+  "summary": "Get a list of all available unit groups in a property",
+  "scopes": [
+   "availability.read"
+  ]
+ },
+ {
+  "spec": "availability-v1",
+  "method": "PATCH",
+  "path": "/availability/v1/unit-groups/{id}",
+  "operationId": "AvailabilityUnit-groupsByIdPatch",
+  "tag": "Availability",
+  "summary": "Allows to modify the unit group availability",
+  "scopes": [
+   "availability.manage"
+  ]
+ },
+ {
+  "spec": "availability-v1",
+  "method": "GET",
+  "path": "/availability/v1/services",
+  "operationId": "AvailabilityServicesGet",
+  "tag": "Availability",
+  "summary": "Get a list of all available services in a property",
+  "scopes": [
+   "availability.read"
+  ]
+ },
+ {
+  "spec": "availability-v1",
+  "method": "PATCH",
+  "path": "/availability/v1/properties/{id}",
+  "operationId": "AvailabilityPropertiesByIdPatch",
+  "tag": "Availability",
+  "summary": "Allows to modify availability of a given property.",
+  "scopes": [
+   "availability.manage"
+  ]
+ },
+ {
+  "spec": "availability-v1",
+  "method": "GET",
+  "path": "/availability/v1/properties/{id}",
+  "operationId": "AvailabilityPropertiesByIdGet",
+  "tag": "Availability",
+  "summary": "Get house-level overbooking for a given property.",
+  "scopes": [
+   "availability.read"
+  ]
+ },
+ {
+  "spec": "availability-v1",
+  "method": "GET",
+  "path": "/availability/v1/reservations/{id}/units",
+  "operationId": "AvailabilityReservationsByIdUnitsGet",
+  "tag": "ReservationAvailability",
+  "summary": "Get a list of all available units for a reservation",
+  "scopes": [
+   "availability.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/authorizations/by-link",
+  "operationId": "BookingAuthorizationsBy-linkPost",
+  "tag": "Authorization",
+  "summary": "Creates a link to a payment form that allows guests to complete the authorization",
+  "scopes": [
+   "authorizations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/authorizations/by-terminal",
+  "operationId": "BookingAuthorizationsBy-terminalPost",
+  "tag": "Authorization",
+  "summary": "Creates the authorization by using the terminal",
+  "scopes": [
+   "authorizations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/authorizations/by-payment-account",
+  "operationId": "BookingAuthorizationsBy-payment-accountPost",
+  "tag": "Authorization",
+  "summary": "Creates authorization by using a previously created payment account",
+  "scopes": [
+   "authorizations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/authorizations/by-authorization",
+  "operationId": "BookingAuthorizationsBy-authorizationPost",
+  "tag": "Authorization",
+  "summary": "Creates the authorization based on an existing pre-authorization created prior directly with the payment service provider",
+  "scopes": [
+   "authorizations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/authorizations/{id}",
+  "operationId": "BookingAuthorizationsByIdGet",
+  "tag": "Authorization",
+  "summary": "Returns a single authorization by ID",
+  "scopes": [
+   "authorizations.read",
+   "authorizations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/authorizations",
+  "operationId": "BookingAuthorizationsGet",
+  "tag": "Authorization",
+  "summary": "Returns a list of authorizations based on the query parameters",
+  "scopes": [
+   "authorizations.read",
+   "authorizations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/authorization-actions/{authorizationId}/cancel",
+  "operationId": "BookingAuthorization-actionsByAuthorizationIdCancelPut",
+  "tag": "AuthorizationActions",
+  "summary": "Cancels the authorization",
+  "scopes": [
+   "authorizations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/authorization-actions/{authorizationId}/refresh",
+  "operationId": "BookingAuthorization-actionsByAuthorizationIdRefreshPut",
+  "tag": "AuthorizationActions",
+  "summary": "Updates the requested amount and extends the expiry date of the authorization",
+  "scopes": [
+   "authorizations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/authorization-actions/{authorizationId}/expire-payment-link",
+  "operationId": "BookingAuthorization-actionsByAuthorizationIdExpire-payment-linkPut",
+  "tag": "AuthorizationActions",
+  "summary": "Expires the pending payment link with the payment provider and updates the status to Expired",
+  "scopes": [
+   "authorizations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/blocks",
+  "operationId": "BookingBlocksPost",
+  "tag": "Block",
+  "summary": "Creates a block",
+  "scopes": [
+   "blocks.create",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/blocks",
+  "operationId": "BookingBlocksGet",
+  "tag": "Block",
+  "summary": "Returns a list of blocks",
+  "scopes": [
+   "blocks.read",
+   "reservations.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/blocks/$count",
+  "operationId": "BookingBlocks$countGet",
+  "tag": "Block",
+  "summary": "Returns number of blocks",
+  "scopes": [
+   "blocks.read",
+   "reservations.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/blocks/{id}",
+  "operationId": "BookingBlocksByIdGet",
+  "tag": "Block",
+  "summary": "Returns a specific block.",
+  "scopes": [
+   "blocks.read",
+   "reservations.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "DELETE",
+  "path": "/booking/v1/blocks/{id}",
+  "operationId": "BookingBlocksByIdDelete",
+  "tag": "Block",
+  "summary": "Delete a specific block",
+  "scopes": [
+   "blocks.manage",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "HEAD",
+  "path": "/booking/v1/blocks/{id}",
+  "operationId": "BookingBlocksByIdHead",
+  "tag": "Block",
+  "summary": "Check if a block exists",
+  "scopes": [
+   "blocks.read",
+   "reservations.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PATCH",
+  "path": "/booking/v1/blocks/{id}",
+  "operationId": "BookingBlocksByIdPatch",
+  "tag": "Block",
+  "summary": "Allows to modify certain block properties",
+  "scopes": [
+   "blocks.manage",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/block-actions/{id}/confirm",
+  "operationId": "BookingBlock-actionsByIdConfirmPut",
+  "tag": "BlockActions",
+  "summary": "Confirm a block.",
+  "scopes": [
+   "blocks.manage",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/block-actions/{id}/set-to-optional",
+  "operationId": "BookingBlock-actionsByIdSet-to-optionalPut",
+  "tag": "BlockActions",
+  "summary": "Set a block to optional.",
+  "scopes": [
+   "blocks.manage",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/block-actions/{id}/cutoff-optional",
+  "operationId": "BookingBlock-actionsByIdCutoff-optionalPut",
+  "tag": "BlockActions",
+  "summary": "Apply the optional cutoff behavior for a block whose cutoff has been reached.",
+  "scopes": [
+   "blocks.manage",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/block-actions/{id}/start-optional",
+  "operationId": "BookingBlock-actionsByIdStart-optionalPut",
+  "tag": "BlockActions",
+  "summary": "Convert an optional block to tentative when its booking window opens.",
+  "scopes": [
+   "blocks.manage",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/block-actions/{id}/release",
+  "operationId": "BookingBlock-actionsByIdReleasePut",
+  "tag": "BlockActions",
+  "summary": "Release a block.",
+  "scopes": [
+   "blocks.manage",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/block-actions/{id}/cancel",
+  "operationId": "BookingBlock-actionsByIdCancelPut",
+  "tag": "BlockActions",
+  "summary": "Cancel a block.",
+  "scopes": [
+   "blocks.manage",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/block-actions/{id}/wash",
+  "operationId": "BookingBlock-actionsByIdWashPut",
+  "tag": "BlockActions",
+  "summary": "Wash a block.",
+  "scopes": [
+   "blocks.manage",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/block-actions/{id}/amend",
+  "operationId": "BookingBlock-actionsByIdAmendPut",
+  "tag": "BlockActions",
+  "summary": "Allow to modify a block",
+  "scopes": [
+   "blocks.manage",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/bookings",
+  "operationId": "BookingBookingsPost",
+  "tag": "Booking",
+  "summary": "Creates a booking for one or more reservations.",
+  "scopes": [
+   "reservations.create",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/bookings",
+  "operationId": "BookingBookingsGet",
+  "tag": "Booking",
+  "summary": "Returns a list of all bookings, filtered by the specified parameters.",
+  "scopes": [
+   "reservations.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/bookings/$force",
+  "operationId": "BookingBookings$forcePost",
+  "tag": "Booking",
+  "summary": "Creates a booking for one or more reservations regardless of availability or restrictions.",
+  "scopes": [
+   "reservations.force"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/bookings/{id}/reservations",
+  "operationId": "BookingBookingsByIdReservationsPost",
+  "tag": "Booking",
+  "summary": "Add one or multiple reservations to an existing booking.",
+  "scopes": [
+   "reservations.create",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/bookings/{id}/reservations/$force",
+  "operationId": "BookingBookingsByIdReservations$forcePost",
+  "tag": "Booking",
+  "summary": "Add one or multiple reservations to an existing booking regardless of availability or restrictions.",
+  "scopes": [
+   "reservations.force"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/bookings/{id}",
+  "operationId": "BookingBookingsByIdGet",
+  "tag": "Booking",
+  "summary": "Returns a specific booking.",
+  "scopes": [
+   "reservations.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PATCH",
+  "path": "/booking/v1/bookings/{id}",
+  "operationId": "BookingBookingsByIdPatch",
+  "tag": "Booking",
+  "summary": "Allows to modify certain booking properties",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/groups",
+  "operationId": "BookingGroupsPost",
+  "tag": "Group",
+  "summary": "Creates a group booking.",
+  "scopes": [
+   "groups.create",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/groups",
+  "operationId": "BookingGroupsGet",
+  "tag": "Group",
+  "summary": "Returns a list of all group bookings, filtered by the specified parameters.",
+  "scopes": [
+   "groups.read",
+   "reservations.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/groups/{id}",
+  "operationId": "BookingGroupsByIdGet",
+  "tag": "Group",
+  "summary": "Returns a specific group booking.",
+  "scopes": [
+   "groups.read",
+   "reservations.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PATCH",
+  "path": "/booking/v1/groups/{id}",
+  "operationId": "BookingGroupsByIdPatch",
+  "tag": "Group",
+  "summary": "Allows to modify certain group booking properties",
+  "scopes": [
+   "groups.manage",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "DELETE",
+  "path": "/booking/v1/groups/{id}",
+  "operationId": "BookingGroupsByIdDelete",
+  "tag": "Group",
+  "summary": "Delete a certain group booking",
+  "scopes": [
+   "groups.manage",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "HEAD",
+  "path": "/booking/v1/groups/{id}",
+  "operationId": "BookingGroupsByIdHead",
+  "tag": "Group",
+  "summary": "Check if a certain group booking exists",
+  "scopes": [
+   "groups.read",
+   "reservations.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/groups/$count",
+  "operationId": "BookingGroups$countGet",
+  "tag": "Group",
+  "summary": "Returns number of group bookings",
+  "scopes": [
+   "groups.read",
+   "reservations.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/groups/{id}/reservations",
+  "operationId": "BookingGroupsByIdReservationsPost",
+  "tag": "Group",
+  "summary": "Add one or multiple reservations to an existing group booking using blocked inventory.",
+  "scopes": [
+   "groups.manage",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/offers",
+  "operationId": "BookingOffersGet",
+  "tag": "Offer",
+  "summary": "Returns offers for one specific stay.",
+  "scopes": [
+   "offers.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/rate-plan-offers",
+  "operationId": "BookingRate-plan-offersGet",
+  "tag": "Offer",
+  "summary": "Returns offers for a specific rate plan.",
+  "scopes": [
+   "offers.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/service-offers",
+  "operationId": "BookingService-offersGet",
+  "tag": "Offer",
+  "summary": "Returns service offers for one specific stay.",
+  "scopes": [
+   "offers.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/offer-index",
+  "operationId": "BookingOffer-indexGet",
+  "tag": "Offer",
+  "summary": "Returns offers with rates and availabilities for the specified range.",
+  "scopes": [
+   "offer"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/payment-accounts/by-terminal",
+  "operationId": "BookingPayment-accountsBy-terminalPost",
+  "tag": "PaymentAccount",
+  "summary": "Creates payment account by using the terminal",
+  "scopes": [
+   "payment"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/payment-accounts/by-link",
+  "operationId": "BookingPayment-accountsBy-linkPost",
+  "tag": "PaymentAccount",
+  "summary": "Creates a link to a payment form that allows guests to complete the payment account",
+  "scopes": [
+   "payment"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/payment-accounts/by-authorization",
+  "operationId": "BookingPayment-accountsBy-authorizationPost",
+  "tag": "PaymentAccount",
+  "summary": "Creates payment account based on an existing authorization created prior externally with the Payment Service Provider",
+  "scopes": [
+   "payment"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "POST",
+  "path": "/booking/v1/payment-accounts/by-stored-payment-method",
+  "operationId": "BookingPayment-accountsBy-stored-payment-methodPost",
+  "tag": "PaymentAccount",
+  "summary": "Creates payment account based on an existing authorization created prior externally with the Payment Service Provider",
+  "scopes": [
+   "payment"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/payment-accounts/{id}",
+  "operationId": "BookingPayment-accountsByIdGet",
+  "tag": "PaymentAccount",
+  "summary": "Returns a single payment account by ID",
+  "scopes": [
+   "payment"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/payment-accounts",
+  "operationId": "BookingPayment-accountsGet",
+  "tag": "PaymentAccount",
+  "summary": "Returns a list of payment accounts based on the query parameters",
+  "scopes": [
+   "payment"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/payment-account-actions/{paymentAccountId}/cancel",
+  "operationId": "BookingPayment-account-actionsByPaymentAccountIdCancelPut",
+  "tag": "PaymentAccountActions",
+  "summary": "Sets payment account status to Canceled",
+  "scopes": [
+   "payment"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/payment-account-actions/{paymentAccountId}/expire-payment-link",
+  "operationId": "BookingPayment-account-actionsByPaymentAccountIdExpire-payment-linkPut",
+  "tag": "PaymentAccountActions",
+  "summary": "Expires the pending payment link with the payment provider and updates the status to Expired",
+  "scopes": [
+   "payment"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/reservations",
+  "operationId": "BookingReservationsGet",
+  "tag": "Reservation",
+  "summary": "Returns a list of all reservations, filtered by the specified parameters.",
+  "scopes": [
+   "reservations.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/reservations/$count",
+  "operationId": "BookingReservations$countGet",
+  "tag": "Reservation",
+  "summary": "Returns the number of reservations fulfilling the criteria specified in the parameters.",
+  "scopes": [
+   "reservations.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/reservations/{id}",
+  "operationId": "BookingReservationsByIdGet",
+  "tag": "Reservation",
+  "summary": "Returns a specific reservation.",
+  "scopes": [
+   "reservations.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PATCH",
+  "path": "/booking/v1/reservations/{id}",
+  "operationId": "BookingReservationsByIdPatch",
+  "tag": "Reservation",
+  "summary": "Allows to modify certain reservation properties",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/reservations/{id}/offers",
+  "operationId": "BookingReservationsByIdOffersGet",
+  "tag": "Reservation",
+  "summary": "Returns offers for one specific reservation.",
+  "scopes": [
+   "offers.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/reservations/{id}/service-offers",
+  "operationId": "BookingReservationsByIdService-offersGet",
+  "tag": "Reservation",
+  "summary": "Returns service offers for one specific reservation.",
+  "scopes": [
+   "offers.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/reservations/{id}/services",
+  "operationId": "BookingReservationsByIdServicesGet",
+  "tag": "Reservation",
+  "summary": "Returns the services booked for a specific reservation.",
+  "scopes": [
+   "reservations.read",
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "DELETE",
+  "path": "/booking/v1/reservations/{id}/services",
+  "operationId": "BookingReservationsByIdServicesDelete",
+  "tag": "Reservation",
+  "summary": "Removes a service from a reservation.",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/assign-unit",
+  "operationId": "BookingReservation-actionsByIdAssign-unitPut",
+  "tag": "ReservationActions",
+  "summary": "Assign a unit to a reservation.",
+  "scopes": [
+   "reservations.assign"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/assign-unit/{unitId}",
+  "operationId": "BookingReservation-actionsByIdAssign-unitByUnitIdPut",
+  "tag": "ReservationActions",
+  "summary": "Assign a specific unit to a reservation.",
+  "scopes": [
+   "reservations.assign"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/unassign-units",
+  "operationId": "BookingReservation-actionsByIdUnassign-unitsPut",
+  "tag": "ReservationActions",
+  "summary": "Unassign units from a reservation.",
+  "scopes": [
+   "reservations.assign"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/checkin",
+  "operationId": "BookingReservation-actionsByIdCheckinPut",
+  "tag": "ReservationActions",
+  "summary": "Check-in of a reservation.",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/revert-checkin",
+  "operationId": "BookingReservation-actionsByIdRevert-checkinPut",
+  "tag": "ReservationActions",
+  "summary": "Reverses the check-in of a reservation.",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/checkout",
+  "operationId": "BookingReservation-actionsByIdCheckoutPut",
+  "tag": "ReservationActions",
+  "summary": "Check-out of a reservation.",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/cancel",
+  "operationId": "BookingReservation-actionsByIdCancelPut",
+  "tag": "ReservationActions",
+  "summary": "Cancel a reservation.",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/noshow",
+  "operationId": "BookingReservation-actionsByIdNoshowPut",
+  "tag": "ReservationActions",
+  "summary": "Set a reservation to No-show.",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/amend",
+  "operationId": "BookingReservation-actionsByIdAmendPut",
+  "tag": "ReservationActions",
+  "summary": "Allows you to amend the stay details of a reservation",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/amend/$force",
+  "operationId": "BookingReservation-actionsByIdAmend$forcePut",
+  "tag": "ReservationActions",
+  "summary": "Allows you to amend the stay details of a reservation regardless of availability or restrictions.",
+  "scopes": [
+   "reservations.force"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/book-service",
+  "operationId": "BookingReservation-actionsByIdBook-servicePut",
+  "tag": "ReservationActions",
+  "summary": "Book the service for a specific reservation.",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/book-service/$force",
+  "operationId": "BookingReservation-actionsByIdBook-service$forcePut",
+  "tag": "ReservationActions",
+  "summary": "Book the service for a specific reservation regardless of availability.",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/remove-city-tax",
+  "operationId": "BookingReservation-actionsByIdRemove-city-taxPut",
+  "tag": "ReservationActions",
+  "summary": "Removes the city tax from a reservation.",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/add-city-tax",
+  "operationId": "BookingReservation-actionsByIdAdd-city-taxPut",
+  "tag": "ReservationActions",
+  "summary": "Adds the city tax to a reservation.",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/lock-unit",
+  "operationId": "BookingReservation-actionsByIdLock-unitPut",
+  "tag": "ReservationActions",
+  "summary": "Lock unit assignment for a reservation.",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "PUT",
+  "path": "/booking/v1/reservation-actions/{id}/unlock-unit",
+  "operationId": "BookingReservation-actionsByIdUnlock-unitPut",
+  "tag": "ReservationActions",
+  "summary": "Unlock unit assignment for a reservation.",
+  "scopes": [
+   "reservations.manage"
+  ]
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/types/sources",
+  "operationId": "BookingTypesSourcesGet",
+  "tag": "Types",
+  "summary": "Returns a list of supported sources.",
+  "scopes": []
+ },
+ {
+  "spec": "booking-v1",
+  "method": "GET",
+  "path": "/booking/v1/types/{type}/allowed-values",
+  "operationId": "BookingTypesByTypeAllowed-valuesGet",
+  "tag": "Types",
+  "summary": "Returns a list of values that a field of the specified type can take in the specified country.",
+  "scopes": []
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/folios",
+  "operationId": "FinanceFoliosGet",
+  "tag": "Folio",
+  "summary": "Returns a list of all folios.",
+  "scopes": [
+   "folios.read",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folios",
+  "operationId": "FinanceFoliosPost",
+  "tag": "Folio",
+  "summary": "Create additional folios for a reservation, or new external folios",
+  "scopes": [
+   "reservations.create",
+   "reservations.manage",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/folios/$count",
+  "operationId": "FinanceFolios$countGet",
+  "tag": "Folio",
+  "summary": "Returns number of folios.",
+  "scopes": [
+   "folios.read",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/folios/{id}",
+  "operationId": "FinanceFoliosByIdGet",
+  "tag": "Folio",
+  "summary": "Returns one folio.",
+  "scopes": [
+   "folios.read",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "PATCH",
+  "path": "/finance/v1/folios/{id}",
+  "operationId": "FinanceFoliosByIdPatch",
+  "tag": "Folio",
+  "summary": "Allows to modify certain properties of a folio",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "HEAD",
+  "path": "/finance/v1/folios/{id}",
+  "operationId": "FinanceFoliosByIdHead",
+  "tag": "Folio",
+  "summary": "Check if the folio exists.",
+  "scopes": [
+   "folios.read",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "DELETE",
+  "path": "/finance/v1/folios/{id}",
+  "operationId": "FinanceFoliosByIdDelete",
+  "tag": "Folio",
+  "summary": "Deletes a folio.",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folio-actions/{folioId}/charges",
+  "operationId": "FinanceFolio-actionsByFolioIdChargesPost",
+  "tag": "FolioActions",
+  "summary": "Adds and directly posts a charge to the folio.\nIf there are any fees configured for the property, an additional charge for each configured fee will be added.",
+  "scopes": [
+   "charges.create",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folio-actions/{folioId}/transitory-charges",
+  "operationId": "FinanceFolio-actionsByFolioIdTransitory-chargesPost",
+  "tag": "FolioActions",
+  "summary": "Adds and directly posts a transitory charge to the folio.\nIf there are any fees configured for the property, an additional charge for each configured fee will be added.",
+  "scopes": [
+   "charges.create",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folio-actions/{folioId}/cancellation-fee",
+  "operationId": "FinanceFolio-actionsByFolioIdCancellation-feePost",
+  "tag": "FolioActions",
+  "summary": "Adds and directly posts a cancellation fee to the folio.\nIf there are any fees configured for the property, an additional charge for each configured fee will be added.\nIf a routing instruction is defined for the cancellation fee service type, the fee will be moved to the destination folio.",
+  "scopes": [
+   "charges.create",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folio-actions/{folioId}/no-show-fee",
+  "operationId": "FinanceFolio-actionsByFolioIdNo-show-feePost",
+  "tag": "FolioActions",
+  "summary": "Adds and directly posts a no-show fee to the folio.\nIf there are any fees configured for the property, an additional charge for each configured fee will be added.\nIf a routing instruction is defined for the no-show fee service type, the fee will be moved to the destination folio.",
+  "scopes": [
+   "charges.create",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "PUT",
+  "path": "/finance/v1/folio-actions/{folioId}/close",
+  "operationId": "FinanceFolio-actionsByFolioIdClosePut",
+  "tag": "FolioActions",
+  "summary": "Closes a folio.",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "PUT",
+  "path": "/finance/v1/folio-actions/{folioId}/reopen",
+  "operationId": "FinanceFolio-actionsByFolioIdReopenPut",
+  "tag": "FolioActions",
+  "summary": "Reopens a folio.",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "PUT",
+  "path": "/finance/v1/folio-actions/{folioId}/move-charges",
+  "operationId": "FinanceFolio-actionsByFolioIdMove-chargesPut",
+  "tag": "FolioActions",
+  "summary": "Move multiple charges, allowances and transitory charges from one folio to another.",
+  "scopes": [
+   "charges.move",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "PUT",
+  "path": "/finance/v1/folio-actions/bulk-move",
+  "operationId": "FinanceFolio-actionsBulk-movePut",
+  "tag": "FolioActions",
+  "summary": "Move multiple charges from one folio to another. Multiple source folios and multiple target folios can be specified.",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "PUT",
+  "path": "/finance/v1/folio-actions/{folioId}/move-all-charges",
+  "operationId": "FinanceFolio-actionsByFolioIdMove-all-chargesPut",
+  "tag": "FolioActions",
+  "summary": "Move all charges and transitory charges from one folio to another.",
+  "scopes": [
+   "charges.move",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folio-actions/{folioId}/charges/{chargeId}/allowances",
+  "operationId": "FinanceFolio-actionsByFolioIdChargesByChargeIdAllowancesPost",
+  "tag": "FolioActions",
+  "summary": "Posts an allowance for a charge",
+  "scopes": [
+   "allowances.post",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folio-actions/{folioId}/allowances",
+  "operationId": "FinanceFolio-actionsByFolioIdAllowancesPost",
+  "tag": "FolioActions",
+  "summary": "Posts an allowance for a folio",
+  "scopes": [
+   "allowances.post",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folio-actions/{folioId}/bulk-allowances",
+  "operationId": "FinanceFolio-actionsByFolioIdBulk-allowancesPost",
+  "tag": "FolioActions",
+  "summary": "Posts allowances for a folio",
+  "scopes": [
+   "allowances.post",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "PUT",
+  "path": "/finance/v1/folio-actions/{folioId}/post-charges",
+  "operationId": "FinanceFolio-actionsByFolioIdPost-chargesPut",
+  "tag": "FolioActions",
+  "summary": "Posts all unposted charges for the whole length of stay.",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "PUT",
+  "path": "/finance/v1/folio-actions/{folioId}/move-payments",
+  "operationId": "FinanceFolio-actionsByFolioIdMove-paymentsPut",
+  "tag": "FolioActions",
+  "summary": "Move multiple payments from one guest/booking folio to another.",
+  "scopes": [
+   "charges.move",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folio-actions/{folioId}/correct",
+  "operationId": "FinanceFolio-actionsByFolioIdCorrectPost",
+  "tag": "FolioActions",
+  "summary": "Corrects a folio by moving some charges.\nThis operation creates a new folio with the charges from the request.\nThe payment, equal to the sum of charges, is also split to this new folio so that both folios will have 0 balance.",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folio-actions/{folioId}/charges/{chargeId}/split",
+  "operationId": "FinanceFolio-actionsByFolioIdChargesByChargeIdSplitPost",
+  "tag": "FolioActions",
+  "summary": "Splits a charge into two using the percent or amount provided\nCreates an allowance and two new charges.",
+  "scopes": [
+   "allowances.post",
+   "charges.create",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folio-actions/{folioId}/payments/{paymentId}/split",
+  "operationId": "FinanceFolio-actionsByFolioIdPaymentsByPaymentIdSplitPost",
+  "tag": "FolioActions",
+  "summary": "Splits a payment into two using the percent or amount provided\nCreates a refund and two new payments.",
+  "scopes": [
+   "payments.create",
+   "refunds.create",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/folios/{folioId}/payments",
+  "operationId": "FinanceFoliosByFolioIdPaymentsGet",
+  "tag": "FolioPayments",
+  "summary": "Get a list of payments.",
+  "scopes": [
+   "folios.read",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folios/{folioId}/payments",
+  "operationId": "FinanceFoliosByFolioIdPaymentsPost",
+  "tag": "FolioPayments",
+  "summary": "Trigger a custom payment for the folio.",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/folios/{folioId}/payments/{paymentId}",
+  "operationId": "FinanceFoliosByFolioIdPaymentsByPaymentIdGet",
+  "tag": "FolioPayments",
+  "summary": "Get a payment by ID.",
+  "scopes": [
+   "folios.read",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folios/{folioId}/payments/by-terminal",
+  "operationId": "FinanceFoliosByFolioIdPaymentsBy-terminalPost",
+  "tag": "FolioPayments",
+  "summary": "Trigger a payment on a card terminal for the folio.",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folios/{folioId}/payments/by-authorization",
+  "operationId": "FinanceFoliosByFolioIdPaymentsBy-authorizationPost",
+  "tag": "FolioPayments",
+  "summary": "Captures a specific amount from a pre-authorization and posts it to the folio.",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folios/{folioId}/payments/by-payment-account",
+  "operationId": "FinanceFoliosByFolioIdPaymentsBy-payment-accountPost",
+  "tag": "FolioPayments",
+  "summary": "Trigger a payment using the payment account stored on the reservation or booking.",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folios/{folioId}/payments/by-link",
+  "operationId": "FinanceFoliosByFolioIdPaymentsBy-linkPost",
+  "tag": "FolioPayments",
+  "summary": "Creates a link to a payment form where guests can pay.",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "PUT",
+  "path": "/finance/v1/folios/{folioId}/payments/{paymentId}/cancel",
+  "operationId": "FinanceFoliosByFolioIdPaymentsByPaymentIdCancelPut",
+  "tag": "FolioPayments",
+  "summary": "Cancels a pending payment link.",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/folios/{folioId}/refunds",
+  "operationId": "FinanceFoliosByFolioIdRefundsGet",
+  "tag": "FolioPayments",
+  "summary": "Get a list of refunds.",
+  "scopes": [
+   "folios.read",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folios/{folioId}/refunds",
+  "operationId": "FinanceFoliosByFolioIdRefundsPost",
+  "tag": "FolioPayments",
+  "summary": "Trigger a refund for the folio.",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/folios/{folioId}/refunds/{refundId}",
+  "operationId": "FinanceFoliosByFolioIdRefundsByRefundIdGet",
+  "tag": "FolioPayments",
+  "summary": "Get a refund by ID.",
+  "scopes": [
+   "folios.read",
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/folios/{folioId}/payments/{paymentId}/refunds",
+  "operationId": "FinanceFoliosByFolioIdPaymentsByPaymentIdRefundsPost",
+  "tag": "FolioPayments",
+  "summary": "Trigger a refund for a specific payment.",
+  "scopes": [
+   "folios.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/invoices/preview-pdf",
+  "operationId": "FinanceInvoicesPreview-pdfGet",
+  "tag": "Invoice",
+  "summary": "Gets a preview invoice PDF for one specific folio.",
+  "scopes": [
+   "invoices.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/invoices/preview",
+  "operationId": "FinanceInvoicesPreviewGet",
+  "tag": "Invoice",
+  "summary": "Gets an invoice preview for one specific folio.",
+  "scopes": [
+   "invoices.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/invoices",
+  "operationId": "FinanceInvoicesGet",
+  "tag": "Invoice",
+  "summary": "Gets the list of all invoices (the metadata only, not the files).",
+  "scopes": [
+   "invoices.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/invoices",
+  "operationId": "FinanceInvoicesPost",
+  "tag": "Invoice",
+  "summary": "Creates an invoice for one specific folio.",
+  "scopes": [
+   "invoices.create",
+   "invoices.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/invoices/{id}/pdf",
+  "operationId": "FinanceInvoicesByIdPdfGet",
+  "tag": "Invoice",
+  "summary": "Gets an invoice PDF file.",
+  "scopes": [
+   "invoices.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/invoices/{id}",
+  "operationId": "FinanceInvoicesByIdGet",
+  "tag": "Invoice",
+  "summary": "Gets invoice data.",
+  "scopes": [
+   "invoices.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "PUT",
+  "path": "/finance/v1/invoice-actions/{id}/pay",
+  "operationId": "FinanceInvoice-actionsByIdPayPut",
+  "tag": "InvoiceAction",
+  "summary": "Marks an invoice as paid.",
+  "scopes": [
+   "invoices.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "PUT",
+  "path": "/finance/v1/invoice-actions/{id}/cancel",
+  "operationId": "FinanceInvoice-actionsByIdCancelPut",
+  "tag": "InvoiceAction",
+  "summary": "Cancels an invoice",
+  "scopes": [
+   "invoices.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/routings",
+  "operationId": "FinanceRoutingsPost",
+  "tag": "Routing",
+  "summary": "Create a routing.",
+  "scopes": [
+   "routings.create",
+   "routings.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/routings",
+  "operationId": "FinanceRoutingsGet",
+  "tag": "Routing",
+  "summary": "Get all routings.",
+  "scopes": [
+   "routings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/routings/{id}",
+  "operationId": "FinanceRoutingsByIdGet",
+  "tag": "Routing",
+  "summary": "Get a specific routing.",
+  "scopes": [
+   "routings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "PATCH",
+  "path": "/finance/v1/routings/{id}",
+  "operationId": "FinanceRoutingsByIdPatch",
+  "tag": "Routing",
+  "summary": "Modify a routing.",
+  "scopes": [
+   "routings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "DELETE",
+  "path": "/finance/v1/routings/{id}",
+  "operationId": "FinanceRoutingsByIdDelete",
+  "tag": "Routing",
+  "summary": "Delete a routing.",
+  "scopes": [
+   "routings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/accounts/aggregate-pairs-daily",
+  "operationId": "FinanceAccountsAggregate-pairs-dailyPost",
+  "tag": "SubLedger",
+  "summary": "Aggregates transactions pairs by date (business day) for all accounts and a given period.",
+  "scopes": [
+   "subledger.read",
+   "accounting.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/accounts/aggregate-daily",
+  "operationId": "FinanceAccountsAggregate-dailyPost",
+  "tag": "SubLedger",
+  "summary": "Aggregates transactions by date (business day) for all accounts and a given period.",
+  "scopes": [
+   "subledger.read",
+   "accounting.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/accounts/aggregate",
+  "operationId": "FinanceAccountsAggregatePost",
+  "tag": "SubLedger",
+  "summary": "Aggregates transactions by timestamp for all accounts and a given period.",
+  "scopes": [
+   "subledger.read",
+   "accounting.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/accounts/export",
+  "operationId": "FinanceAccountsExportPost",
+  "tag": "SubLedger",
+  "summary": "Returns transactions filtered by timestamp for a property for a given period.",
+  "scopes": [
+   "transactions.export",
+   "accounting.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/accounts/export-daily",
+  "operationId": "FinanceAccountsExport-dailyPost",
+  "tag": "SubLedger",
+  "summary": "Returns transactions filtered by date (business day) for a property for a given period.",
+  "scopes": [
+   "transactions.export",
+   "accounting.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "POST",
+  "path": "/finance/v1/accounts/export-gross-daily",
+  "operationId": "FinanceAccountsExport-gross-dailyPost",
+  "tag": "SubLedger",
+  "summary": "Returns gross transactions filtered by date (business day) for a property for a given period.",
+  "scopes": [
+   "transactions.export",
+   "accounting.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/accounts/schema",
+  "operationId": "FinanceAccountsSchemaGet",
+  "tag": "SubLedger",
+  "summary": "Returns the chart of accounts of the subledger.",
+  "scopes": [
+   "subledger.read",
+   "accounting.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/global-accounts",
+  "operationId": "FinanceGlobal-accountsGet",
+  "tag": "SubLedger",
+  "summary": "Returns a list of global accounts.",
+  "scopes": [
+   "subledger.read",
+   "accounting.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/guest-accounts",
+  "operationId": "FinanceGuest-accountsGet",
+  "tag": "SubLedger",
+  "summary": "Returns a list of guest accounts.",
+  "scopes": [
+   "subledger.read",
+   "accounting.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/external-accounts",
+  "operationId": "FinanceExternal-accountsGet",
+  "tag": "SubLedger",
+  "summary": "Returns a list of external accounts.",
+  "scopes": [
+   "subledger.read",
+   "accounting.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/accounts/{number}",
+  "operationId": "FinanceAccountsByNumberGet",
+  "tag": "SubLedger",
+  "summary": "Returns one account.",
+  "scopes": [
+   "subledger.read",
+   "accounting.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/accounts/child-accounts",
+  "operationId": "FinanceAccountsChild-accountsGet",
+  "tag": "SubLedger",
+  "summary": "Returns a list of child accounts for a specified parent account.",
+  "scopes": [
+   "subledger.read",
+   "accounting.read"
+  ]
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/types/currencies",
+  "operationId": "FinanceTypesCurrenciesGet",
+  "tag": "Types",
+  "summary": "Returns a list of all currencies.",
+  "scopes": []
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/types/payment-methods",
+  "operationId": "FinanceTypesPayment-methodsGet",
+  "tag": "Types",
+  "summary": "Returns a list of all supported payment methods.",
+  "scopes": []
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/types/service-types",
+  "operationId": "FinanceTypesService-typesGet",
+  "tag": "Types",
+  "summary": "Returns a list of all supported service types.",
+  "scopes": []
+ },
+ {
+  "spec": "finance-v1",
+  "method": "GET",
+  "path": "/finance/v1/types/vat",
+  "operationId": "FinanceTypesVatGet",
+  "tag": "Types",
+  "summary": "Returns a list of all VAT types.",
+  "scopes": []
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "GET",
+  "path": "/inventory/v1/properties",
+  "operationId": "InventoryPropertiesGet",
+  "tag": "Property",
+  "summary": "Get a properties list",
+  "scopes": []
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "POST",
+  "path": "/inventory/v1/properties",
+  "operationId": "InventoryPropertiesPost",
+  "tag": "Property",
+  "summary": "Creates a property",
+  "scopes": [
+   "properties.create",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "GET",
+  "path": "/inventory/v1/properties/$count",
+  "operationId": "InventoryProperties$countGet",
+  "tag": "Property",
+  "summary": "Return total count of properties",
+  "scopes": []
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "HEAD",
+  "path": "/inventory/v1/properties/{id}",
+  "operationId": "InventoryPropertiesByIdHead",
+  "tag": "Property",
+  "summary": "Check if a property exists",
+  "scopes": []
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "GET",
+  "path": "/inventory/v1/properties/{id}",
+  "operationId": "InventoryPropertiesByIdGet",
+  "tag": "Property",
+  "summary": "Get a property",
+  "scopes": []
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "PATCH",
+  "path": "/inventory/v1/properties/{id}",
+  "operationId": "InventoryPropertiesByIdPatch",
+  "tag": "Property",
+  "summary": "Allows to modify property",
+  "scopes": [
+   "properties.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "DELETE",
+  "path": "/inventory/v1/properties/{id}",
+  "operationId": "InventoryPropertiesByIdDelete",
+  "tag": "Property",
+  "summary": "Deletes a property",
+  "scopes": [
+   "properties.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "POST",
+  "path": "/inventory/v1/property-actions/{id}/clone",
+  "operationId": "InventoryProperty-actionsByIdClonePost",
+  "tag": "PropertyActions",
+  "summary": "Clones a property",
+  "scopes": [
+   "properties.create",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "PUT",
+  "path": "/inventory/v1/property-actions/{id}/archive",
+  "operationId": "InventoryProperty-actionsByIdArchivePut",
+  "tag": "PropertyActions",
+  "summary": "Archive a property",
+  "scopes": [
+   "properties.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "PUT",
+  "path": "/inventory/v1/property-actions/{id}/set-live",
+  "operationId": "InventoryProperty-actionsByIdSet-livePut",
+  "tag": "PropertyActions",
+  "summary": "Move property to live",
+  "scopes": [
+   "properties.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "PUT",
+  "path": "/inventory/v1/property-actions/{id}/reset",
+  "operationId": "InventoryProperty-actionsByIdResetPut",
+  "tag": "PropertyActions",
+  "summary": "Reset a test property and delete all transactional data",
+  "scopes": [
+   "properties.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "GET",
+  "path": "/inventory/v1/types/countries",
+  "operationId": "InventoryTypesCountriesGet",
+  "tag": "Types",
+  "summary": "Returns a list of supported countries.",
+  "scopes": []
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "PATCH",
+  "path": "/inventory/v1/units/{id}",
+  "operationId": "InventoryUnitsByIdPatch",
+  "tag": "Unit",
+  "summary": "Allows to patch unit",
+  "scopes": [
+   "units.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "GET",
+  "path": "/inventory/v1/units/{id}",
+  "operationId": "InventoryUnitsByIdGet",
+  "tag": "Unit",
+  "summary": "Get a unit",
+  "scopes": [
+   "units.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "HEAD",
+  "path": "/inventory/v1/units/{id}",
+  "operationId": "InventoryUnitsByIdHead",
+  "tag": "Unit",
+  "summary": "Check if a unit exists",
+  "scopes": [
+   "units.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "DELETE",
+  "path": "/inventory/v1/units/{id}",
+  "operationId": "InventoryUnitsByIdDelete",
+  "tag": "Unit",
+  "summary": "Delete a unit",
+  "scopes": [
+   "units.delete",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "PATCH",
+  "path": "/inventory/v1/units",
+  "operationId": "InventoryUnitsPatch",
+  "tag": "Unit",
+  "summary": "Allows to patch one or more units",
+  "scopes": [
+   "units.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "GET",
+  "path": "/inventory/v1/units",
+  "operationId": "InventoryUnitsGet",
+  "tag": "Unit",
+  "summary": "Get a units list",
+  "scopes": [
+   "units.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "POST",
+  "path": "/inventory/v1/units",
+  "operationId": "InventoryUnitsPost",
+  "tag": "Unit",
+  "summary": "Create a unit",
+  "scopes": [
+   "units.create",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "GET",
+  "path": "/inventory/v1/units/$count",
+  "operationId": "InventoryUnits$countGet",
+  "tag": "Unit",
+  "summary": "Returns number of units",
+  "scopes": [
+   "units.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "POST",
+  "path": "/inventory/v1/units/bulk",
+  "operationId": "InventoryUnitsBulkPost",
+  "tag": "Unit",
+  "summary": "Create multiple units",
+  "scopes": [
+   "units.create",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "PUT",
+  "path": "/inventory/v1/unit-actions/{id}/archive",
+  "operationId": "InventoryUnit-actionsByIdArchivePut",
+  "tag": "UnitActions",
+  "summary": "Archive a unit",
+  "scopes": [
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "GET",
+  "path": "/inventory/v1/unit-attributes/{id}",
+  "operationId": "InventoryUnit-attributesByIdGet",
+  "tag": "UnitAttribute",
+  "summary": "Get unit attribute by id",
+  "scopes": [
+   "unitattributes.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "PATCH",
+  "path": "/inventory/v1/unit-attributes/{id}",
+  "operationId": "InventoryUnit-attributesByIdPatch",
+  "tag": "UnitAttribute",
+  "summary": "Allows to modify unit attribute",
+  "scopes": [
+   "unitattributes.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "DELETE",
+  "path": "/inventory/v1/unit-attributes/{id}",
+  "operationId": "InventoryUnit-attributesByIdDelete",
+  "tag": "UnitAttribute",
+  "summary": "Deletes unit attribute",
+  "scopes": [
+   "unitattributes.delete",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "HEAD",
+  "path": "/inventory/v1/unit-attributes/{id}",
+  "operationId": "InventoryUnit-attributesByIdHead",
+  "tag": "UnitAttribute",
+  "summary": "Check if a unit attribute exists",
+  "scopes": [
+   "unitattributes.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "GET",
+  "path": "/inventory/v1/unit-attributes",
+  "operationId": "InventoryUnit-attributesGet",
+  "tag": "UnitAttribute",
+  "summary": "Get unit attribute list",
+  "scopes": [
+   "unitattributes.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "POST",
+  "path": "/inventory/v1/unit-attributes",
+  "operationId": "InventoryUnit-attributesPost",
+  "tag": "UnitAttribute",
+  "summary": "Create a unit attribute",
+  "scopes": [
+   "unitattributes.create",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "POST",
+  "path": "/inventory/v1/unit-groups",
+  "operationId": "InventoryUnit-groupsPost",
+  "tag": "UnitGroup",
+  "summary": "Create a unit group",
+  "scopes": [
+   "unitgroups.create",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "GET",
+  "path": "/inventory/v1/unit-groups",
+  "operationId": "InventoryUnit-groupsGet",
+  "tag": "UnitGroup",
+  "summary": "Get all unit groups, or all unit groups for a property",
+  "scopes": [
+   "unitgroups.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "GET",
+  "path": "/inventory/v1/unit-groups/$count",
+  "operationId": "InventoryUnit-groups$countGet",
+  "tag": "UnitGroup",
+  "summary": "Returns number of unit groups",
+  "scopes": [
+   "unitgroups.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "HEAD",
+  "path": "/inventory/v1/unit-groups/{id}",
+  "operationId": "InventoryUnit-groupsByIdHead",
+  "tag": "UnitGroup",
+  "summary": "Check if a unit group exists",
+  "scopes": [
+   "unitgroups.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "GET",
+  "path": "/inventory/v1/unit-groups/{id}",
+  "operationId": "InventoryUnit-groupsByIdGet",
+  "tag": "UnitGroup",
+  "summary": "Get a unit group",
+  "scopes": [
+   "unitgroups.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "PUT",
+  "path": "/inventory/v1/unit-groups/{id}",
+  "operationId": "InventoryUnit-groupsByIdPut",
+  "tag": "UnitGroup",
+  "summary": "Replace a unit group",
+  "scopes": [
+   "unitgroups.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "inventory-v1",
+  "method": "DELETE",
+  "path": "/inventory/v1/unit-groups/{id}",
+  "operationId": "InventoryUnit-groupsByIdDelete",
+  "tag": "UnitGroup",
+  "summary": "Delete a unit group",
+  "scopes": [
+   "unitgroups.delete",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "logs-v1",
+  "method": "GET",
+  "path": "/logs/v1/booking/reservation",
+  "operationId": "LogsBookingReservationGet",
+  "tag": "BookingLogs",
+  "summary": "Returns reservation change log entries sorted by the timestamp",
+  "scopes": [
+   "logs.read"
+  ]
+ },
+ {
+  "spec": "logs-v1",
+  "method": "GET",
+  "path": "/logs/v1/finance/folio",
+  "operationId": "LogsFinanceFolioGet",
+  "tag": "FinanceLogs",
+  "summary": "Returns folio change log entries sorted by the timestamp.",
+  "scopes": [
+   "logs.read"
+  ]
+ },
+ {
+  "spec": "logs-v1",
+  "method": "GET",
+  "path": "/logs/v1/finance/night-audit",
+  "operationId": "LogsFinanceNight-auditGet",
+  "tag": "FinanceLogs",
+  "summary": "Returns the night audit logs.",
+  "scopes": [
+   "logs.read"
+  ]
+ },
+ {
+  "spec": "logs-v1",
+  "method": "GET",
+  "path": "/logs/v1/finance/transactions-export",
+  "operationId": "LogsFinanceTransactions-exportGet",
+  "tag": "FinanceLogs",
+  "summary": "Returns the audit log for all accounting exports that have been done.",
+  "scopes": [
+   "logs.read"
+  ]
+ },
+ {
+  "spec": "operations-v1",
+  "method": "GET",
+  "path": "/operations/v1/maintenances",
+  "operationId": "OperationsMaintenancesGet",
+  "tag": "Maintenance",
+  "summary": "Get list of maintenances",
+  "scopes": [
+   "maintenances.read",
+   "maintenances.manage"
+  ]
+ },
+ {
+  "spec": "operations-v1",
+  "method": "POST",
+  "path": "/operations/v1/maintenances",
+  "operationId": "OperationsMaintenancesPost",
+  "tag": "Maintenance",
+  "summary": "Create a new maintenance window",
+  "scopes": [
+   "maintenances.create",
+   "maintenances.manage"
+  ]
+ },
+ {
+  "spec": "operations-v1",
+  "method": "GET",
+  "path": "/operations/v1/maintenances/$count",
+  "operationId": "OperationsMaintenances$countGet",
+  "tag": "Maintenance",
+  "summary": "Returns number of maintenances",
+  "scopes": [
+   "maintenances.read",
+   "maintenances.manage"
+  ]
+ },
+ {
+  "spec": "operations-v1",
+  "method": "POST",
+  "path": "/operations/v1/maintenances/bulk",
+  "operationId": "OperationsMaintenancesBulkPost",
+  "tag": "Maintenance",
+  "summary": "Create multiple maintenances",
+  "scopes": [
+   "maintenances.create",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "operations-v1",
+  "method": "PATCH",
+  "path": "/operations/v1/maintenances/{id}",
+  "operationId": "OperationsMaintenancesByIdPatch",
+  "tag": "Maintenance",
+  "summary": "Modify a maintenance",
+  "scopes": [
+   "maintenances.manage"
+  ]
+ },
+ {
+  "spec": "operations-v1",
+  "method": "DELETE",
+  "path": "/operations/v1/maintenances/{id}",
+  "operationId": "OperationsMaintenancesByIdDelete",
+  "tag": "Maintenance",
+  "summary": "Delete a maintenance",
+  "scopes": [
+   "maintenances.delete",
+   "maintenances.manage"
+  ]
+ },
+ {
+  "spec": "operations-v1",
+  "method": "GET",
+  "path": "/operations/v1/maintenances/{id}",
+  "operationId": "OperationsMaintenancesByIdGet",
+  "tag": "Maintenance",
+  "summary": "Get a specific maintenance",
+  "scopes": [
+   "maintenances.read",
+   "maintenances.manage"
+  ]
+ },
+ {
+  "spec": "operations-v1",
+  "method": "HEAD",
+  "path": "/operations/v1/maintenances/{id}",
+  "operationId": "OperationsMaintenancesByIdHead",
+  "tag": "Maintenance",
+  "summary": "Check if a maintenance exists",
+  "scopes": [
+   "maintenances.read",
+   "maintenances.manage"
+  ]
+ },
+ {
+  "spec": "operations-v1",
+  "method": "PUT",
+  "path": "/operations/v1/night-audit",
+  "operationId": "OperationsNight-auditPut",
+  "tag": "Operations",
+  "summary": "Performs the night audit for one property.",
+  "scopes": [
+   "operations.manage",
+   "operations.trigger"
+  ]
+ },
+ {
+  "spec": "operations-v1",
+  "method": "PUT",
+  "path": "/operations/v1/units-condition",
+  "operationId": "OperationsUnits-conditionPut",
+  "tag": "Operations",
+  "summary": "Change the condition of a unit",
+  "scopes": [
+   "operations.change"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/settings/v1/age-categories/{id}",
+  "operationId": "SettingsAge-categoriesByIdGet",
+  "tag": "AgeCategory",
+  "summary": "Get an age category",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "PATCH",
+  "path": "/settings/v1/age-categories/{id}",
+  "operationId": "SettingsAge-categoriesByIdPatch",
+  "tag": "AgeCategory",
+  "summary": "Allows to modify properties of an age category",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "DELETE",
+  "path": "/settings/v1/age-categories/{id}",
+  "operationId": "SettingsAge-categoriesByIdDelete",
+  "tag": "AgeCategory",
+  "summary": "Delete an age category",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "POST",
+  "path": "/settings/v1/age-categories",
+  "operationId": "SettingsAge-categoriesPost",
+  "tag": "AgeCategory",
+  "summary": "Create an age category",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/settings/v1/age-categories",
+  "operationId": "SettingsAge-categoriesGet",
+  "tag": "AgeCategory",
+  "summary": "Get an age category list",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "POST",
+  "path": "/rateplan/v1/cancellation-policies",
+  "operationId": "RateplanCancellation-policiesPost",
+  "tag": "CancellationPolicy",
+  "summary": "Create a cancellation policy.",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/cancellation-policies",
+  "operationId": "RateplanCancellation-policiesGet",
+  "tag": "CancellationPolicy",
+  "summary": "Get all cancellation policies.",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/cancellation-policies/{id}",
+  "operationId": "RateplanCancellation-policiesByIdGet",
+  "tag": "CancellationPolicy",
+  "summary": "Get a specific cancellation policy.",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "PATCH",
+  "path": "/rateplan/v1/cancellation-policies/{id}",
+  "operationId": "RateplanCancellation-policiesByIdPatch",
+  "tag": "CancellationPolicy",
+  "summary": "Allows to modify properties of a cancellation policy",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "DELETE",
+  "path": "/rateplan/v1/cancellation-policies/{id}",
+  "operationId": "RateplanCancellation-policiesByIdDelete",
+  "tag": "CancellationPolicy",
+  "summary": "Delete a cancellation policy",
+  "scopes": [
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "POST",
+  "path": "/rateplan/v1/companies",
+  "operationId": "RateplanCompaniesPost",
+  "tag": "Company",
+  "summary": "Create a company",
+  "scopes": [
+   "companies.create",
+   "companies.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/companies",
+  "operationId": "RateplanCompaniesGet",
+  "tag": "Company",
+  "summary": "Get a list of companies",
+  "scopes": [
+   "companies.read",
+   "companies.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/companies/{id}",
+  "operationId": "RateplanCompaniesByIdGet",
+  "tag": "Company",
+  "summary": "Get a company",
+  "scopes": [
+   "companies.read",
+   "companies.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "PATCH",
+  "path": "/rateplan/v1/companies/{id}",
+  "operationId": "RateplanCompaniesByIdPatch",
+  "tag": "Company",
+  "summary": "Modify a company",
+  "scopes": [
+   "companies.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "DELETE",
+  "path": "/rateplan/v1/companies/{id}",
+  "operationId": "RateplanCompaniesByIdDelete",
+  "tag": "Company",
+  "summary": "Delete a company",
+  "scopes": [
+   "companies.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/corporate-codes/codes",
+  "operationId": "RateplanCorporate-codesCodesGet",
+  "tag": "CorporateCodes",
+  "summary": "Returns a list of corporate codes.",
+  "scopes": [
+   "rateplans.read"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "POST",
+  "path": "/rateplan/v1/no-show-policies",
+  "operationId": "RateplanNo-show-policiesPost",
+  "tag": "NoShowPolicy",
+  "summary": "Create a no-show policy.",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/no-show-policies",
+  "operationId": "RateplanNo-show-policiesGet",
+  "tag": "NoShowPolicy",
+  "summary": "Get all no-show policies.",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/no-show-policies/{id}",
+  "operationId": "RateplanNo-show-policiesByIdGet",
+  "tag": "NoShowPolicy",
+  "summary": "Get a specific no-show policy.",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "PATCH",
+  "path": "/rateplan/v1/no-show-policies/{id}",
+  "operationId": "RateplanNo-show-policiesByIdPatch",
+  "tag": "NoShowPolicy",
+  "summary": "Allows to modify properties of a no-show policy",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "DELETE",
+  "path": "/rateplan/v1/no-show-policies/{id}",
+  "operationId": "RateplanNo-show-policiesByIdDelete",
+  "tag": "NoShowPolicy",
+  "summary": "Delete a no-show policy",
+  "scopes": [
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/promo-codes/codes",
+  "operationId": "RateplanPromo-codesCodesGet",
+  "tag": "PromoCodes",
+  "summary": "Returns a list of promo codes.",
+  "scopes": [
+   "rateplans.read"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/rate-plans/{id}/rates",
+  "operationId": "RateplanRate-plansByIdRatesGet",
+  "tag": "Rate",
+  "summary": "Returns a list of rates.",
+  "scopes": [
+   "rates.read",
+   "rates.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "PUT",
+  "path": "/rateplan/v1/rate-plans/{id}/rates",
+  "operationId": "RateplanRate-plansByIdRatesPut",
+  "tag": "Rate",
+  "summary": "Initializes and changes the rates for the rate plan.",
+  "scopes": [
+   "rates.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "PATCH",
+  "path": "/rateplan/v1/rate-plans/{id}/rates",
+  "operationId": "RateplanRate-plansByIdRatesPatch",
+  "tag": "Rate",
+  "summary": "Allows to patch multiple rates of a single rate plan.",
+  "scopes": [
+   "rates.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "DELETE",
+  "path": "/rateplan/v1/rate-plans/{id}/rates",
+  "operationId": "RateplanRate-plansByIdRatesDelete",
+  "tag": "Rate",
+  "summary": "Deletes the rates for the rate plan",
+  "scopes": [
+   "rates.delete",
+   "rates.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/rate-plans/{id}/rates/$count",
+  "operationId": "RateplanRate-plansByIdRates$countGet",
+  "tag": "Rate",
+  "summary": "Returns the number of rates for a specific rate plan within the specifed time range.",
+  "scopes": [
+   "rates.read",
+   "rates.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "PATCH",
+  "path": "/rateplan/v1/rates",
+  "operationId": "RateplanRatesPatch",
+  "tag": "Rate",
+  "summary": "Allows to patch the rates of multiple rate plans.",
+  "scopes": [
+   "rates.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/rate-plans",
+  "operationId": "RateplanRate-plansGet",
+  "tag": "RatePlan",
+  "summary": "Get a rate plan list",
+  "scopes": [
+   "rateplans.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "POST",
+  "path": "/rateplan/v1/rate-plans",
+  "operationId": "RateplanRate-plansPost",
+  "tag": "RatePlan",
+  "summary": "Create a rate plan",
+  "scopes": [
+   "rateplans.create",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "PATCH",
+  "path": "/rateplan/v1/rate-plans",
+  "operationId": "RateplanRate-plansPatch",
+  "tag": "RatePlan",
+  "summary": "Allows to patch one or more rate plans",
+  "scopes": [
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "DELETE",
+  "path": "/rateplan/v1/rate-plans",
+  "operationId": "RateplanRate-plansDelete",
+  "tag": "RatePlan",
+  "summary": "Delete multiple rate plans",
+  "scopes": [
+   "rateplans.delete",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/rate-plans/$count",
+  "operationId": "RateplanRate-plans$countGet",
+  "tag": "RatePlan",
+  "summary": "Returns number of rate plans",
+  "scopes": [
+   "rateplans.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "HEAD",
+  "path": "/rateplan/v1/rate-plans/{id}",
+  "operationId": "RateplanRate-plansByIdHead",
+  "tag": "RatePlan",
+  "summary": "Check if a rate plan exists",
+  "scopes": [
+   "rateplans.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/rate-plans/{id}",
+  "operationId": "RateplanRate-plansByIdGet",
+  "tag": "RatePlan",
+  "summary": "Get a rate plan",
+  "scopes": [
+   "rateplans.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "PUT",
+  "path": "/rateplan/v1/rate-plans/{id}",
+  "operationId": "RateplanRate-plansByIdPut",
+  "tag": "RatePlan",
+  "summary": "Replace a rate plan",
+  "scopes": [
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "DELETE",
+  "path": "/rateplan/v1/rate-plans/{id}",
+  "operationId": "RateplanRate-plansByIdDelete",
+  "tag": "RatePlan",
+  "summary": "Delete a rate plan",
+  "scopes": [
+   "rateplans.delete",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "PUT",
+  "path": "/rateplan/v1/rate-plan-actions/{id}/archive",
+  "operationId": "RateplanRate-plan-actionsByIdArchivePut",
+  "tag": "RatePlanActions",
+  "summary": "Archive a rate plan",
+  "scopes": [
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "POST",
+  "path": "/rateplan/v1/services",
+  "operationId": "RateplanServicesPost",
+  "tag": "Service",
+  "summary": "Create a service.",
+  "scopes": [
+   "services.create",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/services",
+  "operationId": "RateplanServicesGet",
+  "tag": "Service",
+  "summary": "Get all services.",
+  "scopes": [
+   "services.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "PATCH",
+  "path": "/rateplan/v1/services/{id}",
+  "operationId": "RateplanServicesByIdPatch",
+  "tag": "Service",
+  "summary": "Modify a service.",
+  "scopes": [
+   "services.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/services/{id}",
+  "operationId": "RateplanServicesByIdGet",
+  "tag": "Service",
+  "summary": "Get a specific service.",
+  "scopes": [
+   "services.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "HEAD",
+  "path": "/rateplan/v1/services/{id}",
+  "operationId": "RateplanServicesByIdHead",
+  "tag": "Service",
+  "summary": "Check if a service exists",
+  "scopes": [
+   "services.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "DELETE",
+  "path": "/rateplan/v1/services/{id}",
+  "operationId": "RateplanServicesByIdDelete",
+  "tag": "Service",
+  "summary": "Delete a service",
+  "scopes": [
+   "services.create",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "rateplan-v1",
+  "method": "GET",
+  "path": "/rateplan/v1/services/$count",
+  "operationId": "RateplanServices$countGet",
+  "tag": "Service",
+  "summary": "Returns number of services.",
+  "scopes": [
+   "services.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "reports-v1",
+  "method": "GET",
+  "path": "/reports/v1/reports/ordered-services",
+  "operationId": "ReportsReportsOrdered-servicesGet",
+  "tag": "Reports",
+  "summary": "List of ordered services",
+  "scopes": [
+   "reports.read"
+  ]
+ },
+ {
+  "spec": "reports-v1",
+  "method": "GET",
+  "path": "/reports/v1/reports/arrivals",
+  "operationId": "ReportsReportsArrivalsGet",
+  "tag": "Reports",
+  "summary": "Returns the number of arrivals in a month for a property",
+  "scopes": [
+   "reports.read"
+  ]
+ },
+ {
+  "spec": "reports-v1",
+  "method": "GET",
+  "path": "/reports/v1/reports/property-performance",
+  "operationId": "ReportsReportsProperty-performanceGet",
+  "tag": "Reports",
+  "summary": "Returns the property performance report which includes the ADR and the RevPAR for each business day.",
+  "scopes": [
+   "reports.read"
+  ]
+ },
+ {
+  "spec": "reports-v1",
+  "method": "GET",
+  "path": "/reports/v1/reports/company-invoices-vat",
+  "operationId": "ReportsReportsCompany-invoices-vatGet",
+  "tag": "Reports",
+  "summary": "Returns the list of company invoices with information on the company and the VAT breakdown",
+  "scopes": [
+   "reports.read"
+  ]
+ },
+ {
+  "spec": "reports-v1",
+  "method": "GET",
+  "path": "/reports/v1/reports/revenues",
+  "operationId": "ReportsReportsRevenuesGet",
+  "tag": "Reports",
+  "summary": "Returns the revenues report for a property",
+  "scopes": [
+   "reports.read"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/capture-policies",
+  "operationId": "SettingsCapture-policiesGet",
+  "tag": "CapturePolicies",
+  "summary": "Get all capture policies.",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/capture-policies/{id}",
+  "operationId": "SettingsCapture-policiesByIdGet",
+  "tag": "CapturePolicies",
+  "summary": "Get a specific capture policy.",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "PATCH",
+  "path": "/settings/v1/capture-policies/{id}",
+  "operationId": "SettingsCapture-policiesByIdPatch",
+  "tag": "CapturePolicies",
+  "summary": "Allows to modify properties of a capture policy.",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "POST",
+  "path": "/settings/v1/city-tax",
+  "operationId": "SettingsCity-taxPost",
+  "tag": "CityTax",
+  "summary": "Create a city tax.",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/city-tax",
+  "operationId": "SettingsCity-taxGet",
+  "tag": "CityTax",
+  "summary": "Get all city taxes.",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/city-tax/{id}",
+  "operationId": "SettingsCity-taxByIdGet",
+  "tag": "CityTax",
+  "summary": "Get a specific city tax.",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "PATCH",
+  "path": "/settings/v1/city-tax/{id}",
+  "operationId": "SettingsCity-taxByIdPatch",
+  "tag": "CityTax",
+  "summary": "Allows to modify city tax",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "DELETE",
+  "path": "/settings/v1/city-tax/{id}",
+  "operationId": "SettingsCity-taxByIdDelete",
+  "tag": "CityTax",
+  "summary": "Delete a city tax",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/sub-accounts",
+  "operationId": "SettingsSub-accountsGet",
+  "tag": "CustomSubAccounts",
+  "summary": "Returns a list of all sub-accounts.",
+  "scopes": [
+   "subledger.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "POST",
+  "path": "/settings/v1/sub-accounts",
+  "operationId": "SettingsSub-accountsPost",
+  "tag": "CustomSubAccounts",
+  "summary": "Create a sub-account.",
+  "scopes": [
+   "subledger.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/sub-accounts/$count",
+  "operationId": "SettingsSub-accounts$countGet",
+  "tag": "CustomSubAccounts",
+  "summary": "Returns number of sub-accounts.",
+  "scopes": [
+   "subledger.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/sub-accounts/{id}",
+  "operationId": "SettingsSub-accountsByIdGet",
+  "tag": "CustomSubAccounts",
+  "summary": "Returns one sub-account.",
+  "scopes": [
+   "subledger.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "PATCH",
+  "path": "/settings/v1/sub-accounts/{id}",
+  "operationId": "SettingsSub-accountsByIdPatch",
+  "tag": "CustomSubAccounts",
+  "summary": "Allows to modify the name of the sub-account.",
+  "scopes": [
+   "subledger.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "HEAD",
+  "path": "/settings/v1/sub-accounts/{id}",
+  "operationId": "SettingsSub-accountsByIdHead",
+  "tag": "CustomSubAccounts",
+  "summary": "Check if the sub-account exists.",
+  "scopes": [
+   "subledger.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "DELETE",
+  "path": "/settings/v1/sub-accounts/{id}",
+  "operationId": "SettingsSub-accountsByIdDelete",
+  "tag": "CustomSubAccounts",
+  "summary": "Delete a custom sub-account",
+  "scopes": [
+   "subledger.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/features/{propertyId}",
+  "operationId": "SettingsFeaturesByPropertyIdGet",
+  "tag": "FeatureSettings",
+  "summary": "Get feature settings for a property.",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "PATCH",
+  "path": "/settings/v1/features/{propertyId}",
+  "operationId": "SettingsFeaturesByPropertyIdPatch",
+  "tag": "FeatureSettings",
+  "summary": "Allows to modify feature settings",
+  "scopes": [
+   "features.toggle",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/invoice-address",
+  "operationId": "SettingsInvoice-addressGet",
+  "tag": "InvoiceAddress",
+  "summary": "Get invoice addresses",
+  "scopes": [
+   "setup.read",
+   "setup.manage",
+   "settings.read",
+   "settings.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "PUT",
+  "path": "/settings/v1/invoice-address",
+  "operationId": "SettingsInvoice-addressPut",
+  "tag": "InvoiceAddress",
+  "summary": "Create or update invoice addresses for one or more properties.",
+  "scopes": [
+   "setup.manage",
+   "settings.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "PATCH",
+  "path": "/settings/v1/invoice-address",
+  "operationId": "SettingsInvoice-addressPatch",
+  "tag": "InvoiceAddress",
+  "summary": "Change fields in the invoice address of one or more properties.",
+  "scopes": [
+   "setup.manage",
+   "settings.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/languages",
+  "operationId": "SettingsLanguagesGet",
+  "tag": "Languages",
+  "summary": "Get the language settings for the account",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "PUT",
+  "path": "/settings/v1/languages",
+  "operationId": "SettingsLanguagesPut",
+  "tag": "Languages",
+  "summary": "Replaces the language settings for the account",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/market-segments/{id}",
+  "operationId": "SettingsMarket-segmentsByIdGet",
+  "tag": "MarketSegment",
+  "summary": "Get a market segment.",
+  "scopes": [
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "HEAD",
+  "path": "/settings/v1/market-segments/{id}",
+  "operationId": "SettingsMarket-segmentsByIdHead",
+  "tag": "MarketSegment",
+  "summary": "Check if a market segment exists.",
+  "scopes": [
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "PATCH",
+  "path": "/settings/v1/market-segments/{id}",
+  "operationId": "SettingsMarket-segmentsByIdPatch",
+  "tag": "MarketSegment",
+  "summary": "Allows to modify market segment.",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "DELETE",
+  "path": "/settings/v1/market-segments/{id}",
+  "operationId": "SettingsMarket-segmentsByIdDelete",
+  "tag": "MarketSegment",
+  "summary": "Delete a market segment.",
+  "scopes": [
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/market-segments",
+  "operationId": "SettingsMarket-segmentsGet",
+  "tag": "MarketSegment",
+  "summary": "Returns a list of all market segments, filtered by the specified parameters.",
+  "scopes": [
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "POST",
+  "path": "/settings/v1/market-segments",
+  "operationId": "SettingsMarket-segmentsPost",
+  "tag": "MarketSegment",
+  "summary": "Create a market segment",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/market-segments/$count",
+  "operationId": "SettingsMarket-segments$countGet",
+  "tag": "MarketSegment",
+  "summary": "Returns number of market segments.",
+  "scopes": [
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/properties/{id}",
+  "operationId": "SettingsPropertiesByIdGet",
+  "tag": "PropertySettings",
+  "summary": "Get property settings",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/properties/{propertyId}/time-slice-definitions/{id}",
+  "operationId": "SettingsPropertiesByPropertyIdTime-slice-definitionsByIdGet",
+  "tag": "TimeSliceDefinitions",
+  "summary": "Get a specific time slice definition",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "PATCH",
+  "path": "/settings/v1/properties/{propertyId}/time-slice-definitions/{id}",
+  "operationId": "SettingsPropertiesByPropertyIdTime-slice-definitionsByIdPatch",
+  "tag": "TimeSliceDefinitions",
+  "summary": "Modifies a specific time slice definition for the property",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "DELETE",
+  "path": "/settings/v1/properties/{propertyId}/time-slice-definitions/{id}",
+  "operationId": "SettingsPropertiesByPropertyIdTime-slice-definitionsByIdDelete",
+  "tag": "TimeSliceDefinitions",
+  "summary": "Delete a certain time slice definition",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "GET",
+  "path": "/settings/v1/properties/{propertyId}/time-slice-definitions",
+  "operationId": "SettingsPropertiesByPropertyIdTime-slice-definitionsGet",
+  "tag": "TimeSliceDefinitions",
+  "summary": "Get time slice definitions",
+  "scopes": [
+   "settings.read",
+   "setup.read",
+   "setup.manage"
+  ]
+ },
+ {
+  "spec": "settings-v1",
+  "method": "POST",
+  "path": "/settings/v1/properties/{propertyId}/time-slice-definitions",
+  "operationId": "SettingsPropertiesByPropertyIdTime-slice-definitionsPost",
+  "tag": "TimeSliceDefinitions",
+  "summary": "Creates a time slice definition",
+  "scopes": [
+   "settings.manage",
+   "setup.manage"
+  ]
+ }
+]
